@@ -1,0 +1,35 @@
+﻿@using BILWeb.RuleAll;
+@using BILBasic.Common;
+@{
+    ViewBag.Title = "配置管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<T_RuleAllInfo> modelList = ((PageData<T_RuleAllInfo>)ViewData["PageData"]).data;
+}
+
+
+@{ var cssOff = "switchOn switchOff";
+    var cssOn = "switchOn";
+}
+<link href="~/Content/SCG/css/Role/Role.css" rel="stylesheet" />
+<body class="skin-blue">
+    <div class="box">
+        <div style="width:100%;text-align:center;">
+            <table class="table table-bordered">
+                @{ foreach (T_RuleAllInfo t_RuleAllInfo in modelList)
+                    {
+                        <tr>
+                            <td style="width:50%"> @t_RuleAllInfo.strConItemID</td>
+                            <td>
+                                <div class="@{if (@t_RuleAllInfo.IsEnable==1){@cssOff}else{@cssOn}} " data-id="@t_RuleAllInfo.ID">
+                                    <em></em>
+                                </div>
+                            </td>
+                        </tr>
+                    }}
+            </table>
+
+        </div>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="~/Content/SCG/js/Role/Role.js"></script>

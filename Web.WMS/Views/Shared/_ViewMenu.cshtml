@@ -1,0 +1,42 @@
+﻿@using BILWeb.Menu;
+@{
+    var lstMenumodel = (List<T_MenuInfo>)ViewData["lstMenu"];
+
+}
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            @{
+                if (lstMenumodel != null)
+                {
+                    foreach (var item in lstMenumodel)
+                    {
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="@item.MenuName">&#xe723;</i>
+                                <cite>@item.MenuName</cite>
+                                <i class="iconfont nav_right">&#xe697;</i>
+                            </a>
+                            <ul class="sub-menu">
+                                @foreach (var childItem in item.lstSubMenu)
+                                {
+                                    <li>
+                                        <a onclick="xadmin.add_tab('@childItem.MenuName','@childItem.NodeUrl')">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>@childItem.MenuName</cite>
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </li>
+                    }
+                }
+
+            }
+        </ul>
+    </div>
+</div>
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->

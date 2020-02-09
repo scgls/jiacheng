@@ -1,0 +1,74 @@
+﻿@using BILBasic.Common;
+@using BILWeb.Supplier;
+@model T_SupplierInfo
+@{
+    ViewBag.Title = "供应商管理";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_SupplierInfo> pageData = (PageData<T_SupplierInfo>)ViewData["PageData"];
+    var errorMsg = ViewData["errorMsg"];
+}
+
+
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/Supplier/GetModelList" method="post">
+            <div class="layui-card-body ">
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.SupplierNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "供应商编号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.SupplierName, new { htmlAttributes = new { @class = "form-control", @placeholder = "供应商" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </form>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+    <table class="layui-table layui-form">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.SupplierNo)</th>
+                <th>@Html.DisplayNameFor(model => model.SupplierName)</th>
+                <th>@Html.DisplayNameFor(model => model.ContactPerson)</th>
+                <th>@Html.DisplayNameFor(model => model.ContactTel)</th>
+                @*<th>操作</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (pageData.data != null && pageData.data.Count != 0)
+                {
+                    foreach (T_SupplierInfo Row in pageData.data)
+                    {
+                        <tr>
+                            <td>@Row.SupplierNo</td>
+                            <td>@Row.SupplierName</td>
+                            <td>@Row.ContactPerson</td>
+                            <td>@Row.ContactTel</td>
+                            @*<td>
+                                <a title="查看" href="/Supplier/getmodel?ID=@Row.ID">
+                                    <i class="layui-icon">&#xe63c;</i>
+                                </a>
+                                <a title="删除" href="/supplier/Delete?ID = @Row.ID">
+                                    <i class="layui-icon">&#xe640;</i>
+                                </a>
+                        
+                            </td>*@
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" align="center"><b>无查询数据</b></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+
+

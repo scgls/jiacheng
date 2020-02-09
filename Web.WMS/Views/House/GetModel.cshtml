@@ -1,0 +1,138 @@
+﻿@using Web.WMS.Common;
+@model BILWeb.House.T_HouseInfo
+@{
+    ViewBag.Title = "库区新增";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var strMsg = (string)ViewData["strMsg"];
+
+}
+@using (Html.BeginForm("Add", "house", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+        <input name="isDel" value="1" type="hidden" />
+        <table id="example1" class="table table-bordered table-striped">
+            <tr>
+                <td>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WarehouseID, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("WarehouseID", Commom.GetList("cbxWareHouse") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HouseNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.HouseNo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HouseNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HouseName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.HouseName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HouseName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.HouseType, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("HouseType", Commom.GetList("cbxHouseType") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HouseType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactUser, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ContactUser, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactUser, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactPhone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LocationDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LocationDesc, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LocationDesc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FloorType, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("FloorType", Commom.GetList("cbxFloor") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FloorType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HouseStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("HouseStatus", Commom.GetList("cbxHouseStatus") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HouseStatus, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HouseProp, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("HouseProp", Commom.GetList("cbxHouseProp") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HouseProp, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AreaCount, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.AreaCount, new { htmlAttributes = new { @class = "form-control", @readOnly = "readOnly " } })
+                            @Html.ValidationMessageFor(model => model.AreaCount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AreaUsingCount, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.AreaUsingCount, new { htmlAttributes = new { @class = "form-control", @readOnly = "readOnly " } })
+                            @Html.ValidationMessageFor(model => model.AreaUsingCount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-10">
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-10">
+                <a href="javascript:history.go(-1);" class="btn btn-danger pull-left" style="margin-right:30px;">返回</a>   <input type="submit" value="提 交" class="btn btn-primary pull-left" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@{Html.RenderAction("ErrorMsg", strMsg);}

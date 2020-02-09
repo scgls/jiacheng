@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.OutStockTask" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.OutStockTask" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing" />
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd16" namespace="http://schemas.datacontract.org/2004/07/BILWeb.InStock" />
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd17" namespace="http://schemas.datacontract.org/2004/07/BILWeb.Stock" />
+  <xs:complexType name="T_OutStockTaskInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AuditDateTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="AuditUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CloseDateTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="CloseReason" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CloseUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ERPVoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErpDocNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsOutStockPost" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsOwe" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsQuality" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsReceivePost" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsShelvePost" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsUnderShelvePost" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsUrgent" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MoveReasonCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MoveReasonDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MoveType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OutStockDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="PlanName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Plant" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostStatus" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PrintQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PrintTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Reason" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReviewStatus" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SupcusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupcusName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TaskIsSueduser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TaskIssued" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="TaskStatus" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="TaskType" nillable="true" type="xs:decimal" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_OutStockTaskInfo" nillable="true" type="tns:T_OutStockTaskInfo" />
+  <xs:complexType name="ArrayOfT_OutStockTaskDetailsInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_OutStockTaskDetailsInfo" nillable="true" type="tns:T_OutStockTaskDetailsInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_OutStockTaskDetailsInfo" nillable="true" type="tns:ArrayOfT_OutStockTaskDetailsInfo" />
+  <xs:complexType name="T_OutStockTaskDetailsInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q2:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompleteDateTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Costcenter" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CurrentRemainStockQtySAP" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ErpDocNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErpVoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FromStorageLoc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsLock" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsQualitycomp" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsSerial" type="xs:int" />
+          <xs:element minOccurs="0" name="IsSmallBatch" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="KeeperUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LimitStockQtySAP" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MoveReasonCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MoveReasonDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MoveType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OperatorDateTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="OperatorUserName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OperatorUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OutStockQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PackCount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PackFlag" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PartNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PoNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PoRowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PostStatus" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PostUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QualityQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RemainQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RemainsSockQtySAP" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Requstreason" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReserveNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReserveRowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReviewDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ReviewQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ReviewStatus" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ReviewUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SaleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ScanQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ShelvePackCount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ShelveQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SupCusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupCusName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TMaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TMaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TaskID" type="xs:int" />
+          <xs:element minOccurs="0" name="TaskQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="TaskType" type="xs:int" />
+          <xs:element minOccurs="0" name="ToStorageLoc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TrackNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnQualityQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="UnShelveQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnitName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Wbselem" nillable="true" type="xs:string" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/BILWeb.InStock" minOccurs="0" name="lstSerialNo" nillable="true" type="q3:ArrayOfT_SerialNoInfo" />
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/BILWeb.Stock" minOccurs="0" name="lstStockInfo" nillable="true" type="q4:ArrayOfT_StockInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_OutStockTaskDetailsInfo" nillable="true" type="tns:T_OutStockTaskDetailsInfo" />
+  <xs:complexType name="ArrayOfT_OutStockTaskInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_OutStockTaskInfo" nillable="true" type="tns:T_OutStockTaskInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_OutStockTaskInfo" nillable="true" type="tns:ArrayOfT_OutStockTaskInfo" />
+</xs:schema>

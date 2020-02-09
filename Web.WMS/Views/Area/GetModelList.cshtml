@@ -1,0 +1,115 @@
+﻿@using BILBasic.Common;
+@using BILWeb.Area;
+@model T_AreaInfo
+@{
+    ViewBag.Title = "库区管理";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_AreaInfo> pageData = (PageData<T_AreaInfo>)ViewData["PageData"];
+}
+<script type="text/javascript">
+    function DeleteByModel(ID) {
+        if (confirm("确定删除数据这条数据?")) {
+            $.ajax({
+                type: "get",
+                url: "DeleteBymodel?ID=" + ID,
+                method: "POST",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data == "") {
+                        if (data == "") {
+                            window.location.reload()
+                        } else {
+                            alert(data);
+                        }
+                    }
+                }
+            });
+        }
+    }
+</script>
+<head>
+</head>
+<body>
+    <div class="box">
+        <div class="layui-card-body layui-table-body layui-table-main">
+            <form action="/area/GetModelList" method="post">
+                <div class="layui-card-body ">
+                    <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.WarehouseNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "仓库" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.HouseNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "库区" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.AreaNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "库位" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+            </form>
+            @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+            <table class="layui-table layui-form">
+                <thead>
+                    <tr>
+                        @*<th>选择</th>*@
+                        <th>@Html.DisplayNameFor(model => model.WarehouseNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.HouseNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.AreaNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.AreaName)</th>
+                        <th>@Html.DisplayNameFor(model => model.StrAreaType)</th>
+                        <th>@Html.DisplayNameFor(model => model.StrAreaStatus)</th>
+                        <th>@Html.DisplayNameFor(model => model.ContactUser)</th>
+                        <th>@Html.DisplayNameFor(model => model.ContactPhone)</th>
+                        @*<th>@Html.DisplayNameFor(model => model.Address)</th>
+                            <th>@Html.DisplayNameFor(model => model.LocationDesc)</th>*@
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (pageData.data != null && pageData.data.Count != 0)
+                        {
+                            foreach (T_AreaInfo t_AreaInfo in pageData.data)
+                            {
+                                <tr>
+                                    @*<td><input type="checkbox" value="@t_AreaInfo.AreaNo" class="minimal" /></td>*@
+                                    <td>@t_AreaInfo.WarehouseNo</td>
+                                    <td>@t_AreaInfo.HouseNo</td>
+                                    <td>@t_AreaInfo.AreaNo</td>
+                                    <td>@t_AreaInfo.AreaName</td>
+                                    <td>@t_AreaInfo.StrAreaType</td>
+                                    <td>@t_AreaInfo.StrAreaStatus</td>
+                                    <td>@t_AreaInfo.ContactUser</td>
+                                    <td>@t_AreaInfo.ContactPhone</td>
+                                    @*<td>@t_AreaInfo.Address</td>
+                                        <td> @t_AreaInfo.LocationDesc</td>*@
+                                    <td>
+                                        <a title="编辑" href="/Area/getmodel?ID=@t_AreaInfo.ID">
+                                            <i class="layui-icon">&#xe642;</i>
+                                        </a>
+                                        @*<a title="删除" onclick="DeleteByModel(@t_AreaInfo.ID)">
+                                            <i class="layui-icon">&#xe640;</i>
+                                        </a>*@
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" align="center"><b>无数据</b></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+            @{Html.RenderAction("PageView", pageData);}
+        </div>
+    </div>
+</body>
+
+<script src="~/Content/SCG/js/Common/Operate.js"></script>
+<script src="~/Content/SCG/js/area/area.js"></script>

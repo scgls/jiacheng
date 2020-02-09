@@ -1,0 +1,200 @@
+﻿
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+span, img, a, ul, li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.krakatoa {
+    margin: auto;
+}
+
+.krakatoa-control {
+    padding-bottom: 20px;
+}
+/************************************************************登陆界面****************************************************************************/
+#login {
+    height: 300px;
+    width: 300px;
+    z-index: 1000;
+    position: absolute;
+    /*top: 1090px;*/
+    left: 70%;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.ui-form-title {
+    font: 500 18px/28px tahoma,arial,"Hiragino Sans GB","Microsoft Yahei",宋体;
+    padding: 26px 0px 16px;
+    width: 100%;
+    color: #FFF;
+}
+
+#fieldset {
+    border: 0px none;
+}
+
+.login_div {
+    width: 100%;
+    height: 45px;
+    margin-top: 20px;
+    border: 0px none;
+}
+
+#login_btn {
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+    background-color: #FFA800;
+    border: 0px none;
+    color: white;
+    font-size: 20px;
+    font-family: 'Microsoft YaHei';
+}
+
+.login_lable {
+    height: 100%;
+    width: 20%;
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+    .login_lable :hover {
+        opacity: 0.1;
+    }
+
+.user {
+    background-image: url('/Content/img/user.png');
+}
+
+.password {
+    background-image: url('/Content/img/password.png');
+}
+
+.float {
+    float: left;
+}
+
+.header {
+    display: table;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url("/Content/img/bg.jpg") no-repeat scroll center center / cover transparent;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+    display: block;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #333;
+}
+
+.text-vertical-center {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+    .text-vertical-center h1 {
+        margin: 0px;
+        padding: 0px;
+        font-size: 4.5em;
+        font-weight: 700;
+    }
+
+h3, .h3 {
+    font-size: 24px;
+}
+
+h1, .h1, h2, .h2, h3, .h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+}
+
+.text-vertical-center {
+    text-align: center;
+}
+
+.btn-dark {
+    border-radius: 0px;
+    color: #FFF;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.btn-lg, .btn-group-lg > .btn {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+a {
+    color: #428BCA;
+    text-decoration: none;
+}
+
+a {
+    background: none repeat scroll 0px 0px transparent;
+}
+
+.callout {
+    display: table;
+    width: 100%;
+    height: 400px;
+    color: #FFF;
+    background: url("/Content/img/callout.jpg") no-repeat scroll center center / cover transparent;
+}
+
+.text-vertical-center {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}

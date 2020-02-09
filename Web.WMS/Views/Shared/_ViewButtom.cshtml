@@ -1,0 +1,35 @@
+﻿@using Web.WMS.Common;
+@{
+    List<But> SysButs = SystemButton.GetAllSysBut();
+    string CurrentMenu = (string)System.Web.HttpContext.Current.Session["Message"];
+    List<But> CurrentSysBut = SysButs.Where(t => t.Text == CurrentMenu).ToList();
+}
+
+@{
+    if (!(CurrentSysBut == null || CurrentSysBut.Count <= 0))
+    {
+        foreach (But item in CurrentSysBut[0].children)
+        {
+            if (item.IsHave && item.IsChecked)
+            {
+                switch (item.Text)
+                {
+                    case "全选":<a class="btn bg-blue margin quanxuan">全选</a> break;
+                    case "刷新":<a class="btn bg-blue margin shuaxin"><i class="fa fa-refresh"></i> 刷 新</a> break;
+                    case "同步":<a class="btn bg-blue margin tongbu"><i class="fa fa-cloud-download"></i> 同 步</a> break;
+                    case "导出":<a class="btn bg-blue margin daochu" href="Excel"><i class="fa fa-folder-open"></i> 导 出</a> break;
+                    case "查询":<button class="btn btn-blue margin chaxun"><i class="fa fa-search"></i> 查 询</button> break;
+                    case "打印":<button class="btn bg-blue margin dayin"><i class="fa fa-print"></i> 打 印</button> break;
+                    case "生单":<button class="btn bg-blue margin shengdan"><i class="fa fa-plus-square"></i> 生 单</button> break;
+                    case "关闭":<button class="btn bg-blue margin guanbi"><i class="fa fa-times"></i> 关 闭</button> break;
+                    case "新增":<a class="btn bg-blue margin xinzeng"><i class="fa fa-plus-square"></i> 新 增</a> break;
+                    case "编辑":<button class="btn bg-blue margin bianji"><i class="fa fa-edit"></i> 编 辑</button> break;
+                    case "删除": <button class="btn bg-blue margin shanchu"><i class="fa fa-times"></i> 删 除</button> break;
+                    case "生箱": <button class="btn bg-blue margin shengxiang"><i class="fa fa-plus-square"></i> 生 箱</button> break;
+                    case "单箱打印": <button class="btn bg-blue margin dprint"><i class="fa fa-print"></i>单箱打印</button> break;
+                    case "整批打印": <button class="btn bg-blue margin zprint"><i class="fa fa-print"></i>批量打印</button> break;
+                }
+            }
+        }
+    }
+}

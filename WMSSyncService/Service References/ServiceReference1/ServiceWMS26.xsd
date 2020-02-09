@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.UserGroup" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.UserGroup" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" />
+  <xs:complexType name="ArrayOfT_UserGroupInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_UserGroupInfo" nillable="true" type="tns:T_UserGroupInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_UserGroupInfo" nillable="true" type="tns:ArrayOfT_UserGroupInfo" />
+  <xs:complexType name="T_UserGroupInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BIsChecked" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MainTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PickGroupNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PickLeaderUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrUserGroupStatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrUserGroupType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserGroupAbbname" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserGroupName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserGroupNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserGroupStatus" type="xs:int" />
+          <xs:element minOccurs="0" name="UserGroupType" type="xs:int" />
+          <xs:element minOccurs="0" name="WarehouseNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_UserGroupInfo" nillable="true" type="tns:T_UserGroupInfo" />
+</xs:schema>

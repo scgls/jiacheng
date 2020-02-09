@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.InStock" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.InStock" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing" />
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd21" namespace="http://schemas.datacontract.org/2004/07/BILWeb.OutBarCode" />
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd22" namespace="http://schemas.datacontract.org/2004/07/BILWeb.Pallet" />
+  <xs:complexType name="ArrayOfT_SerialNoInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_SerialNoInfo" nillable="true" type="tns:T_SerialNoInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_SerialNoInfo" nillable="true" type="tns:ArrayOfT_SerialNoInfo" />
+  <xs:complexType name="T_SerialNoInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ERPVoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FacMaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDis" type="xs:int" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNoWMS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_SerialNoInfo" nillable="true" type="tns:T_SerialNoInfo" />
+  <xs:complexType name="ArrayOfT_InStockDetailInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_InStockDetailInfo" nillable="true" type="tns:T_InStockDetailInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_InStockDetailInfo" nillable="true" type="tns:ArrayOfT_InStockDetailInfo" />
+  <xs:complexType name="T_InStockDetailInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q2:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ArrStockDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ArrivalDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CenterPackNum" type="xs:decimal" />
+          <xs:element minOccurs="0" name="DeliverySup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ERPVoucherDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ERPVoucherType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Hasprint" type="xs:decimal" />
+          <xs:element minOccurs="0" name="InStockID" type="xs:int" />
+          <xs:element minOccurs="0" name="InStockQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="InnerPackNum" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsSerial" type="xs:int" />
+          <xs:element minOccurs="0" name="MainTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OutPackNum" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PartNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Plant" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PlantName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProtectWay" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QualityDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="QualityQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="QualityType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QualityUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveAreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ReceiveUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveWareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RemainQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RowNoDel" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SaleCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SaleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ScanQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ShipmentDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="SpecialRequire" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Stationname" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StorageLoc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StoreCondition" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrSupPrdDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupPrdBatch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupPrdDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="SupplierName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupplierNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnQualityQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnitName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="lasttime" type="xs:int" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/BILWeb.OutBarCode" minOccurs="0" name="lstBarCode" nillable="true" type="q3:ArrayOfT_OutBarCodeInfo" />
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/BILWeb.Pallet" minOccurs="0" name="lstPallet" nillable="true" type="q4:ArrayOfT_PalletInfo" />
+          <xs:element minOccurs="0" name="lstSerialNo" nillable="true" type="tns:ArrayOfT_SerialNoInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_InStockDetailInfo" nillable="true" type="tns:T_InStockDetailInfo" />
+  <xs:complexType name="T_InStockInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q5:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ErpVoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsQuality" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsReceivePost" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsShelvePost" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MoveType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Plant" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PlantName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupplierName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupplierNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="lstDetail" nillable="true" type="tns:ArrayOfT_InStockDetailInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_InStockInfo" nillable="true" type="tns:T_InStockInfo" />
+  <xs:complexType name="ArrayOfT_InStockInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_InStockInfo" nillable="true" type="tns:T_InStockInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_InStockInfo" nillable="true" type="tns:ArrayOfT_InStockInfo" />
+</xs:schema>

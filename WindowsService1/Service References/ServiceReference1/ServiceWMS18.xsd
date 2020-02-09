@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.PickRule" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.PickRule" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing" />
+  <xs:complexType name="T_PickRuleInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsDel" type="xs:int" />
+          <xs:element minOccurs="0" name="MaterialClassCode" type="xs:int" />
+          <xs:element minOccurs="0" name="MaterialClassName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PickRuleCode" type="xs:int" />
+          <xs:element minOccurs="0" name="PickRuleName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_PickRuleInfo" nillable="true" type="tns:T_PickRuleInfo" />
+  <xs:complexType name="ArrayOfT_PickRuleInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_PickRuleInfo" nillable="true" type="tns:T_PickRuleInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_PickRuleInfo" nillable="true" type="tns:ArrayOfT_PickRuleInfo" />
+</xs:schema>

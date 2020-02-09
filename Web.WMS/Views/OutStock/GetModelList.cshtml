@@ -1,0 +1,208 @@
+﻿@using BILBasic.Common;
+@using Web.WMS.Common;
+@using BILWeb.OutStock;
+@model T_OutStockInfo
+@{
+    ViewBag.Title = "出库单据";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_OutStockInfo> pageData = (PageData<T_OutStockInfo>)ViewData["PageData"];
+}
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/OutStock/GetModelList" method="post">
+            <div class="layui-card-body ">
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.CustomerCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "客户" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.VoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "单据号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.ErpVoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "ERP单号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.DateFrom, new { htmlAttributes = new { @class = "form-control laydateX", @placeholder = "开始时间" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control laydateY", @placeholder = "结束时间" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.ToErpWarehouseName, new { htmlAttributes = new { @class = "form-control", @placeholder = "调入仓" } })
+                </div>
+                @*<div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.TradingConditionsName, new { htmlAttributes = new { @class = "form-control", @placeholder = "交易条件" } })
+                </div>*@
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.DropDownList("VoucherType", Commom.GetList("cbxOutStockVoucherName") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.DropDownList("Status", Commom.GetList("cbxOutstockVoucherStatus") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.DropDownList("FromErpWarehouse", Commom.GetWarehouseList("cbxFromErpWarehouse") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <input type="hidden" name="PcOrPda" value="1" />
+                <div class="layui-inline layui-show-xs-block">
+                    <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </form>
+        <div class="layui-inline layui-show-xs-block">
+            @Html.DropDownList("HeaderName", Commom.GetHeaderNameList as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>@Html.DisplayNameFor(model => model.VoucherNo)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.StrongHoldCode)</th>*@
+                    <th>@Html.DisplayNameFor(model => model.StrongHoldName)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.CompanyCode)</th>*@
+                    <th>@Html.DisplayNameFor(model => model.ErpVoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrVoucherType)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrStatus)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.DepartmentName)</th>*@
+                    @*<th>@Html.DisplayNameFor(model => model.StrCreater)</th>*@
+                    <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.TradingConditionsName)</th>*@
+                    @*<th>@Html.DisplayNameFor(model => model.SupName)</th>*@
+
+                    <th>@Html.DisplayNameFor(model => model.CustomerCode)</th>
+                    <th>@Html.DisplayNameFor(model => model.ToErpWarehouseName)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.FromErpWarehouse)</th>*@
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (T_OutStockInfo t_OutStockInfo in pageData.data)
+                        {
+                            <tr>
+                                <td><input type="checkbox" value="@t_OutStockInfo.ID" /></td>
+                                <td>@t_OutStockInfo.VoucherNo</td>
+                                @*<td>@t_OutStockInfo.StrongHoldCode</td>*@
+                                <td>@t_OutStockInfo.StrongHoldName</td>
+                                @*<td>@t_OutStockInfo.CompanyCode</td>*@
+                                <td>@t_OutStockInfo.ErpVoucherNo</td>
+                                <td>@t_OutStockInfo.StrVoucherType</td>
+                                <td>@t_OutStockInfo.StrStatus</td>
+                                @*<td>@t_OutStockInfo.DepartmentName</td>*@
+                                @*<td>@t_OutStockInfo.StrCreater</td>*@
+                                <td>@t_OutStockInfo.CreateTime</td>
+                                @*<td>@t_OutStockInfo.TradingConditionsName</td>*@
+                                @*<td>@t_OutStockInfo.SupName</td>*@
+                                <td>@t_OutStockInfo.CustomerCode</td>
+                                <td>@t_OutStockInfo.ToErpWarehouseName</td>
+                                @*<td>@t_OutStockInfo.FromErpWarehouse</td>*@
+                                <td>
+                                    <a title="详情" onclick="getDetail(@t_OutStockInfo.ID)" class="detail" data-toggle="modal" data-target="#compose-modal">
+                                        <i class="layui-icon">&#xe642;</i>
+                                    </a>
+
+                                </td>
+                            </tr>
+
+
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="13" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+
+<div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:90%;">
+        <div class="modal-content">
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>项次</th>
+                                    <th>项序</th>
+                                    <th>据点</th>
+                                    <th>物料编号</th>
+                                    <th>物料描述</th>
+                                    <th>批次</th>
+                                    <th>订单数量</th>
+                                    <th>仓库</th>
+                                    @*<th>货位</th>*@
+                                </tr>
+                            </thead>
+                            <tbody id="detailTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="~/Content/SCG/js/Common/Operate.js"></script>
+<script src="~/Content/SCG/js/OutStock/OutStock.js"></script>
+<script type="text/javascript">
+$(".quanxuan").click(function () {
+    if ($(this).html() == "反选") {
+        $(".icheckbox_minimal").removeClass('checked');
+        $(".icheckbox_minimal").attr("aria-checked", "false");
+        $("input:checkbox").removeAttr("checked");
+        $(this).html("全选");
+    } else {
+        //样式
+        $(".icheckbox_minimal").addClass('checked');
+        $(".icheckbox_minimal").attr("aria-checked", "true");
+        //check
+        $("input:checkbox").each(function () {
+            $(this).prop('checked', true);//
+        });
+        $(this).html("反选");
+    }
+})
+
+
+
+    $(".tongbu").click(function () {
+        if ($("#ErpVoucherNo").val() == "") {
+            alert("先输入ERP单号！");
+            return;
+        }
+        var index = layer.load(1);
+        $.ajax({
+            type: "GET",
+            url: "Sync?ErpVoucherNo=" + $("#ErpVoucherNo").val(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.state) {
+                    alert("同步成功！");
+                } else {
+                    alert(data.obj);
+                }
+                layer.close(index);
+            },
+            fail: function () {
+                alert("提交失败！");
+                layer.close(index);
+            }
+        });
+    })
+
+
+</script>

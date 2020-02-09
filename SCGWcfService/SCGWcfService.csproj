@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CB7AAD9B-DF2E-49BE-A6CE-3736ACF6B894}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SCGWcfService</RootNamespace>
+    <AssemblyName>SCGWcfService</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="log4net.xml" />
+    <Content Include="ServiceWMS.svc" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Check\ICheck.cs" />
+    <Compile Include="Check\ServiceCheck.cs" />
+    <Compile Include="Customer\IServiceCustomer.cs" />
+    <Compile Include="Customer\ServiceCustomer.cs" />
+    <Compile Include="DepInterface\IServiceDepInterface.cs" />
+    <Compile Include="DepInterface\ServiceDepInterface.cs" />
+    <Compile Include="EdateChange\IServiceEDateChange.cs" />
+    <Compile Include="EdateChange\ServiceEDateChange.cs" />
+    <Compile Include="Excel\IServiceExcel.cs" />
+    <Compile Include="Excel\ServiceExcel.cs" />
+    <Compile Include="ICommon.cs" />
+    <Compile Include="InStockTaskDetail\IServiceInTaskDetail.cs" />
+    <Compile Include="InStockTaskDetail\ServiceInTaskDetail.cs" />
+    <Compile Include="InStockTask\IServiceInTask.cs" />
+    <Compile Include="InStockTask\ServiceInTask.cs" />
+    <Compile Include="InStock\IServiceInStock.cs" />
+    <Compile Include="InStock\IServiceInStockDetail.cs" />
+    <Compile Include="InStock\ServiceInStock.cs" />
+    <Compile Include="InStock\ServiceInStockDetail.cs" />
+    <Compile Include="OutStockCreate\IServiceOutStockCreate.cs" />
+    <Compile Include="OutStockCreate\ServiceOutStockCreate.cs" />
+    <Compile Include="OutStockTask\IServiceOutTask.cs" />
+    <Compile Include="OutStockTask\ServiceOutTask.cs" />
+    <Compile Include="OutStock\IServiceOutStock.cs" />
+    <Compile Include="OutStock\IServiceOutStockDetail.cs" />
+    <Compile Include="OutStock\ServiceOutStock.cs" />
+    <Compile Include="OutStock\ServiceOutStockDetail.cs" />
+    <Compile Include="Pallet\IServicePallet.cs" />
+    <Compile Include="Pallet\IServicePalletDetail.cs" />
+    <Compile Include="Pallet\ServicePallet.cs" />
+    <Compile Include="Pallet\ServicePalletDetail.cs" />
+    <Compile Include="PickRule\IServicePickRule.cs" />
+    <Compile Include="PickRule\ServicePickRule.cs" />
+    <Compile Include="Print\IPrint.cs" />
+    <Compile Include="Print\ServicePrint.cs" />
+    <Compile Include="QualityChange\IServiceQualityChange.cs" />
+    <Compile Include="QualityChange\ServiceQualityChange.cs" />
+    <Compile Include="Quality\IServiceQuality.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Quality\IServiceQualityDetail.cs" />
+    <Compile Include="Quality\ServiceQuality.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Quality\ServiceQualityDetail.cs" />
+    <Compile Include="RetentionChange\IServiceRetentionChange.cs" />
+    <Compile Include="RetentionChange\ServiceRetentionChange.cs" />
+    <Compile Include="SerialNo\IServiceSerialNo.cs" />
+    <Compile Include="SerialNo\ServiceSerialNo.cs" />
+    <Compile Include="Stock\IServiceStock.cs" />
+    <Compile Include="Stock\ServiceStock.cs" />
+    <Compile Include="Supplier\IServiceSupplier.cs" />
+    <Compile Include="Supplier\IServiceSupplierAddress.cs" />
+    <Compile Include="Supplier\ServiceSupplier.cs" />
+    <Compile Include="Supplier\ServiceSupplierAddewss.cs" />
+    <Compile Include="SyncService\GolabelModel.cs" />
+    <Compile Include="SyncService\IServiceSync.cs" />
+    <Compile Include="SyncService\ServiceSync.cs" />
+    <Compile Include="SystemSet\ISeriviceLogin.cs" />
+    <Compile Include="SystemSet\IServiceArea.cs" />
+    <Compile Include="SystemSet\IServiceContactAddress.cs" />
+    <Compile Include="SystemSet\IServiceContactCompany.cs" />
+    <Compile Include="SystemSet\IServiceHouse.cs" />
+    <Compile Include="SystemSet\IServiceMaterial.cs" />
+    <Compile Include="SystemSet\IServiceMaterialBatch.cs" />
+    <Compile Include="SystemSet\IServiceMenu.cs" />
+    <Compile Include="SystemSet\IServiceUserGroup.cs" />
+    <Compile Include="SystemSet\IServiceWareHouse.cs" />
+    <Compile Include="SystemSet\IUser.cs" />
+    <Compile Include="SystemSet\ServiceArea.cs" />
+    <Compile Include="SystemSet\ServiceContactAddress.cs" />
+    <Compile Include="SystemSet\ServiceContactCompany.cs" />
+    <Compile Include="SystemSet\ServiceHouse.cs" />
+    <Compile Include="SystemSet\ServiceLogin.cs" />
+    <Compile Include="ServiceCommon.cs" />
+    <Compile Include="SystemSet\ServiceMaterial.cs" />
+    <Compile Include="SystemSet\ServiceMaterialBatch.cs" />
+    <Compile Include="SystemSet\ServiceMenu.cs" />
+    <Compile Include="SystemSet\ServiceUser.cs" />
+    <Compile Include="SystemSet\ServiceUserGroup.cs" />
+    <Compile Include="SystemSet\ServiceWareHouse.cs" />
+    <Compile Include="ServiceWMS.svc.cs">
+      <DependentUpon>ServiceWMS.svc</DependentUpon>
+    </Compile>
+    <Compile Include="IService1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Device\" />
+    <Folder Include="Modl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\wcf.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BILBasic\BILBasic.csproj">
+      <Project>{2f8b48db-60f9-4fc4-9102-c120e34aaf3d}</Project>
+      <Name>BILBasic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BILWeb\BILWeb.csproj">
+      <Project>{813b9e5b-7562-4251-b790-7a3f1de51f12}</Project>
+      <Name>BILWeb</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1501</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:1501/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

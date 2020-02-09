@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.DepInterface" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.DepInterface" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing" />
+  <xs:complexType name="T_DepInterfaceInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ClassName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DLLName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Function" type="xs:int" />
+          <xs:element minOccurs="0" name="FunctionName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FunctionNote" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Route" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrFunction" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrVoucherName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherName" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_DepInterfaceInfo" nillable="true" type="tns:T_DepInterfaceInfo" />
+  <xs:complexType name="ArrayOfT_DepInterfaceInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_DepInterfaceInfo" nillable="true" type="tns:T_DepInterfaceInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_DepInterfaceInfo" nillable="true" type="tns:ArrayOfT_DepInterfaceInfo" />
+</xs:schema>

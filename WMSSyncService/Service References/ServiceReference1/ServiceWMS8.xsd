@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.EdateChange" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.EdateChange" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" />
+  <xs:complexType name="T_EDateChangeInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ErpStatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ResoneCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_EDateChangeInfo" nillable="true" type="tns:T_EDateChangeInfo" />
+  <xs:complexType name="ArrayOfT_EDateChangeInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_EDateChangeInfo" nillable="true" type="tns:T_EDateChangeInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_EDateChangeInfo" nillable="true" type="tns:ArrayOfT_EDateChangeInfo" />
+  <xs:complexType name="T_EDateChangeDetailInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q2:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AftEDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BefEDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ResoneCode" type="xs:int" />
+          <xs:element minOccurs="0" name="ResoneName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StockQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="StrAftEDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrResoneCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_EDateChangeDetailInfo" nillable="true" type="tns:T_EDateChangeDetailInfo" />
+  <xs:complexType name="ArrayOfT_EDateChangeDetailInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_EDateChangeDetailInfo" nillable="true" type="tns:T_EDateChangeDetailInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_EDateChangeDetailInfo" nillable="true" type="tns:ArrayOfT_EDateChangeDetailInfo" />
+</xs:schema>

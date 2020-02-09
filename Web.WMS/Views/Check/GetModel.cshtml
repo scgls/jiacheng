@@ -1,0 +1,110 @@
+﻿@using BILBasic.Common;
+@using Web.WMS.Common;
+@model BILWeb.Query.Check_Model
+@{
+    ViewBag.Title = "新建盘点单";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Taskno = (string)ViewData["Taskno"];
+}
+@*@using (Html.BeginForm("Add", "Check", FormMethod.Post))
+    {*@
+<a href="javascript:history.go(-1);" class="btn btn-google-plus x-red " style="margin-right:30px;">返回</a> <input type="submit" class="btn btn-google-plus margin baocun" value="保 存" onclick="saveExcel()">
+<div class="mailbox row">
+    <div class="col-xs-12">
+        <div class="box box-solid">
+            <div class="box-body">
+                <table id="DtSelect">
+                    <tr>
+                        <td>
+                            @*@Html.LabelFor(model => model.CHECKNO, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.CHECKNO, new { htmlAttributes = new { @class = "" } })*@
+                            <div class="col-xs-12"><label style="width:80%">盘点单号： <input id="CHECKNO" name="CHECKNO" type="text" class="form-control" value="@Taskno" readonly />  </label></div>
+
+                        </td>
+                        <td>
+                            <div class="col-xs-12"><label style="width:80%">盘点描述： <input id="CHECKDESC" name="CHECKDESC" type="text" class="form-control" /></label></div>
+                            @*@Html.LabelFor(model => model.CHECKDESC, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.CHECKDESC, new { htmlAttributes = new { @class = "" } })*@
+                        </td>
+                        <td>
+                            <div class="col-xs-12"><label style="width:80%">备注： <input id="REMARKS" name="REMARKS" type="text" class="form-control" /> </label> </div>
+                            @*@Html.LabelFor(model => model.REMARKS, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.REMARKS, new { htmlAttributes = new { @class = "" } })*@
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mailbox row">
+    <div class="col-xs-12">
+        <div class="box box-solid">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3 col-sm-4">
+
+                        <!-- Navigation - folders-->
+                        <div style="margin-top: 15px;">
+                            <label>仓库（必填）</label>
+                            <input id="warehouseno" type="text" class="form-control" />
+                            <label>库区（多）</label>
+                            @*<label>
+                                @Html.DropDownList("HouseID", Commom.GetList("cbxHouse") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control checkhouse" } })
+                            </label>*@
+                            <input id="houseno" type="text" class="form-control" />
+                            <label>库位（多模糊）</label>
+                            <input id="areano" type="text" class="form-control" />
+                            <label>高低货位</label>
+                            <select id="Svalue" class="form-control">
+                                <option value="0">全部</option>
+                                <option value="1">高货位</option>
+                                <option value="2">低货位</option>
+                            </select>
+                            <input type="button" value="查 询" class="btn bg-blue pull-right margin chaxun" onclick="getAreas()">
+                        </div>
+                    </div><!-- /.col (LEFT) -->
+                    <div class="col-md-9 col-sm-8">
+                        <div class="table-responsive">
+                            <input type="button" id="button" value="全选" class="btn bg-red pull-left margin chaxun" onclick="checkall()">
+                            <!-- THE MESSAGES -->
+                            <table name="table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>选择</th>
+                                        <th style="display:none;"></th>
+                                        <th>序号</th>
+                                        <th>库位编号</th>
+                                        <th>库位名</th>
+                                        <th>库区编号</th>
+                                        <th>仓库编号</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detailTable">
+                                    <tr>
+                                        <td colspan="6" align="center"><b>无数据</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /.table-responsive -->
+                    </div><!-- /.col (RIGHT) -->
+                </div><!-- /.row -->
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col (MAIN) -->
+</div>
+
+
+
+<script src="~/Content/SCG/js/Check/Check.js"></script>
+
+@*<script>
+    $(".checkhouse").change(function () {
+         alert(123444);
+        alert(this.find("option:selected").text());
+        var allhouse = $("#houseno").text();
+        $("#houseno").text(allhouse + "," + $("#houseno").find("option:selected").text());
+    })
+</script>*@

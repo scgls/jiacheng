@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.TransferCreate" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.TransferCreate" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing" />
+  <xs:complexType name="T_TransferCreateInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErpVoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FromAreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FromHouse" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FromStorageLoc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FromWareHouse" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsSerial" type="xs:int" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OKSelect" type="xs:boolean" />
+          <xs:element minOccurs="0" name="OperatorDateTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="OperatorUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PostStatus" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PostUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Qty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RemainQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ToAreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ToHouse" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ToStorageLoc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ToWareHouse" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="U_ljlx" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnitCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnitName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Wbselem" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_TransferCreateInfo" nillable="true" type="tns:T_TransferCreateInfo" />
+  <xs:complexType name="ArrayOfT_TransferCreateInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_TransferCreateInfo" nillable="true" type="tns:T_TransferCreateInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_TransferCreateInfo" nillable="true" type="tns:ArrayOfT_TransferCreateInfo" />
+</xs:schema>

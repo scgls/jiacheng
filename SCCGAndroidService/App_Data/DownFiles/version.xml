@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<VERSION>  
+    <VERSIONCODE>1.1</VERSIONCODE>  
+    <FILENAME>updateversion</FILENAME>  
+    <LOADURL>http://192.168.100.108:8000/downfiles.aspx?filename=test.apk
+    </LOADURL>  
+</VERSION>

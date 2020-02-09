@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.Print" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.Print" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd24" namespace="http://schemas.datacontract.org/2004/07/" />
+  <xs:complexType name="ArrayOfBarcode_Model">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Barcode_Model" nillable="true" type="tns:Barcode_Model" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBarcode_Model" nillable="true" type="tns:ArrayOfBarcode_Model" />
+  <xs:complexType name="Barcode_Model">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/" base="q1:DBModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ABatchQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="AllIn" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BarCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BarcodeMType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BarcodeNo" type="xs:int" />
+          <xs:element minOccurs="0" name="BarcodeType" type="xs:int" />
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BoxDetail" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BoxWeight" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreateTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Creater" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CusName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ErpVoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InnerCount" type="xs:int" />
+          <xs:element minOccurs="0" name="InnerPackQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Inner_ID" type="xs:int" />
+          <xs:element minOccurs="0" name="IsDel" type="xs:int" />
+          <xs:element minOccurs="0" name="IsRohs" type="xs:int" />
+          <xs:element minOccurs="0" name="LABELMARK" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MantissaQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MateBatch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNoID" type="xs:int" />
+          <xs:element minOccurs="0" name="MixDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="NoPack" type="xs:int" />
+          <xs:element minOccurs="0" name="OutBox_ID" type="xs:int" />
+          <xs:element minOccurs="0" name="OutCount" type="xs:int" />
+          <xs:element minOccurs="0" name="OutPackQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PrintQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProductBatch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductClass" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ProtectWay" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Qty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RecDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="RecPeo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RelaWeight" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RowNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RowNoDel" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SpecialRequire" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StoreCondition" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrongHoldCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrongHoldName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupPrdBatch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupPrdDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherQty" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="VoucherType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="areano" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="begin" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="end" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="isCheck" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Barcode_Model" nillable="true" type="tns:Barcode_Model" />
+</xs:schema>

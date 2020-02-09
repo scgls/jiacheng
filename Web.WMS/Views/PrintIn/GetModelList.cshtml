@@ -1,0 +1,335 @@
+﻿@using BILBasic.Common;
+@using Web.WMS.Common;
+@using BILWeb.AdvInStock;
+@model T_AdvInStockDetailInfo
+@{
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_AdvInStockDetailInfo> pageData = (PageData<T_AdvInStockDetailInfo>)ViewData["PageData"];
+    var printIP = System.Web.HttpContext.Current.Session["printIP"];
+
+}
+<script src="~/Content/SCG/js/PrintIn/PrintIn.js"></script>
+<input type="hidden" id="printIP" value="@printIP" />
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/printin/GetModelList" method="post">
+            <div class="layui-card-body ">
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.ErpVoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "ERP单号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.MaterialNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.DateFrom, new { htmlAttributes = new { @class = "form-control laydateX", @placeholder = "开始时间" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control laydateY", @placeholder = "结束时间" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.Createname, new { htmlAttributes = new { @class = "form-control", @placeholder = "操作人" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.IsPrint, new { htmlAttributes = new { @class = "form-control", @placeholder = "是否打印" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </form>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>@Html.DisplayNameFor(model => model.ErpVoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaterialNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaterialDesc)</th>
+                    <th>@Html.DisplayNameFor(model => model.EAN)</th>
+                    <th>@Html.DisplayNameFor(model => model.SupBatch)</th>
+                    <th>@Html.DisplayNameFor(model => model.EDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.AdvQty)</th>
+                    <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                    <th>@Html.DisplayNameFor(model => model.Createname)</th>
+                    <th>@Html.DisplayNameFor(model => model.strqualitytype)</th>
+                    <th>@Html.DisplayNameFor(model => model.IsPrint)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (T_AdvInStockDetailInfo row in pageData.data)
+                        {
+                                <tr>
+                                    <td><input type="checkbox" value="@row.ID" class="minimal" /></td>
+                                    <td>@row.ErpVoucherNo</td>
+                                    <td>@row.MaterialNo</td>
+                                    <td>@row.MaterialDesc</td>
+                                    <td>@row.EAN</td>
+                                    <td>@row.SupBatch</td>
+                                    <td>@row.EDate</td>
+                                    <td>@row.AdvQty</td>
+                                    <td>@row.CreateTime</td>
+                                    <td style="display:none;">@row.RowNO</td>
+                                    <td style="display:none;">@row.RowNODel</td>
+                                    <td style="display:none;">@row.StrongHoldCode</td>
+                                    <td style="display:none;">@row.MaterialNoID</td>
+                                    <td style="display:none;">@row.CompanyCode</td>
+                                    <td style="display:none;">@row.WarehouseName</td>
+                                    <td>@row.Createname</td>
+                                    <td>@row.strqualitytype</td>
+                                    <td>@row.IsPrint</td>
+                                    <td>
+                                        <a class="PrintIn"><i class="fa fa-print"></i></a>
+                                        <a onclick="Delete(@row.ID)" title="删除">
+                                            <i class="layui-icon">&#xe640;</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="13" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+
+<div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop='static'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-print"></i> 预收货标签打印</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">采购订单号:</span>
+                            <input id="erpvoucherno" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">收货日期:</span>
+                            <input id="receivetime" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">物料号:</span>
+                            <input id="materialno" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">物料名:</span>
+                            <input id="materialdesc" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">EAN号:</span>
+                            <input id="ean" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">有效期:</span>
+                            <input id="edate" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">批次号:</span>
+                            <input id="batch" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">收货数:</span>
+                            <input id="num" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">装箱量:</span>
+                            <input id="everynum" class="form-control">
+                        </div>
+                    </div>
+                    <input id="RowNO" style="display:none;">
+                    <input id="RowNODel" style="display:none;">
+                    <input id="StrongHoldCode" style="display:none;">
+                    <input id="MaterialNoID" style="display:none;">
+                    <input id="CompanyCode" style="display:none;">
+                    <input id="WarehouseName" style="display:none;">
+                    <input id="Createname" style="display:none;">
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>关闭</button>
+                    <a id="print" class="btn btn-primary pull-left"><i class="fa fa-print"></i>打印</a>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@*<button id="print" class="btn btn-primary pull-left"><i class="fa fa-print"></i>打印</button>*@
+
+<script type="text/javascript">
+    $(".quanxuan").click(function () {
+        if ($(this).html() == "反选") {
+            $(".icheckbox_minimal").removeClass('checked');
+            $(".icheckbox_minimal").attr("aria-checked", "false");
+            $("input:checkbox").removeAttr("checked");
+            $(this).html("全选");
+        } else {
+            //样式
+            $(".icheckbox_minimal").addClass('checked');
+            $(".icheckbox_minimal").attr("aria-checked", "true");
+            //check
+            $("input:checkbox").each(function () {
+                $(this).prop('checked', true);//
+            });
+            $(this).html("反选");
+        }
+    })
+
+
+    $('.PrintIn').click(function () {
+        $('#compose-modal').modal({ keyboard: false }, 'show');
+        var tds = $(this).parent().parent().find("td");
+        $("#erpvoucherno").val(tds.eq(1).html());
+        $("#materialno").val(tds.eq(2).html());
+        $("#materialdesc").val(tds.eq(3).html());
+        $("#ean").val(tds.eq(4).html());
+        $("#batch").val(tds.eq(5).html());
+        $("#edate").val(tds.eq(6).html());
+        $("#num").val(tds.eq(7).html());
+        $("#everynum").val(tds.eq(7).html());
+        $("#receivetime").val(tds.eq(8).html());
+        $("#RowNO").val(tds.eq(9).html());
+        $("#RowNODel").val(tds.eq(10).html());
+        $("#StrongHoldCode").val(tds.eq(11).html());
+        $("#MaterialNoID").val(tds.eq(12).html());
+        $("#CompanyCode").val(tds.eq(13).html());
+        $("#WarehouseName").val(tds.eq(14).html());
+        $("#Createname").val(tds.eq(15).html());
+    })
+
+    $('#print').click(function () {
+        try {
+            if ($("#num").val().trim() == "" || $("#num").val().trim() == "0" || $("#everynum").val().trim() == "" || $("#everynum").val().trim() == "0") {
+                alert("打印量和包装量不能为空或者0");
+                return;
+            }
+            if (parseFloat($("#num").val()) < parseFloat($("#everynum").val())) {
+                alert("打印量不能少于包装量");
+                return;
+            }
+            $.ajax({
+                type: "Post",
+                url: "/PrintIn/SaveBarcode",
+                data: {
+                    erpvoucherno: $("#erpvoucherno").val(),
+                    materialno: $("#materialno").val(),
+                    materialdesc: $("#materialdesc").val(),
+                    ean: $("#ean").val(),
+                    batch: $("#batch").val(),
+                    edate: $("#edate").val(),
+                    num: $("#num").val(),
+                    everynum: $("#everynum").val(),
+                    receivetime: $("#receivetime").val(),
+                    RowNO: $("#RowNO").val(),
+                    RowNODel: $("#RowNODel").val(),
+                    MaterialNoID: $("#MaterialNoID").val(),
+                    StrongHoldCode: $("#StrongHoldCode").val(),
+                    CompanyCode: $("#CompanyCode").val(),
+                    WarehouseName: $("#WarehouseName").val(),
+                    Createname: $("#Createname").val()
+                },
+                success: function (msg) {
+                    if (msg.state) {
+                        window.open($("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj);
+                        $('#compose-modal').modal('hide');
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                fail: function () {
+                    alert("提交失败！")
+                }
+            });
+        } catch (e) {
+            alert(e);
+        }
+
+    })
+
+    $(".dayin").click(function () {
+        var IDs = "";
+        if (confirm("确定打印这" + $('input[type=checkbox]:checked').length + "条记录?")) {
+            $.each($('input:checkbox:checked'), function () {
+                if ($(this).val()!="on") {
+                    IDs = (IDs + $(this).val() + ",");
+                }
+            });
+            $.ajax({
+                type: "Post",
+                url: "/PrintIn/PrintList",
+                data: {
+                    IDs: IDs
+                },
+                success: function (msg) {
+                    if (msg.state) {
+                        window.open($("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj);
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                fail: function () {
+                    alert("提交失败！")
+                }
+            });
+        }
+    })
+
+    $(".shuaxin").click(function () {
+        window.location.href = window.location.href;
+    })
+
+
+    function Delete(ID) {
+        $.ajax({
+            type: "GET",
+            url: "/PrintIn/DeleteForAdv?ID=" + ID,
+            data: {},
+            success: function (msg) {
+                if (msg.state) {
+                    alert("操作成功");
+                     window.location.href = window.location.href;
+                    //location.reload();
+                }
+                else {
+                    alert(msg.obj);
+                }
+            },
+            fail: function () {
+                alert("提交失败！")
+            }
+        });
+    }
+
+</script>
+
