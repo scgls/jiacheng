@@ -20,7 +20,7 @@ namespace BILWeb.Area
             int houseType = 0;
             if (model == null)
             {
-                strError = "客户端传来的实体类不能为空！！！！！！！！！！！！！！！！！！";
+                strError = "客户端传来的实体类不能为空！";
                 return false;
             }
 
