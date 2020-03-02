@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.Query" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.Query" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="CusSup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErpVoucherNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VoucherType" type="xs:int" />
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="addresses" nillable="true" type="tns:ArrayOfAddress" />
+      <xs:element minOccurs="0" name="customercode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customername" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="departmentcode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="departmentname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="strongholdcode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="suppliername" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="supplierno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="toerpwarehouse" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vouuser" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CusSup" nillable="true" type="tns:CusSup" />
+  <xs:complexType name="ArrayOfAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Address" nillable="true" type="tns:Address" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAddress" nillable="true" type="tns:ArrayOfAddress" />
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Address" nillable="true" type="tns:Address" />
+  <xs:complexType name="Check_Model">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CBEGINTIME" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CDONETIME" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CHECKDESC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CHECKNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CHECKSTATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CHECKTYPE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CREATER" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CREATETIME" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="ISDEL" type="xs:int" />
+      <xs:element minOccurs="0" name="REMARKS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="begintime" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="endtime" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ischeck" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Check_Model" nillable="true" type="tns:Check_Model" />
+  <xs:complexType name="ArrayOfCheck_Model">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Check_Model" nillable="true" type="tns:Check_Model" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCheck_Model" nillable="true" type="tns:ArrayOfCheck_Model" />
+  <xs:complexType name="CheckRef_Model">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AREANO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CHECKID" type="xs:int" />
+      <xs:element minOccurs="0" name="CHECKNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="areaid" type="xs:int" />
+      <xs:element minOccurs="0" name="houseno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="warehouseno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CheckRef_Model" nillable="true" type="tns:CheckRef_Model" />
+  <xs:complexType name="ArrayOfCheckRef_Model">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CheckRef_Model" nillable="true" type="tns:CheckRef_Model" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCheckRef_Model" nillable="true" type="tns:ArrayOfCheckRef_Model" />
+  <xs:complexType name="ArrayOfCheckAnalyze">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CheckAnalyze" nillable="true" type="tns:CheckAnalyze" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCheckAnalyze" nillable="true" type="tns:ArrayOfCheckAnalyze" />
+  <xs:complexType name="CheckAnalyze">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AREAID" type="xs:int" />
+      <xs:element minOccurs="0" name="AREANO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BARCODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CHECKNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Creater" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EDATE" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="KQTY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MATERIALDESC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MATERIALID" type="xs:int" />
+      <xs:element minOccurs="0" name="MATERIALNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PALLETNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PRODUCTDATE" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="QTY" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="SAREAID" type="xs:int" />
+      <xs:element minOccurs="0" name="SAREANO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SBatchNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SEDATE" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SERIALNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SMATERIALDESC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SMATERIALNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SMATERIALNOID" type="xs:int" />
+      <xs:element minOccurs="0" name="SQTY" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="SSERIALNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SSTRONGHOLDCODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="STRONGHOLDCODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="STRONGHOLDNAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SUPCODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SUPNAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SUPPRDBATCH" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SUPPRDDATE" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="YQTY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ean" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="houseid" type="xs:int" />
+      <xs:element minOccurs="0" name="houseno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="partno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="remark" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="sean" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="sstatus" type="xs:int" />
+      <xs:element minOccurs="0" name="sstatusname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" type="xs:int" />
+      <xs:element minOccurs="0" name="statusname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="swarehouseno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="unit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="warehouseid" type="xs:int" />
+      <xs:element minOccurs="0" name="warehouseno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CheckAnalyze" nillable="true" type="tns:CheckAnalyze" />
+</xs:schema>

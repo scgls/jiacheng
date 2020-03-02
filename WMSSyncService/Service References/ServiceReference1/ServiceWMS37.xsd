@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.Material" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.Material" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" />
+  <xs:complexType name="ArrayOfT_MaterialInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_MaterialInfo" nillable="true" type="tns:T_MaterialInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_MaterialInfo" nillable="true" type="tns:ArrayOfT_MaterialInfo" />
+  <xs:complexType name="T_MaterialInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AreaID" type="xs:int" />
+          <xs:element minOccurs="0" name="AreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Brand" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BrandIntRO" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DisRule" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ErpBarCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Hight" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsActivate" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsBond" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsDangerous" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsQuality" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsSerial" type="xs:int" />
+          <xs:element minOccurs="0" name="KeeperName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="KeeperNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Length" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="LifeCycle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MainTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MainTypeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialDescEN" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NetWeight" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PackQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PackRule" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PackVolume" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PalletPackQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PalletVolume" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PartNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PlaceArea" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductTypeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProtectWay" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PurchaseTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PurchaseTypeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QualityDay" type="xs:decimal" />
+          <xs:element minOccurs="0" name="QualityMon" type="xs:decimal" />
+          <xs:element minOccurs="0" name="QueryStock" type="xs:int" />
+          <xs:element minOccurs="0" name="SpecialRequire" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StackArea" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="StackHouse" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="StackRule" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="StackWareHouse" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="StockQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="StoreCondition" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupplierName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupplierNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnitName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Volume" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="WareHouseID" type="xs:int" />
+          <xs:element minOccurs="0" name="WareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WaterCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Weight" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Wide" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="standardbox1" type="xs:int" />
+          <xs:element minOccurs="0" name="standardbox2" type="xs:int" />
+          <xs:element minOccurs="0" name="standardbox3" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_MaterialInfo" nillable="true" type="tns:T_MaterialInfo" />
+  <xs:complexType name="T_Material_BatchInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q2:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Brand" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CustomerNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CustomerNote" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DQuantily" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Edate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ExceptionNote" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FactoryCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FactoryName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IEscrow" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaterialID" type="xs:int" />
+          <xs:element minOccurs="0" name="PQuantily" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProductBatch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ProjectNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ROHS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RQuantily" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="StockQty" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SupCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupPrdBatch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SupPrdDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Version" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WBS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WareHouseNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_Material_BatchInfo" nillable="true" type="tns:T_Material_BatchInfo" />
+  <xs:complexType name="ArrayOfT_Material_BatchInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_Material_BatchInfo" nillable="true" type="tns:T_Material_BatchInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_Material_BatchInfo" nillable="true" type="tns:ArrayOfT_Material_BatchInfo" />
+</xs:schema>

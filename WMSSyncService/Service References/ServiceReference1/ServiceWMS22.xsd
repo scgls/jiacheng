@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILBasic.User" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILBasic.User" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" />
+  <xs:complexType name="UserModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CXAccount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CYAccount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Deviceversion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Duty" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FCAccount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="GroupCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="GroupName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsChangePwd" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsPick" type="xs:int" />
+          <xs:element minOccurs="0" name="IsPickLeader" type="xs:int" />
+          <xs:element minOccurs="0" name="IsQuality" type="xs:int" />
+          <xs:element minOccurs="0" name="IsReceive" type="xs:int" />
+          <xs:element minOccurs="0" name="LoginDevice" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LoginIP" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LoginPassword" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LoginTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="LoginType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Mobile" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PDAPrintIP" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PassWord" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PickAreaID" type="xs:int" />
+          <xs:element minOccurs="0" name="PickAreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PickHouseID" type="xs:int" />
+          <xs:element minOccurs="0" name="PickLeader" type="xs:boolean" />
+          <xs:element minOccurs="0" name="PickWareHouseID" type="xs:int" />
+          <xs:element minOccurs="0" name="PickWareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PinYin" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostAccount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QuanUserName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QuanUserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RePassword" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveAreaID" type="xs:int" />
+          <xs:element minOccurs="0" name="ReceiveAreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveHouseID" type="xs:int" />
+          <xs:element minOccurs="0" name="ReceiveHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveWareHouseName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReceiveWareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Sex" type="xs:int" />
+          <xs:element minOccurs="0" name="StrIsPick" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrIsPickLeader" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrIsReceive" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Tel" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ToSampAreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ToSampWareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserStatus" type="xs:int" />
+          <xs:element minOccurs="0" name="UserType" type="xs:int" />
+          <xs:element minOccurs="0" name="WarehouseCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WarehouseID" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserModel" nillable="true" type="tns:UserModel" />
+</xs:schema>

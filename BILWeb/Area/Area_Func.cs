@@ -16,12 +16,8 @@ namespace BILWeb.Area
    
         protected override bool CheckModelBeforeSave(T_AreaInfo model, ref string strError)
         {
-
-
-
             T_Area_DB _db = new T_Area_DB();
             int houseType = 0;
-            //ymh
             if (model == null)
             {
                 strError = "客户端传来的实体类不能为空！";

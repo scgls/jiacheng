@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.RetentionChange" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.RetentionChange" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" />
+  <xs:complexType name="T_RetentionChangeInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ResoneCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RetainType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrRetainType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_RetentionChangeInfo" nillable="true" type="tns:T_RetentionChangeInfo" />
+  <xs:complexType name="ArrayOfT_RetentionChangeInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_RetentionChangeInfo" nillable="true" type="tns:T_RetentionChangeInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_RetentionChangeInfo" nillable="true" type="tns:ArrayOfT_RetentionChangeInfo" />
+  <xs:complexType name="T_RetentionDetailChangeInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q2:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AreaID" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="AreaNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BatchNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaterialNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QresoneCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QresoneName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RetainType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Rowno" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WareHouseID" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="WareHouseNo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_RetentionDetailChangeInfo" nillable="true" type="tns:T_RetentionDetailChangeInfo" />
+  <xs:complexType name="ArrayOfT_RetentionDetailChangeInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_RetentionDetailChangeInfo" nillable="true" type="tns:T_RetentionDetailChangeInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_RetentionDetailChangeInfo" nillable="true" type="tns:ArrayOfT_RetentionDetailChangeInfo" />
+</xs:schema>

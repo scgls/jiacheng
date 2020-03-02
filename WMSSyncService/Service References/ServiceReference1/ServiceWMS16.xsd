@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BILWeb.Warehouse" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BILWeb.Warehouse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1501/ServiceWMS.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" />
+  <xs:complexType name="ArrayOfT_WareHouseInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="T_WareHouseInfo" nillable="true" type="tns:T_WareHouseInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfT_WareHouseInfo" nillable="true" type="tns:ArrayOfT_WareHouseInfo" />
+  <xs:complexType name="T_WareHouseInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/BILBasic.Basing.Factory" base="q1:Base_Model">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AreaCount" type="xs:int" />
+          <xs:element minOccurs="0" name="AreaRate" type="xs:decimal" />
+          <xs:element minOccurs="0" name="AreaUsingCount" type="xs:int" />
+          <xs:element minOccurs="0" name="BIsChecked" type="xs:boolean" />
+          <xs:element minOccurs="0" name="BIsLock" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ContactPhone" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ContactUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Floor" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HouseCount" type="xs:int" />
+          <xs:element minOccurs="0" name="HouseName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HouseRate" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HouseUsingCount" type="xs:int" />
+          <xs:element minOccurs="0" name="IsDel" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="LocationDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PickRule" type="xs:int" />
+          <xs:element minOccurs="0" name="SamplerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SamplerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrWarehouseStatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StrWarehouseType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WareHouseName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WareHouseNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WareHouseStatus" type="xs:int" />
+          <xs:element minOccurs="0" name="WareHouseType" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="T_WareHouseInfo" nillable="true" type="tns:T_WareHouseInfo" />
+</xs:schema>
