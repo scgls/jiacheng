@@ -1,0 +1,302 @@
+﻿@using BILWeb.Login.User
+@using BILWeb.UserGroup;
+@using BILWeb.Warehouse;
+@using Web.WMS.Common;
+@model UserInfo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<T_WareHouseInfo> wmodelList = (List<T_WareHouseInfo>)ViewData["Warehouse"];
+    List<T_UserGroupInfo> gmodelList = (List<T_UserGroupInfo>)ViewData["serGroup"];
+    var strMsg = (string)ViewData["strMsg"];
+}
+
+<script type="text/javascript">
+    //得到所有选中的值 type ：1所属权限，2所属仓库
+    function buttonOnClick(type) {
+        //记录选中id
+        var strId = "";
+
+        //记录选中权限名称
+        var str = "";
+
+        var checkArr = $("#table_Check").children("tbody").children("tr");
+        if (type == 2) {
+            checkArr = $("#table_check").children("tbody").children("tr");
+        }
+        //循环判断是否选中icheck=true
+        checkArr.each(function (k, y) {
+            var tdArr = checkArr.eq(k).find("td")
+            var idvArr = tdArr.eq(0).find("div");
+            var inputcheck = idvArr.eq(0).find("input");
+            //是否选中
+            if ($(inputcheck)[0].checked == true) {
+                if (strId == "") {
+                    strId = tdArr.eq(2).html();
+                    if (type == 2) {
+                        strId = tdArr.eq(3).html();
+                    }
+                } else {
+                    if (type == 2) {
+                        strId = strId + "," + tdArr.eq(3).html();
+                    } else {
+                        strId = strId + "," + tdArr.eq(2).html();
+                    }
+                }
+                if (str == "") {
+                    str = tdArr.eq(1).html();
+                } else {
+                    str = str + "," + tdArr.eq(1).html();
+                }
+                //取消选中
+                inputcheck.iCheck('uncheck');
+            }
+        });
+        //alert(strId + "____" + str);
+        if (type == 1) {
+            $("#GroupName").val(str);
+            $("#GroupCode").val(strId);
+        } else {
+            $("#WarehouseName").val(str);
+            $("#WarehouseCode").val(strId);
+        }
+    }
+
+    //window.onload = function () {
+    //    var msg = $("#strMsg").val();
+    //    if (msg != "") {
+    //        alert(msg);
+    //    }
+    //}
+</script>
+@*<input id="strMsg" type="hidden" value="@strMsg" />*@
+<div class="box box-primary">
+    @using (Html.BeginForm("Add", "UserInfo", FormMethod.Post))
+    {
+        <input type="hidden" name="isDel" value="1" />
+        @Html.HiddenFor(model => model.ID)
+        <div class="box-body">
+            <table style="width:100%;margin:auto;" class="table table-bordered table-striped ">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.UserNo, new { @class = "form-control", @placeholder = "用户编号" })
+                                    @Html.ValidationMessageFor(model => model.UserNo)
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "用户名" })
+                                    @Html.ValidationMessageFor(model => model.UserName)
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.Mobile, new { @class = "form-control", @placeholder = "手机号" })
+                                    @Html.ValidationMessageFor(model => model.Mobile)
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.Tel, new { @class = "form-control", @placeholder = "联系电话" })
+                                    @Html.ValidationMessageFor(model => model.Tel)
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "邮箱" })
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group" id="pass">
+                                <div class="col-md-10">
+                                    @Html.PasswordFor(model => model.PassWord, htmlAttributes: new { @class = "form-control", @placeholder = "密码" })
+                                    @Html.ValidationMessageFor(model => model.PassWord)
+
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group" id="pass">
+                                <div class="col-md-10">
+                                    @Html.PasswordFor(model => model.RePassword, htmlAttributes: new { @class = "form-control", @placeholder = "确认密码" })
+                                    @Html.ValidationMessageFor(model => model.RePassword)
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label class="control-label">所属仓库</label>
+                                @Html.HiddenFor(model => model.WarehouseCode, new { htmlAttributes = new { @id = "WarehouseCode" } })
+                                @Html.TextBoxFor(model => model.WarehouseName, new { htmlAttributes = new { @id = "WarehouseName", @class = "form-control list", @placeholder = "所属仓库" }, disabled = "disabled" })
+                                <a class="detail" data-toggle="modal" data-target="#compose-modal">选择</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label class="control-label">所属权限</label>
+                                @Html.HiddenFor(model => model.GroupCode, new { htmlAttributes = new { @id = "GroupCode" } })
+                                @Html.TextBoxFor(model => model.GroupName, new { htmlAttributes = new { @id = "GroupName", @class = "form-control list", @placeholder = "所属权限" }, disabled = "disabled" })
+                                <a class="detail" data-toggle="modal" data-target="#compose-moda2">选择</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label">状态</label>
+                                @Html.DropDownList("UserStatus", Commom.GetList("cbxUserStatus") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label">类型</label>
+                                @Html.DropDownList("UserType", Commom.GetList("cbxUserType") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label">性别</label>
+                                @Html.DropDownList("Sex", Commom.GetList("cbxSex") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <div class="box-footer">
+                <a href="javascript:history.go(-1);" class="btn btn-danger pull-left" style="margin-right:30px;">返回</a>
+                <button type="submit" class="btn btn-primary" onclick="check()">确认</button>     
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="compose-modal" tabindex="1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped" id="table_check">
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>仓库编号</th>
+                                    <th>仓库名称</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (wmodelList != null && wmodelList.Count > 0)
+                                {
+                                    for (int i = 0; i < wmodelList.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" />
+                                            </td>
+                                            <td>@wmodelList[i].WareHouseNo</td>
+                                            <td>@wmodelList[i].WareHouseName</td>
+                                            <td style="display:none">@wmodelList[i].ID</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn bg-olive" data-dismiss="modal" onclick="buttonOnClick(2)">保存</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div class="modal fade" id="compose-moda2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped" id="table_Check">
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>用户组</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (gmodelList != null && gmodelList.Count > 0)
+                                {
+                                    for (int i = 0; i < gmodelList.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="minimal" />
+                                            </td>
+                                            <td>@gmodelList[i].UserGroupName</td>
+                                            <td style="display:none">@gmodelList[i].ID</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn bg-olive" data-dismiss="modal" onclick="buttonOnClick(1)">保存</button>
+                    <button type="button" class="btn btn-google-plus" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@{Html.RenderAction("ErrorMsg", strMsg);}
+<script type="text/javascript">
+    $(function () {
+        //Money Euro
+        $("[data-mask]").inputmask();
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal',
+            radioClass: 'iradio_minimal'
+        });
+
+    });
+
+
+</script>

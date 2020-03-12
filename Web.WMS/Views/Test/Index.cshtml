@@ -1,0 +1,46 @@
+﻿@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>table模块快速使用</title>
+        <link href="~/Content/X-admin/lib/layui/css/layui.css" rel="stylesheet" />
+    </head>
+    <body>
+        @DateTime.Now.ToString();
+        <input id="aaa" /> <input id="bbb" />
+        <table id="demo" lay-filter="test"></table>
+        <script src="~/Content/X-admin/lib/layui/layui.js"></script>
+        <script>
+            layui.use('table', function () {
+                var table = layui.table;
+                //第一个实例
+                table.render({
+                    elem: '#demo'
+                    , height: 312
+                    , url: '/test/table/' //数据接口
+                    , where: { aaa: $("#aaa").val(), bbb: $("#bbb").val() }//扩展参数,可以传数据到后台
+                    , title: '用户数据表'
+                    , page: true //开启分页
+                    , cols: [[ //表头
+                        { field: 'ID', title: 'ID', width: 80, sort: true, fixed: 'left' }
+                        , { field: 'productName', title: '用户名', width: 80 }
+                        , { field: 'effectTime', title: '性别', width: 80, sort: true }
+                    ]]
+                });
+
+            });
+        </script>
+    </body>
+    </html>*@
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+}
+<head>
+</head>
+<body>
+    <input type="text" class="laydateX">
+
+
+</body>

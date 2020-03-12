@@ -1,0 +1,123 @@
+﻿@using BILBasic.Common;
+@using Web.WMS.Common;
+@using BILWeb.OutStockCreate;
+@model T_OutStockCreateInfo
+@{
+    ViewBag.Title = "按物料生成拣货单";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_OutStockCreateInfo> pageData = (PageData<T_OutStockCreateInfo>)ViewData["PageData"];
+}
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/OutStockCreate/GetModelList" method="post">
+            <div class="layui-card-body ">
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.ErpVoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "ERP单号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.MaterialNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.DropDownList("VoucherType", Commom.GetList("cbxOutStockVoucherName") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.DropDownList("Status", Commom.GetList("cbxOutstockVoucherStatus") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+                <input type="hidden" name="PcOrPda" value="1" />
+            </div>
+        </form>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>@Html.DisplayNameFor(model => model.VoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrongHoldName)</th>
+                    <th>@Html.DisplayNameFor(model => model.CustomerName)</th>
+                    <th>@Html.DisplayNameFor(model => model.ErpVoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrVoucherType)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaterialNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaterialDesc)</th>
+                    <th>@Html.DisplayNameFor(model => model.FromShipmentDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutStockQty)</th>
+                    <th>@Html.DisplayNameFor(model => model.OldOutStockQty)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrIsSpcBatch)</th>
+                    <th>@Html.DisplayNameFor(model => model.FromBatchno)</th>
+                    <th>@Html.DisplayNameFor(model => model.CustomerCode)</th>
+                    <th>@Html.DisplayNameFor(model => model.FromErpWareHouse)</th>
+                    <th>@Html.DisplayNameFor(model => model.FromErpAreaNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.ToErpWareHouse)</th>
+                    <th>@Html.DisplayNameFor(model => model.ToErpAreaNo)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (T_OutStockCreateInfo t_OutStockCreateInfo in pageData.data)
+                        {
+                            <tr>
+                                <td><input type="checkbox" value="@t_OutStockCreateInfo.ID" class="minimal" /></td>
+                                <td>@t_OutStockCreateInfo.VoucherNo </td>
+                                <td>@t_OutStockCreateInfo.StrongHoldName </td>
+                                <td>@t_OutStockCreateInfo.CustomerName </td>
+                                <td>@t_OutStockCreateInfo.ErpVoucherNo </td>
+                                <td>@t_OutStockCreateInfo.StrVoucherType </td>
+                                <td>@t_OutStockCreateInfo.MaterialNo </td>
+                                <td>@t_OutStockCreateInfo.MaterialDesc </td>
+                                <td>@t_OutStockCreateInfo.FromShipmentDate </td>
+                                <td>@t_OutStockCreateInfo.OutStockQty </td>
+                                <td>@t_OutStockCreateInfo.OldOutStockQty </td>
+                                <td>@t_OutStockCreateInfo.StrIsSpcBatch </td>
+                                <td>@t_OutStockCreateInfo.FromBatchno </td>
+                                <td>@t_OutStockCreateInfo.CustomerCode </td>
+                                <td>@t_OutStockCreateInfo.FromErpWareHouse </td>
+                                <td>@t_OutStockCreateInfo.FromErpAreaNo </td>
+                                <td>@t_OutStockCreateInfo.ToErpWareHouse </td>
+                                <td>@t_OutStockCreateInfo.ToErpAreaNo </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="19" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+<script>
+    $(".shengdan").click(function () {
+        var IDs = "";
+        if ($('input[type=checkbox]:checked').length == 0) {
+            return;
+        }
+        if (confirm("确定这" + $('input[type=checkbox]:checked').length + "行生成拣货单?")) {
+            $.each($('input:checkbox:checked'), function () {
+                if ($(this).val() != "on") {
+                    IDs = (IDs + $(this).val() + ",");
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Shengdan?ID=" + IDs,
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.state) {
+                        window.location.reload()
+                    } else {
+                        alert(data.obj);
+                    }
+                }
+            });
+        }
+    })
+</script>

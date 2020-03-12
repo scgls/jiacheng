@@ -1,0 +1,12 @@
+﻿@{
+    var strMsg = ViewData["Msg"]==null?"":ViewData["Msg"];
+}
+<input id="strMsg" type="hidden" value="@strMsg" />
+<script>
+    window.onload = function () {
+        var msg = $("#strMsg").val();
+        if (msg != "") {
+            alert(msg);
+        }
+    }
+</script>

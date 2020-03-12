@@ -1,0 +1,120 @@
+﻿@using BILBasic.Common;
+@using BILWeb.Material;
+@model T_MaterialInfo
+@{
+    ViewBag.Title = "物料管理";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_MaterialInfo> pageData = (PageData<T_MaterialInfo>)ViewData["PageData"];
+
+}
+
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/Material/GetModelList" method="post">
+            <div class="layui-card-body ">
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.MaterialNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料编号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.MaterialDesc, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料名称" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.SupplierNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "供应商" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </form>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    @*<th>选择</th>*@
+                    <th>@Html.DisplayNameFor(model => model.MaterialNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaterialDesc)</th>
+                    <th>@Html.DisplayNameFor(model => model.Length)</th>
+                    <th>@Html.DisplayNameFor(model => model.Wide)</th>
+                    <th>@Html.DisplayNameFor(model => model.Hight)</th>
+                    <th>@Html.DisplayNameFor(model => model.Volume)</th>
+                    <th>@Html.DisplayNameFor(model => model.Weight)</th>
+                    <th>@Html.DisplayNameFor(model => model.NetWeight)</th>
+                    <th>@Html.DisplayNameFor(model => model.Unit)</th>
+                    <th>@Html.DisplayNameFor(model => model.DisRule)</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (T_MaterialInfo t_MaterialInfo in pageData.data)
+                        {
+                            <tr>
+
+                                @*<td>
+                                        <label>
+                                            <input type="checkbox" class="minimal" value="@t_MaterialInfo.ID" />
+                                        </label>
+                                    </td>*@
+                                <td>@t_MaterialInfo.MaterialNo</td>
+                                <td>@t_MaterialInfo.MaterialDesc</td>
+                                <td>@t_MaterialInfo.Length</td>
+                                <td>@t_MaterialInfo.Wide</td>
+                                <td>@t_MaterialInfo.Hight</td>
+                                <td>@t_MaterialInfo.Volume</td>
+                                <td>@t_MaterialInfo.Weight</td>
+                                <td>@t_MaterialInfo.NetWeight</td>
+                                <td>@t_MaterialInfo.Unit</td>
+                                <td>@t_MaterialInfo.DisRule</td>
+                                <td>
+
+                                    <a title="编辑" href="/material/getmodel?ID=@t_MaterialInfo.ID">
+                                        <i class="layui-icon">&#xe642;</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="13" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+
+<script src="~/Content/SCG/js/Common/Operate.js"></script>
+<script>
+    $(".tongbu").click(function () {
+        if ($("#MaterialNo").val() == "") {
+            alert("先输入物料号！");
+            return;
+        }
+        var index = layer.load(1);
+        $.ajax({
+            type: "GET",
+            url: "Sync?MaterialNo=" + $("#MaterialNo").val(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.state) {
+                    alert("同步成功！");
+                } else {
+                    alert(data.obj);
+                }
+                layer.close(index);
+            },
+            fail: function () {
+                alert("提交失败！");
+                layer.close(index);
+            }
+        });
+    })
+</script>
+

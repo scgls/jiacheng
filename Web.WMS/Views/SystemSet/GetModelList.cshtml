@@ -1,0 +1,163 @@
+﻿
+@using BILBasic.Common;
+@using BILWeb.PickRule;
+@model T_PickRuleInfo
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PageData<T_PickRuleInfo> pageData = (PageData<T_PickRuleInfo>)ViewData["PageData"];
+}
+@switch (Model.RuleType.ToString())
+{
+    case "1":
+        ViewBag.Title = "生单规则";
+        break;
+    case "2":
+        ViewBag.Title = "拣货规则";
+        break;
+    case "3":
+        ViewBag.Title = "分单规则";
+        break;
+    case "5":
+        ViewBag.Title = "上架规则";
+        break;
+    case "6":
+        ViewBag.Title = "补货规则";
+        break;
+    case "7":
+        ViewBag.Title = "批次规则";
+        break;
+}
+<style type="text/css">
+    .changeColor {
+        background-color: #31b0d5 !important;
+    }
+</style>
+
+<script type="text/javascript">
+    var ruletype = 0;
+    var id = 0;
+    $(function () {
+        //让table选中
+        $("#systemSetTable").bootstrapTable({
+            clickToSelect: true
+        });
+        //触发选中事件，改变改行
+        $("#systemSetTable").on("click-row.bs.table", function (e,row, $element) {
+            $(".changeColor").removeClass("changeColor");
+            $($element).addClass("changeColor");
+            //id = row[0];
+            //ruletype = row[1];
+        });
+        $('.xinzeng').attr('href', '/SystemSet/Getmodel?ruletype=' +@Model.RuleType);
+        $(".bianji").click(function () {
+            if ($(".changeColor").length == 0) {
+                alert("请选中行")
+                return false;
+            }
+            var index = $("#systemSetTable").find("tr.changeColor").data("index");
+            var list = $("#systemSetTable").bootstrapTable("getData")[index];
+            window.location.href = "/SystemSet/getmodel?id=" + list[0];
+            //$.get("/SystemSet/getmodel", { id: id }, function (data) {
+            //})
+        })
+        $(".shanchu").click(function () {
+            if ($(".changeColor").length == 0) {
+                alert("请选中行")
+                return false;
+            }
+            var index = $("#systemSetTable").find("tr.changeColor").data("index");
+            var list = $("#systemSetTable").bootstrapTable("getData")[index];
+            //  ButtonDelete(id, ruletype)
+            window.location.href = "/SystemSet/DeleteId?id=" + list[0] + "&type=" + list[1];
+        })
+    })
+
+    function ButtonDelete(id, type) {
+        $.post("/SystemSet/DeleteId", { id: id ,type: type }, function (data) {
+        });
+    }
+
+
+</script>
+
+<body class="skin-blue">
+    @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+    <div class="box">
+        <form action="/PickRule/GetModelList" class="text-right" method="post">
+            <div class="box-header">
+                <div class="box-tools">
+                    <div class="input-group" style="float: right">
+                        <label>物料类别：@Html.EditorFor(model => model.MaterialClassCode, new { htmlAttributes = new { @class = "input-sm pull-right" } })</label>
+                        <label>规则名称：@Html.EditorFor(model => model.PickRuleName, new { htmlAttributes = new { @class = "input-sm  pull-right" } })</label>
+                        <button type="submit" class="btn btn-primary">搜索</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive">
+            @*table-striped*@
+            <table id="systemSetTable" class="table table-bordered " >
+                <thead>
+                    <tr>
+                        <th class="hidden"></th>
+                        <th class="hidden"></th>
+                        <th>@Html.DisplayNameFor(model => model.MaterialClassCode)</th>
+                        <th>@Html.DisplayNameFor(model => model.MaterialClassName)</th>
+                        <th>@Html.DisplayNameFor(model => model.PickRuleName)</th>
+                        <th>@Html.DisplayNameFor(model => model.StrStatus)</th>
+                        <th>@Html.DisplayNameFor(model => model.Creater)</th>
+                        <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                        <th>操作</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (pageData.data != null)
+                        {
+                            foreach (T_PickRuleInfo row in pageData.data)
+                            {
+                    <tr>
+                        <td  class="hidden">@row.ID</td>
+                        <td  class="hidden">@row.RuleType</td>
+                        <td> @row.MaterialClassCode </td>
+                        <td> @row.MaterialClassName </td>
+                        <td> @row.PickRuleName </td>
+                        <td> @row.StrStatus </td>
+                        <td> @row.Creater </td>
+                        <td> @row.CreateTime </td>
+                        <td>
+                            @*<a href="" onclick="ButtonEdit(@row.ID)">编辑</a>*@
+                            @Html.ActionLink("编辑", "getmodel", new { ID = row.ID, }) |
+                            @*@Html.ActionLink("删除", "Delete",new { ID = row.ID })*@
+                            <a  onclick="ButtonDelete(@row.ID,@row.RuleType)">删除</a>
+                        </td>
+                    </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" align="center"><b>无查询数据</b></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @{Html.RenderAction("PageView", pageData);}
+        </div>
+        <div style="display:none" id="itemType">@Model.RuleType</div>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    //删除hover样式
+    $(function () {
+        $("#systemSetTable").removeClass("table-hover")
+    })
+</script>
+
+

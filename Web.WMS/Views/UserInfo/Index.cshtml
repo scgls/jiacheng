@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "UserInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="editor-label">
+        @*@Html.LabelFor(model => model.Pictures)*@
+    </div>
+    <div class="editor-field">
+        <div><input type="file" name="Image" /></div>
+    </div>
+    <button type="submit">submit</button>
+}
+
+<script src="~/Content/js/bootstrap-treeview.js"></script>
+<link href="~/Content/css/bootstrap-treeview.css" rel="stylesheet" />
+<div id="searchTree"></div>
+
+<script>
+    var treeData = [{
+        text: "Parent 1",
+        nodes: [{
+            text: "Child 1",
+            nodes: [{
+                text: "Grandchild 1"
+            }, {
+                text: "Grandchild 2",
+                nodes: [{
+                    text: "Grandchild 2-1",
+                    nodes: [{
+                        text: "Grandchild 2-1-1"
+                    }, {
+                        text: "Grandchild 2-2-1",
+                    }]
+                }, {
+                    text: "Grandchild 1-2",
+                }]
+            }]
+        }, {
+            text: "Child 2",
+            nodes: [{
+                text: "Grandchild 2-1"
+            }, {
+                text: "Grandchild 2-2",
+            }]
+        }]
+    }, {
+        text: "Parent 2",
+        id: '11111'
+    }, {
+        text: "Parent 3"
+    }, {
+        text: "Parent 4"
+    }, {
+        text: "Parent 5"
+    }];
+    var nodeCheckedSilent = false;
+
+    function nodeChecked(event, node) {
+        if (nodeCheckedSilent) {
+            return;
+        }
+        nodeCheckedSilent = true;
+        checkAllParent(node);
+        checkAllSon(node);
+        nodeCheckedSilent = false;
+    }
+
+    var nodeUncheckedSilent = false;
+
+    function nodeUnchecked(event, node) {
+        if (nodeUncheckedSilent)
+            return;
+        nodeUncheckedSilent = true;
+        uncheckAllParent(node);
+        uncheckAllSon(node);
+        nodeUncheckedSilent = false;
+    }
+
+    //选中全部父节点
+    function checkAllParent(node) {
+        $('#searchTree').treeview('checkNode', node.nodeId, {
+            silent: true
+        });
+        var parentNode = $('#searchTree').treeview('getParent', node.nodeId);
+        if (!("nodeId" in parentNode)) {
+            return;
+        } else {
+            checkAllParent(parentNode);
+        }
+    }
+    //取消全部父节点
+    function uncheckAllParent(node) {
+        $('#searchTree').treeview('uncheckNode', node.nodeId, {
+            silent: true
+        });
+        var siblings = $('#searchTree').treeview('getSiblings', node.nodeId);
+        var parentNode = $('#searchTree').treeview('getParent', node.nodeId);
+        if (!("nodeId" in parentNode)) {
+            return;
+        }
+        var isAllUnchecked = true; //是否全部没选中
+        for (var i in siblings) {
+            if (siblings[i].state.checked) {
+                isAllUnchecked = false;
+                break;
+            }
+        }
+        if (isAllUnchecked) {
+            uncheckAllParent(parentNode);
+        }
+
+    }
+
+    //级联选中所有子节点
+    function checkAllSon(node) {
+        $('#searchTree').treeview('checkNode', node.nodeId, {
+            silent: true
+        });
+        if (node.nodes != null && node.nodes.length > 0) {
+            for (var i in node.nodes) {
+                checkAllSon(node.nodes[i]);
+            }
+        }
+    }
+    //级联取消所有子节点
+    function uncheckAllSon(node) {
+        $('#searchTree').treeview('uncheckNode', node.nodeId, {
+            silent: true
+        });
+        if (node.nodes != null && node.nodes.length > 0) {
+            for (var i in node.nodes) {
+                uncheckAllSon(node.nodes[i]);
+            }
+        }
+    }
+    $('#searchTree').treeview({
+        showCheckbox: true,
+        data: treeData,
+        onNodeChecked: nodeChecked,
+        onNodeUnchecked: nodeUnchecked
+    });
+</script>

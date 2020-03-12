@@ -1,0 +1,106 @@
+﻿@using Web.WMS.Common;
+@model BILWeb.UserGroup.T_UserGroupInfo
+
+@{
+    ViewBag.Title = "组权限管理";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    var strMsg = (string)ViewData["strMsg"];
+}
+
+@using (Html.BeginForm("Add", "usergroup", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+        <input name="isDel" value="1" type="hidden" />
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserGroupNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.UserGroupNo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UserGroupNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserGroupName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.UserGroupName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UserGroupName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserGroupType, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("UserGroupType", Commom.GetList("cbxUserGroupType") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                                @*@Html.EditorFor(model => model.UserGroupType, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.ValidationMessageFor(model => model.UserGroupType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserGroupStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("UserGroupStatus", Commom.GetList("cbxUserGroupStatus") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                                @*@Html.EditorFor(model => model.UserGroupStatus, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.ValidationMessageFor(model => model.UserGroupStatus, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MainTypeCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("MainTypeCode", Commom.GetList("cbxMaterialClass") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MainTypeCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                @*<tr>
+                    <td>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PickLeaderUserNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("PickLeaderUserNo", Commom.GetList("cbxPickLeader") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PickLeaderUserNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>*@
+            </tbody>
+
+        </table>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-10">
+                <input type="submit" value="保存" class="btn btn-primary pull-left" />
+            </div>
+        </div>
+    </div>
+}
+
+@{Html.RenderAction("ErrorMsg", strMsg);}

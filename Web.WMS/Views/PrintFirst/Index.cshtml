@@ -1,0 +1,125 @@
+﻿@using BILWeb.Print;
+@{
+    ViewBag.Title = "期初打印";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    List<Barcode_Model> Data = ViewData["Data"] == null ? null : (List<Barcode_Model>)ViewData["Data"];
+    var Path = ViewData["Path"] == null ? null : (String)ViewData["Path"];
+    var printIP = System.Web.HttpContext.Current.Session["printIP"];
+}
+
+    <form method="post" enctype="multipart/form-data" action="/PrintFirst/ImportExcel" class="form-group">
+        <input name="file" type="file" id="file" />
+        <input type="submit" style="" class="btn btn-google-plus margin " value="导 入" onclick="saveExcel()">
+        <input type="button" class="btn btn-google-plus margin dayin" value="打 印" onclick="saveExcel()">
+    </form>
+
+<input type="hidden" value="@Path" id="Path" />
+<input type="hidden" id="printIP" value="@printIP" />
+<div class="mailbox row">
+    <div class="col-xs-12">
+        <div class="box box-solid">
+            <div class="box-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <input type="button" id="button" value="全选" class="btn bg-red pull-left margin chaxun" onclick="checkall()">
+                        <!-- THE MESSAGES -->
+                        <table name="table" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>序号</th>
+                                    <th>据点</th>
+                                    <th>据点号</th>
+                                    <th>物料号</th>
+                                    <th>物料描述</th>
+                                    <th>批次</th>
+                                    <th>效期</th>
+                                    <th>EAN</th>
+                                    <th>数量</th>
+                                    <th>库位</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailTable">
+                                @{
+                                    if (Data != null && Data.Count != 0)
+                                    {
+                                        foreach (Barcode_Model row in Data)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" class="minimal" value="@row.RowNo" /></td>
+                                                <td>@row.RowNo </td>
+                                                <td>@row.StrongHoldName </td>
+                                                <td>@row.StrongHoldCode </td>
+                                                <td>@row.MaterialNo </td>
+                                                <td>@row.MaterialDesc </td>
+                                                <td>@row.BatchNo </td>
+                                                <td>@row.EDate </td>
+                                                <td>@row.EAN </td>
+                                                <td>@row.Qty </td>
+                                                <td>@row.ErpVoucherNo </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="13" align="center"><b>无查询数据</b></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                </div><!-- /.row -->
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col (MAIN) -->
+</div>
+
+<script type="text/javascript">
+
+    //正选反选
+    function checkall() {
+        var flag = true;
+        if (document.getElementById('button').value == "全选") {
+            flag = true;
+            document.getElementById('button').value = "取消";
+        } else {
+            flag = false;
+            document.getElementById('button').value = "全选";
+        }
+        $("input[type=checkbox]").each(function () { //循环checkbox选择或取消
+            $(this).prop("checked", flag);
+        })
+
+    }
+
+    $(".dayin").click(function () {
+        var IDs = "";
+        if (confirm("确定打印这" + $('input[type=checkbox]:checked').length + "条记录?")) {
+            $.each($('input:checkbox:checked'), function () {
+                IDs = (IDs + $(this).val() + ",");
+            });
+            $.ajax({
+                type: "Post",
+                url: "/PrintFirst/Print",
+                data: {
+                    IDs: IDs,
+                    Path: $("#Path").val()
+                },
+                success: function (msg) {
+                    if (msg.state) {
+                        window.open($("#printIP").val() + "Main.aspx?flag=First&parameter1=" + msg.obj);
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                fail: function () {
+                    alert("提交失败！")
+                }
+            });
+        }
+    })
+
+</script>

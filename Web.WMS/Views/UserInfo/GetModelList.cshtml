@@ -1,0 +1,80 @@
+﻿@using BILBasic.Common;
+@using BILWeb.Login.User;
+@model UserInfo
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<UserInfo> pageData = (PageData<UserInfo>)ViewData["PageData"];
+    var errorMsg = ViewData["errorMsg"];
+}
+
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/UserInfo/GetModelList" method="post">
+            <div class="layui-card-body ">
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "用户名" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    @Html.EditorFor(model => model.UserNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "用户编号" } })
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                    <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </form>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.UserNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrSex)</th>
+                    <th>@Html.DisplayNameFor(model => model.Address)</th>
+                    <th>@Html.DisplayNameFor(model => model.Tel)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrUserStatus)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrIsAdmin)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrIsPickLeader)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (UserInfo userInfo in pageData.data)
+                        {
+                            <tr>
+                                <td>@userInfo.UserName</td>
+                                <td>@userInfo.UserNo</td>
+                                <td>@userInfo.StrSex</td>
+                                <td>@userInfo.Address</td>
+                                <td>@userInfo.Tel</td>
+                                <td>@userInfo.StrUserStatus</td>
+                                <td>@userInfo.StrIsAdmin</td>
+                                <td>@userInfo.StrIsPickLeader</td>
+                                <td>
+                                    <a title="编辑" href="/UserInfo/getmodel2?ID=@userInfo.ID">
+                                        <i class="layui-icon">&#xe642;</i>
+                                    </a>
+                                    @*<a title="删除" href="/UserInfo/Delete?ID=@userInfo.ID">
+                                        <i class="layui-icon">&#xe640;</i>
+                                    </a>*@
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="19" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+<script src="~/Content/SCG/js/UserInfo/UserInfo.js"></script>

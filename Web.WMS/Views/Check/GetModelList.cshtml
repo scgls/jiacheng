@@ -1,0 +1,89 @@
+﻿@using BILBasic.Common;
+@using BILWeb.Query;
+@model Check_Model
+@{
+    ViewBag.Title = "盘点单管理";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<Check_Model> pageData = (PageData<Check_Model>)ViewData["PageData"];
+}
+
+<body>
+    <div class="box">
+        <div class="layui-card-body layui-table-body layui-table-main">
+            <form action="/Check/GetModelList" method="post">
+                <div class="layui-card-body ">
+                    @*<div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.CHECKNO, new { htmlAttributes = new { @class = "form-control", @placeholder = "盘点单号" } })
+                    </div>*@
+                    <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.CHECKSTATUS, new { htmlAttributes = new { @class = "form-control", @placeholder = "状态" } })
+                    </div>
+
+                    <div class="layui-inline layui-show-xs-block">
+                        <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+            </form>
+            <P>
+                @Html.ActionLink("新 建", "getmodel", null, new { @class = "btn bg-olive margin xinzen" })
+                <button class="btn bg-blue margin shuaxin">刷新</button>
+                @*<button class="btn bg-olive margin chakan" onclick="chakan()">查看结果</button>*@
+                @*<button class="btn bg-olive margin fupan" onclick="fupan()">复盘</button>*@
+                @*@Html.ActionLink("盈亏分析", "CheckAnalyze", null, new { @class = "btn bg-olive margin fenxi" })*@
+                <button class="btn bg-olive margin fenxi" onclick="fenxi()">盈亏分析</button>
+                @*<button class="btn bg-olive margin yiju" onclick="yiju()">盘点依据</button>*@
+                @*<button class="btn bg-olive margin daochu" onclick="daochu()">导出盘点单</button>*@
+                <button class="btn bg-red margin shanchu" onclick="shanchu()">删除</button>
+                <button class="btn bg-red margin zhongzhi" onclick="zhongzhi()">终止</button>
+            </P>
+            <table class="layui-table layui-form">
+                <thead>
+                    <tr>
+                        <th>选择</th>
+                        <th>@Html.DisplayNameFor(model => model.CHECKNO)</th>
+                        <th>@Html.DisplayNameFor(model => model.CHECKDESC)</th>
+                        <th>@Html.DisplayNameFor(model => model.CHECKTYPE)</th>
+                        <th>@Html.DisplayNameFor(model => model.CHECKSTATUS)</th>
+                        <th>@Html.DisplayNameFor(model => model.CREATER)</th>
+                        <th>@Html.DisplayNameFor(model => model.CREATETIME)</th>
+                        <th>@Html.DisplayNameFor(model => model.CDONETIME)</th>
+                        <th>@Html.DisplayNameFor(model => model.REMARKS)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    @{
+                        if (pageData.data != null && pageData.data.Count != 0)
+                        {
+                            foreach (Check_Model Row in pageData.data)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" value="@Row.ID" class="minimal" /></td>
+                                    <td>@Row.CHECKNO</td>
+                                    <td>@Row.CHECKDESC</td>
+                                    <td>@Row.CHECKTYPE</td>
+                                    <td>@Row.CHECKSTATUS</td>
+                                    <td>@Row.CREATER</td>
+                                    <td>@Row.CREATETIME</td>
+                                    <td>@Row.CDONETIME</td>
+                                    <td>@Row.REMARKS</td>
+                                    @*<td>@Html.ActionLink("编辑", "getmodel", "area", new { ID = Row.ID }, null) </td>*@
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" align="center"><b>无数据</b></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @{Html.RenderAction("PageView", pageData);}
+        </div>
+    </div>
+</body>
+
+
+<script src="~/Content/SCG/js/Check/Check.js"></script>

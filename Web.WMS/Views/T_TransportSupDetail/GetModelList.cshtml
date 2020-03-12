@@ -1,0 +1,84 @@
+﻿@using BILBasic.Common;
+@using Web.WMS.Common;
+@using BILWeb.TransportSupplier;
+@model T_TransportSupDetailInfo
+@{
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_TransportSupDetailInfo> pageData = (PageData<T_TransportSupDetailInfo>)ViewData["PageData"];
+
+}
+
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/T_TransportSupDetail/GetModelList" method="post">
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.PlateNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "车牌号" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.PalletNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "条码" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.VoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物流号" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.DateFrom, new { htmlAttributes = new { @class = "form-control laydateX", @placeholder = "开始时间" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control laydateY", @placeholder = "结束时间" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+            </div>
+        </form>
+
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PlateNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.PalletNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.BoxCount)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.OutBoxCount)</th>*@
+                    <th>@Html.DisplayNameFor(model => model.Feight)</th>
+                    <th>@Html.DisplayNameFor(model => model.VoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.CustomerName)</th>
+                    <th>@Html.DisplayNameFor(model => model.strType)</th>
+                    <th>@Html.DisplayNameFor(model => model.Creater)</th>
+                    <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (T_TransportSupDetailInfo Row in pageData.data)
+                        {
+                                <tr>
+                                    <td>@Row.PlateNumber</td>
+                                    <td>@Row.PalletNo</td>
+                                    <td>@Row.BoxCount</td>
+                                    @*<td>@Row.OutBoxCount</td>*@
+                                    <td>@Row.Feight</td>
+                                    <td>@Row.VoucherNo</td>
+                                    <td>@Row.CustomerName</td>
+                                    <td>@Row.strType</td>
+                                    @*<td>@Row.TradingConditionsCode</td>*@
+                                    <td>@Row.Creater</td>
+                                    <td>@Row.CreateTime</td>
+                                </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="22" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+
+<script src="~/Content/SCG/js/TaskTrans/TaskTrans.js"></script>
