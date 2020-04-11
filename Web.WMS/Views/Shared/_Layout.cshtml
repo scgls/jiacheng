@@ -1,4 +1,4 @@
-﻿@using Web.WMS.Common;
+@using Web.WMS.Common;
 @using BILWeb.BaseInfo;
 @{ 
     T_System tmodel = Commom.getSystem();
@@ -46,6 +46,8 @@
        
     </style>
     <script src="~/Content/js/jquery-2.1.1.min.js"></script>
+	@Styles.Render("~/Content/DevExtremeBundle")
+	@Scripts.Render("~/Scripts/DevExtremeBundle")
 </head>
 <body class="skin-blue">
     @RenderBody()

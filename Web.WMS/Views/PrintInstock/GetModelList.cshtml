@@ -107,10 +107,10 @@
                                 <input id="materialdesc" class="form-control" readonly="readonly">
                             </div>
                         </div>
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">ENA号:</span>
-                                <input id="ean" type="" class="form-control" readonly="readonly">
+                                <input id="ean"  class="form-control" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-group">
@@ -124,7 +124,7 @@
                                 <span class="input-group-addon">批次号:</span>
                                 <input id="batch" class="form-control">
                             </div>
-                        </div>
+                        </div>*@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">收货数:</span>
@@ -157,12 +157,14 @@
     $('.PrintIn').click(function () {
         $("#batch").attr("disabled", false);
         $("#edate").attr("disabled", false);
+        $("#ean").attr("disabled", false);
+        
         $('#compose-modal').modal({ keyboard: false }, 'show');
         var tds = $(this).parent().parent().find("td");
         $("#erpvoucherno").val(tds.eq(1).html());
         $("#materialno").val(tds.eq(2).html());
         $("#materialdesc").val(tds.eq(3).html());
-        $("#ean").val(tds.eq(4).html());
+        //$("#ean").val(tds.eq(4).html());
         $("#num").val(tds.eq(6).html());
         $("#everynum").val(tds.eq(6).html());
         $("#RowNO").val(tds.eq(7).html());
@@ -176,41 +178,41 @@
         //杂入 28
         //调拨入库单 33
         //批次和效期
-        var vouchertype = tds.eq(14).html();
-        if (vouchertype == "27" || vouchertype == "28" || vouchertype == "33") {
-            $("#batch").val(tds.eq(12).html());
-            $("#edate").val(tds.eq(13).html());
-        }
-        if (vouchertype == "28" || vouchertype == "33") {
-            $("#batch").attr("disabled", "disabled");
-        }
+        //var vouchertype = tds.eq(14).html();
+        //if (vouchertype == "27" || vouchertype == "28" || vouchertype == "33") {
+        //    $("#batch").val(tds.eq(12).html());
+        //    $("#edate").val(tds.eq(13).html());
+        //}
+        //if (vouchertype == "28" || vouchertype == "33") {
+        //    $("#batch").attr("disabled", "disabled");
+        //}
         //if (vouchertype == "27" && $("#batch").val().trim() != "") {
         //    $("#batch").attr("disabled", "disabled");
         //}
-        if (vouchertype == "28" || vouchertype == "33") {
-            $("#edate").attr("disabled", "disabled");
-        }
+        //if (vouchertype == "28" || vouchertype == "33") {
+        //    $("#edate").attr("disabled", "disabled");
+        //}
 
 
         //根据物料号获EAN码
-        $.ajax({
-            type: "Post",
-            url: "/PrintInStock/GetEAN",
-            data: {
-                materialno: $("#materialno").val()
-            },
-            success: function (msg) {
-                if (msg.state) {
-                    $("#ean").val(msg.obj);
-                }
-                else {
-                    alert("EAN获取失败！");
-                }
-            },
-            fail: function () {
-                alert("提交失败！")
-            }
-        });
+        //$.ajax({
+        //    type: "Post",
+        //    url: "/PrintInStock/GetEAN",
+        //    data: {
+        //        materialno: $("#materialno").val()
+        //    },
+        //    success: function (msg) {
+        //        if (msg.state) {
+        //            $("#ean").val(msg.obj);
+        //        }
+        //        else {
+        //            alert("EAN获取失败！");
+        //        }
+        //    },
+        //    fail: function () {
+        //        alert("提交失败！")
+        //    }
+        //});
 
     })
 

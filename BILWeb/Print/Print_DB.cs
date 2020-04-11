@@ -43,7 +43,7 @@ namespace BILWeb.Print
                 return o.ToString();
         }
 
-        public string GetSupMan() 
+        public string GetSupMan()
         {
             string username = ConfigurationManager.ConnectionStrings["username"].ConnectionString;
             return username;
@@ -60,7 +60,7 @@ namespace BILWeb.Print
         }
 
 
-        public void SetParameterById(string group, int id,string name)
+        public void SetParameterById(string group, int id, string name)
         {
             string sql = "update T_PARAMETER set parametername = '" + name + "' where  groupname = '" + group + "'and parameterid =" + id + "";
             dbFactory.ExecuteNonQuery(CommandType.Text, sql);
@@ -223,7 +223,7 @@ namespace BILWeb.Print
                 }
                 //修改表头
                 int count = statuses.Count;
-                int count1 = statuses.FindAll(s => s==1).Count;
+                int count1 = statuses.FindAll(s => s == 1).Count;
                 int count3 = statuses.FindAll(s => s == 3).Count;
                 if (count == count1)
                     sql = "update T_INSTOCK set status = 1 where id =" + infos[0].HeaderID;
@@ -237,11 +237,11 @@ namespace BILWeb.Print
                 dbFactory.ExecuteNonQueryList(sqls);
                 return true;
             }
-                
+
         }
 
 
-        public bool GetPrintVoucher2(int vouchertype, string voucherno, ref List<T_InStockDetailInfo> infos, ref string ErrMsg,ref CusSup cs)
+        public bool GetPrintVoucher2(int vouchertype, string voucherno, ref List<T_InStockDetailInfo> infos, ref string ErrMsg, ref CusSup cs)
         {
 
             string sql = "select a.CreateTime,a.VoucherNo,a.ErpVoucherNo,a.SupplierNo,a.SupplierName,a.VoucherType,a.ERPVOUCHERTYPE,a.ERPVOUCHERDESC,a.StrongHoldCode,a.StrongHoldName,a.status," +
@@ -266,7 +266,7 @@ namespace BILWeb.Print
                 string sh = infos[0].StrongHoldCode;
                 string supno = infos[0].SupplierNo;
                 cs = new CusSup();
-               //查询订单流水
+                //查询订单流水
                 sql = "select num from T_SENDNUM where erpvoucherno = '" + voucherno + "'";
                 object o = dbFactory.ExecuteScalar(CommandType.Text, sql);
                 if (o == null || o.ToString() == "")
@@ -299,7 +299,7 @@ namespace BILWeb.Print
 
         }
 
-        public bool SaveSend(string voucherno, int num) 
+        public bool SaveSend(string voucherno, int num)
         {
             string sql = "update T_SENDNUM set num = " + num + " where erpvoucherno = '" + voucherno + "'";
             dbFactory.ExecuteNonQuery(CommandType.Text, sql);
@@ -324,7 +324,7 @@ namespace BILWeb.Print
             info.StrongHoldName = dr["StrongHoldName"].ToDBString();
             if (string.IsNullOrEmpty(info.StrongHoldName))
             {
-                ErrMsg = dr["MaterialNo"].ToDBString()+"据点名称为空，请在物料数据中维护";
+                ErrMsg = dr["MaterialNo"].ToDBString() + "据点名称为空，请在物料数据中维护";
                 return false;
             }
             info.FromBatchNo = dr["FromBatchNo"].ToDBString();
@@ -390,7 +390,7 @@ namespace BILWeb.Print
         }
 
 
-        public string GetBatch2(DateTime dt ,string company, string matenoid, string supbatch)
+        public string GetBatch2(DateTime dt, string company, string matenoid, string supbatch)
         {
             //获取公司代号
             string one = GetParameterByName("Company", company);
@@ -401,10 +401,10 @@ namespace BILWeb.Print
             return one + two + three + four + five;
         }
 
-        private void InsertBarchreg(string materialno, string line ,int sn) 
+        private void InsertBarchreg(string materialno, string line, int sn)
         {
             string sql = "insert into T_BATCHINS values('" + materialno + "','" + line + "'," + DateTime.Now.Year + ",," + DateTime.Now.Month + ",," + DateTime.Now.Day + ",SYSDATE," + sn + ");";
-            dbFactory.ExecuteNonQuery(CommandType.Text,sql);
+            dbFactory.ExecuteNonQuery(CommandType.Text, sql);
         }
 
         public string GetBatchSC(string json)
@@ -427,9 +427,9 @@ namespace BILWeb.Print
                     string combine = dr["combine"].ToDBString();
                     int datetype = dr["datetype"].ToInt32();
 
-                    DateTime laocaidate=DateTime.Now ;
+                    DateTime laocaidate = DateTime.Now;
                     int sn = 0;
-                    if(datetype<=1)
+                    if (datetype <= 1)
                     {
                         //欧莱雅
                         if (datetype == 1)
@@ -449,11 +449,11 @@ namespace BILWeb.Print
                             {
                                 case "P":
                                     result += plant;
-                                   
+
                                     break;
                                 case "S":
                                     result += subcode;
-                                  
+
                                     break;
                                 case "Y":
                                     //0 当前，1灌装日期
@@ -476,13 +476,13 @@ namespace BILWeb.Print
                                 case "N":
                                     //宜昌天美
                                     if (datetype == 0)
-                                    { 
+                                    {
                                         //从记录表中获取数据
-                                        sql = "select * from T_BATCHINS where materialno = '" + materialno + "' and year = " + DateTime.Now.Year + " and month = " + DateTime.Now.Month ;
-                                        List<Barcode_Model> l = new List<Barcode_Model>() ;
+                                        sql = "select * from T_BATCHINS where materialno = '" + materialno + "' and year = " + DateTime.Now.Year + " and month = " + DateTime.Now.Month;
+                                        List<Barcode_Model> l = new List<Barcode_Model>();
                                         using (IDataReader dr1 = dbFactory.ExecuteReader(sql))
                                         {
-                                            
+
                                             while (dr1.Read())
                                             {
                                                 Barcode_Model m = new Barcode_Model();
@@ -501,7 +501,7 @@ namespace BILWeb.Print
                                             result += GetSN(0);
                                             InsertBarchreg(materialno, lineno, 0);
                                         }
-                                        else 
+                                        else
                                         {
                                             //如果存在完全匹配的直接返回
                                             int index = l.FindIndex(p => p.MaterialNo == materialno && p.RowNo == lineno && p.year == DateTime.Now.Year && p.month == DateTime.Now.Month && p.day == DateTime.Now.Day);
@@ -531,10 +531,10 @@ namespace BILWeb.Print
                     }
                     //Coty
                     else if (datetype == 2)
-                    { 
+                    {
                         string y = DateTime.Now.Year.ToString();
-                        y = y.Substring(y.Length-1,1);
-                        string days = DateTime.Now.DayOfYear.ToString().PadLeft(3,'0');
+                        y = y.Substring(y.Length - 1, 1);
+                        string days = DateTime.Now.DayOfYear.ToString().PadLeft(3, '0');
                         result = y + days + "00";
                     }
                     //HCT-ULTA
@@ -553,7 +553,7 @@ namespace BILWeb.Print
                         }
                         result = "B" + y + days + snn;
                     }
-                    
+
                     Barcode_Model m1 = new Barcode_Model();
                     m1.BatchNo = result;
                     bm.HeaderStatus = "S";
@@ -578,7 +578,7 @@ namespace BILWeb.Print
             //if (o == null || o.ToString() == "")
             //    return "01";
             //return (Convert.ToInt32(o.ToString().Substring(5, 2)) + 1).ToString().PadLeft(2, '0');
-            string sql ="";
+            string sql = "";
             string[] items = supbatch.Split('+');
             if (items.Length > 1)
             {
@@ -588,7 +588,7 @@ namespace BILWeb.Print
             }
             else
                 sql = "select max(BATCHNO) from t_outbarcode where STRONGHOLDCODE = '" + company + "'  and  MATERIALNOID = " + matenoid + " and batchno like '%" + ymd + "%' and SupPrdBatch = '" + supbatch + "' and barcodetype=1";
-         
+
 
             object o = dbFactory.ExecuteScalar(CommandType.Text, sql);
             if (o == null || o.ToString() == "")
@@ -603,7 +603,7 @@ namespace BILWeb.Print
             {
                 return o.ToString().Substring(5, 2);
             }
-            
+
         }
 
         private string GetBarchYear()
@@ -903,7 +903,7 @@ namespace BILWeb.Print
                 ErrMsg = "端口格式错误";
                 return false;
             }
-           
+
             //打印
             SocketHelper sh = new SocketHelper(ipport.Split(':')[0], port);
             if (!sh.Send(strlist, ref ErrMsg))
@@ -1003,12 +1003,13 @@ namespace BILWeb.Print
                     return false;
                 }
             }
-            catch {
+            catch
+            {
                 ErrMsg = "端口格式错误";
                 return false;
             }
-            
-           
+
+
             //打印
             SocketHelper sh = new SocketHelper(ipport.Split(':')[0], port);
             if (!sh.Send(strlist, ref ErrMsg))
@@ -1131,59 +1132,77 @@ namespace BILWeb.Print
         /// <returns></returns>
         public bool SubBarcodes(List<Barcode_Model> list, string ipport, decimal hasprint, ref string ErrMsg, int type = 0)
         {
-            //在条码中插入打印日期
-            foreach (var item in list)
+            string strError = "";
+            try
             {
-                if (item.EDate == DateTime.MinValue || item.EDate.ToString("yyyy/MM/dd") == "0001/01/01")
+                List<string> lstSql = new List<string>();
+                foreach (var item in list)
                 {
-                    ErrMsg = "行号："+item.RowNo+"，"+item.RowNoDel+"的有效期不能为最小值";
-                    return false;
+                    item.VoucherQty = 0;
+                    if (item.CreateTime == DateTime.MinValue)
+                        item.CreateTime = DateTime.Now;
+                    string strSql1 = Common_DB2.GetInertSqlCache(item, "t_outbarcode", "");
+                    lstSql.Add(strSql1);
                 }
-                if (item.CreateTime == DateTime.MinValue)
-                    item.CreateTime = DateTime.Now;
-            }
-
-            //保存
-            using (var tran = OracleDBPoolHelper.GetTransaction())
-            {
-                try
+                int i = dbFactory.ExecuteNonQueryList(lstSql, ref strError);
+                if (i > 0)
                 {
-                    list.Save("t_outbarcode", "SEQ_OUTBARCODE_ID", tran);
-
-                    if (hasprint != 0)
-                    {
-                        //修改已经打印数量
-                        string sql = "update t_instockdetail t set t.hasprint =(case when t.hasprint is null then " + hasprint + " else t.hasprint+" + hasprint + " end) where t.rowno = '" + list[0].RowNo + "' and (t.rownodel='" + list[0].RowNoDel + "' or t.rownodel is null) and t.headerid =(select max(id) from t_instock i where i.ErpVoucherNo = '" + list[0].ErpVoucherNo + "' )";
-                        sql.ExeNullQuery(tran);
-                    }
-
-                    OracleDBPoolHelper.CommitTransaction(tran);
+                    return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    ErrMsg = ex.ToString();
-                    OracleDBPoolHelper.RollbackTransaction(tran);
                     return false;
                 }
             }
-            if (ipport != "sup")
+            catch (Exception ex)
             {
-                if (type == 0)
-                {
-                    //打印标签
-                    bool res = PrintZPL(list, ipport, ref ErrMsg);
-                    if (!res)
-                        return false;
-                }
-                else if (type == 1)
-                {
-                    //打印标签
-                    bool res = PrintZPL2(list, ipport, ref ErrMsg);
-                    if (!res)
-                        return false;
-                }
+                strError = ex.Message;
+                return false;
             }
-           
+
+
+
+            ////保存
+            //using (var tran = OracleDBPoolHelper.GetTransaction())
+            //{
+            //    try
+            //    {
+            //        list.Save("t_outbarcode", "SEQ_OUTBARCODE_ID", tran);
+
+            //        if (hasprint != 0)
+            //        {
+            //            //修改已经打印数量
+            //            string sql = "update t_instockdetail t set t.hasprint =(case when t.hasprint is null then " + hasprint + " else t.hasprint+" + hasprint + " end) where t.rowno = '" + list[0].RowNo + "' and (t.rownodel='" + list[0].RowNoDel + "' or t.rownodel is null) and t.headerid =(select max(id) from t_instock i where i.ErpVoucherNo = '" + list[0].ErpVoucherNo + "' )";
+            //            sql.ExeNullQuery(tran);
+            //        }
+
+            //        OracleDBPoolHelper.CommitTransaction(tran);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ErrMsg = ex.ToString();
+            //        OracleDBPoolHelper.RollbackTransaction(tran);
+            //        return false;
+            //    }
+            //}
+            //if (ipport != "sup")
+            //{
+            //    if (type == 0)
+            //    {
+            //        //打印标签
+            //        bool res = PrintZPL(list, ipport, ref ErrMsg);
+            //        if (!res)
+            //            return false;
+            //    }
+            //    else if (type == 1)
+            //    {
+            //        //打印标签
+            //        bool res = PrintZPL2(list, ipport, ref ErrMsg);
+            //        if (!res)
+            //            return false;
+            //    }
+            //}
+
 
             ErrMsg = "保存成功";
             return true;
@@ -1235,8 +1254,9 @@ namespace BILWeb.Print
         }
 
         //期初条码生成
-        public string GetInsertSQL(Barcode_Model model) {
-            return "insert into t_outbarcode (materialno,materialdesc,qty,barcode,barcodetype,serialno,batchno,ean,edate,status,receivetime,erpvoucherno,strongholdcode,strongholdname,companycode) values ('"+ model.MaterialNo + "','" + model.MaterialDesc + "'," + model.Qty + ",'" + model.BarCode + "'," + model.BarcodeType + ",'" + model.SerialNo + "','" + model.BatchNo + "','" + model.EAN + "','" + model.EDate + "',0,'"+model.ReceiveTime+"','"+ model.ErpVoucherNo+ "','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "')";
+        public string GetInsertSQL(Barcode_Model model)
+        {
+            return "insert into t_outbarcode (materialno,materialdesc,qty,barcode,barcodetype,serialno,batchno,ean,edate,status,receivetime,erpvoucherno,strongholdcode,strongholdname,companycode) values ('" + model.MaterialNo + "','" + model.MaterialDesc + "'," + model.Qty + ",'" + model.BarCode + "'," + model.BarcodeType + ",'" + model.SerialNo + "','" + model.BatchNo + "','" + model.EAN + "','" + model.EDate + "',0,'" + model.ReceiveTime + "','" + model.ErpVoucherNo + "','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "')";
         }
         #endregion
 
@@ -1290,7 +1310,7 @@ namespace BILWeb.Print
         {
             if (page == null)
             {
-                string sql2 = "select * from t_outbarcode b where barcode = '"+model.BarCode+"'";
+                string sql2 = "select * from t_outbarcode b where barcode = '" + model.BarCode + "'";
                 DataTable dt2 = dbFactory.ExecuteDataSet(CommandType.Text, sql2).Tables[0];
                 list = ConvertToModel<Barcode_Model>(dt2);
                 if (list.Count == 0)
@@ -1303,7 +1323,7 @@ namespace BILWeb.Print
 
             string sql = "select ROW_NUMBER() OVER(Order by ID desc) AS PageRowNumber ,b.* from t_outbarcode b where  " + GetBarcodeQuery(model);
             DataTable dt = Common_DB.QueryByDividPage(ref page, sql);
-           
+
             list = ConvertToModel<Barcode_Model>(dt);
             page.CurrentPageRecordCounts = dt.Rows.Count;
             if (list.Count == 0)
@@ -1361,7 +1381,7 @@ namespace BILWeb.Print
 
         #region 期初打印
 
-      
+
 
         //PDA期初打印
 
@@ -1712,9 +1732,9 @@ namespace BILWeb.Print
                     j = Check_Func.SerializeObject(bm);
                     return j;
                 }
-                foreach(var item in list)
+                foreach (var item in list)
                 {
-                    bool res = PrintLpkPallet(item.SerialNo, ipport,ref ErrMsg);
+                    bool res = PrintLpkPallet(item.SerialNo, ipport, ref ErrMsg);
                     if (!res)
                     {
                         bm.HeaderStatus = "E";
@@ -1764,7 +1784,7 @@ namespace BILWeb.Print
                     ErrMsg = "没有该条记录";
                     return false;
                 }
-                List<Barcode_Model> list2 = GetPalletField(count, sumqty, dt); 
+                List<Barcode_Model> list2 = GetPalletField(count, sumqty, dt);
                 return PrintZPL2(list2, ip, ref ErrMsg);
 
             }
@@ -1796,7 +1816,7 @@ namespace BILWeb.Print
                     ErrMsg = "没有该条记录";
                     return false;
                 }
-                List<Barcode_Model> list2 = GetPalletField(count, sumqty, dt); 
+                List<Barcode_Model> list2 = GetPalletField(count, sumqty, dt);
 
                 ip = ip + ":9100";
 
@@ -1902,7 +1922,7 @@ namespace BILWeb.Print
         //    try
         //    {
         //        List<Barcode_Model> list = Check_Func.DeserializeJsonToList<Barcode_Model>(json);
-                
+
         //        if (list.Count == 0)
         //        {
         //            bm.HeaderStatus = "E";
@@ -1911,7 +1931,7 @@ namespace BILWeb.Print
         //            return j;
         //        }
         //        ipport = list[0].IP;
-               
+
         //        //拼接取样标签
         //        //1@04X@4100001H11QA@CY1LD12@5@20170623@2017062300083
         //        string pick = list[0].BarCode;
@@ -1999,7 +2019,7 @@ namespace BILWeb.Print
                 foreach (var item in list)
                 {
                     string sql = "insert into T_PICKRELBARCODE (PICKBARCODE,CREATETIME,MATERIALNO,CREATER,QTY,BATCHNO) " +
-                        "values('" + item.BarCode + "',SYSDATE,'" + item.MaterialNo + "','" + item.Creater + "'," + item.Qty + ",'"+item.BatchNo+"')";
+                        "values('" + item.BarCode + "',SYSDATE,'" + item.MaterialNo + "','" + item.Creater + "'," + item.Qty + ",'" + item.BatchNo + "')";
                     sqls.Add(sql);
                     item.CreateTime = DateTime.Now;
                     item.LABELMARK = "QuYang";
@@ -2105,14 +2125,14 @@ namespace BILWeb.Print
                     return j;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 bm.HeaderStatus = "E";
                 bm.Message = ex.ToString();
                 j = Check_Func.SerializeObject(bm);
                 return j;
             }
-            
+
 
         }
 
@@ -2188,14 +2208,14 @@ namespace BILWeb.Print
                 ErrMsg = ex.ToString();
                 return false;
             }
-          
+
         }
 
         public string GetAlert(string type, string subtype)
         {
             List<Alert> list = new List<Alert>();
-            string sql ="";
-            if(subtype==""||subtype=="全部")
+            string sql = "";
+            if (subtype == "" || subtype == "全部")
                 sql = "select * from mes_alert where  CREATETIME>=to_date('" + DateTime.Now.AddHours(-24).ToString("yyyy-MM-dd") + "','YYYY/MM/DD') and MESSAGETYPE='" + type + "' and ISRETURN <>0 order by ISRETURN desc,CREATETIME desc";
             else
                 sql = "select * from mes_alert where  CREATETIME>=to_date('" + DateTime.Now.AddHours(-24).ToString("yyyy-MM-dd") + "','YYYY/MM/DD') and MESSAGETYPE='" + type + "' and MESSAGESUBTYPE='" + subtype + "' and ISRETURN <>0 order by ISRETURN desc,CREATETIME desc";
@@ -2231,14 +2251,14 @@ namespace BILWeb.Print
         }
 
         //level=1 or 2
-        public string UpdateAlert(string json,int level)
+        public string UpdateAlert(string json, int level)
         {
             BaseMessage_Model<string> bm = new BaseMessage_Model<string>();
             try
             {
                 Alert model = Check_Func.DeserializeJsonToObject<Alert>(json);
                 string sql = "update mes_alert set ISRETURN=" + level + " , USINGTIME =sysdate,userno =userno||'" + model.USERNO + "-' where id= " + model.ID;
-               
+
                 dbFactory.ExecuteNonQuery(CommandType.Text, sql);
                 bm.HeaderStatus = "S";
                 bm.Message = "成功";
@@ -2290,7 +2310,7 @@ namespace BILWeb.Print
             BaseMessage_Model<List<string>> bm = new BaseMessage_Model<List<string>>();
             try
             {
-                string sql = "select b.subname from MES_ALERTTYPE t inner join MES_SUBALERTTYPE b on t.id = b.pid where t.name='"+name+"'";
+                string sql = "select b.subname from MES_ALERTTYPE t inner join MES_SUBALERTTYPE b on t.id = b.pid where t.name='" + name + "'";
                 List<string> typs = new List<string>();
                 using (var read = dbFactory.ExecuteReader(CommandType.Text, sql))
                 {
@@ -2367,7 +2387,8 @@ namespace BILWeb.Print
                     }
                 }
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 err = ex.ToString();
                 return false;
             }
@@ -2377,7 +2398,7 @@ namespace BILWeb.Print
             }
             catch (Exception ex)
             {
-                err = "推送成功，修改数据失败 "+ex.ToString();
+                err = "推送成功，修改数据失败 " + ex.ToString();
                 return false;
             }
             err = ps.ToString();
@@ -2387,15 +2408,15 @@ namespace BILWeb.Print
         private static string MakeAlertJson(string para, Alert item)
         {
             para = "";
-            para += "MESSAGETYPE:" + item.MESSAGETYPE+"@";
+            para += "MESSAGETYPE:" + item.MESSAGETYPE + "@";
             para += "MESSAGEDESC:" + item.MESSAGEDESC + "@";
             para += "ISRETURN:" + item.ISRETURN + "@";
-            para += "LINENO:" + item.LINENO+ "@";
+            para += "LINENO:" + item.LINENO + "@";
             para += "CREATETIME:" + item.CREATETIME.ToString("yyyy-MM-dd_HH:MM:ss") + "@";
             para += "REMARK:" + item.REMARK + "@";
             para += "MESSAGESUBTYPE:" + item.MESSAGESUBTYPE;
-           
-           
+
+
             return para;
         }
 
@@ -2429,7 +2450,7 @@ namespace BILWeb.Print
             return responseText;
 
         }
-       
+
 
 
     }

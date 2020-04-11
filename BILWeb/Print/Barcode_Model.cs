@@ -22,24 +22,24 @@ namespace BILWeb.Print
         private string cusname;
         private string supcode;
         private string supname;
-        private decimal? outpackqty;
-        private decimal? innerpackqty;
+        private decimal outpackqty;
+        private decimal innerpackqty;
 
         private decimal qty;
         private int nopack;
-        private decimal? printqty;
+        private decimal printqty;
         private string barcode;
         private int barcodetype;
         private string serialno;
         private int barcodeno;
         private int outcount;
         private int innercount;
-        private decimal? mantissaqty;
+        private decimal mantissaqty;
         private int isrohs;
         private int outbox_id;
         private int inner_id;
         private string batchno;
-        private decimal? abatchqty;
+        private decimal abatchqty;
         private int isdel;
         private string ean;
         private DateTime receivetime;
@@ -178,7 +178,7 @@ namespace BILWeb.Print
             }
         }
 
-        public decimal? OutPackQty
+        public decimal OutPackQty
         {
             get
             {
@@ -190,7 +190,7 @@ namespace BILWeb.Print
             }
         }
 
-        public decimal? InnerPackQty
+        public decimal InnerPackQty
         {
             get
             {
@@ -228,7 +228,7 @@ namespace BILWeb.Print
             }
         }
 
-        public decimal? PrintQty
+        public decimal PrintQty
         {
             get
             {
@@ -316,7 +316,7 @@ namespace BILWeb.Print
             }
         }
 
-        public decimal? MantissaQty
+        public decimal MantissaQty
         {
             get
             {
@@ -378,7 +378,7 @@ namespace BILWeb.Print
             }
         }
 
-        public decimal? ABatchQty
+        public decimal ABatchQty
         {
             get
             {
@@ -404,7 +404,7 @@ namespace BILWeb.Print
 
 
 
-        public decimal? VoucherQty { get; set; }
+        public decimal VoucherQty { get; set; }
 
         public DateTime SupPrdDate { get; set; }
 

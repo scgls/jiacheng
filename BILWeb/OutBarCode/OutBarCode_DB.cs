@@ -15,6 +15,8 @@ using BILBasic.User;
 using BILBasic.Common;
 using System.Data;
 using BILBasic.XMLUtil;
+using BILWeb.Login.User;
+using BILWeb.DAL;
 
 namespace BILWeb.OutBarCode
 {
@@ -335,6 +337,165 @@ namespace BILWeb.OutBarCode
         {
             string strSql = "SELECT COUNT(1)  from T_TASKTRANSDETAIL where SERIALNO = '"+strJSerialNo+"'";
             return base.GetScalarBySql(strSql).ToInt32();
+        }
+
+        
+
+        protected override List<string> GetSaveModelListSql(UserModel user, List<T_OutBarCodeInfo> modelList)
+        {
+            List<string> listSql = new List<string>();
+            string strSql1 = "";
+            foreach (var item in modelList)
+            {
+                strSql1 = Common_DB2.GetInertSqlCache(item, "t_outbarcode", "");
+
+                //StringBuilder strB = new StringBuilder();
+
+                //strB.Append("INSERT INTO [dbo].[T_OUTBARCODE] ");
+                //   strB.Append("([voucherno]       ");
+                //   strB.Append(",[rowno]           ");
+                //   strB.Append(",[erpvoucherno]    ");
+                //   strB.Append(",[vouchertype]     ");
+                //   strB.Append(",[materialno]      ");
+                //   strB.Append(",[materialdesc]    ");
+                //   strB.Append(",[cuscode]         ");
+                //   strB.Append(",[cusname]         ");
+                //   strB.Append(",[supcode]         ");
+                //   strB.Append(",[supname]         ");
+                //   strB.Append(",[outpackqty]      ");
+                //   strB.Append(",[innerpackqty]    ");
+                //   strB.Append(",[voucherqty]      ");
+                //   strB.Append(",[qty]             ");
+                //   strB.Append(",[nopack]          ");
+                //   strB.Append(",[printqty]        ");
+                //   strB.Append(",[barcode]         ");
+                //   strB.Append(",[barcodetype]     ");
+                //   strB.Append(",[serialno]        ");
+                //   strB.Append(",[barcodeno]       ");
+                //   strB.Append(",[outcount]        ");
+                //   strB.Append(",[innercount]      ");
+                //   strB.Append(",[mantissaqty]     ");
+                //   strB.Append(",[isrohs]          ");
+                //   strB.Append(",[outbox_id]       ");
+                //   strB.Append(",[abatchqty]       ");
+                //   strB.Append(",[isdel]           ");
+                //   strB.Append(",[creater]         ");
+                //   strB.Append(",[createtime]      ");
+                //   strB.Append(",[modifyer]        ");
+                //   strB.Append(",[modifytime]      ");
+                //   strB.Append(",[materialnoid]    ");
+                //   strB.Append(",[strongholdcode]  ");
+                //   strB.Append(",[strongholdname]  ");
+                //   strB.Append(",[companycode]     ");
+                //   strB.Append(",[productdate]     ");
+                //   strB.Append(",[supprdbatch]     ");
+                //   strB.Append(",[supprddate]      ");
+                //   strB.Append(",[productbatch]    ");
+                //   strB.Append(",[edate]           ");
+                //   strB.Append(",[storecondition]  ");
+                //   strB.Append(",[specialrequire]  ");
+                //   strB.Append(",[batchno]         ");
+                //   strB.Append(",[barcodemtype]    ");
+                //   strB.Append(",[rownodel]        ");
+                //   strB.Append(",[protectway]      ");
+                //   strB.Append(",[boxweight]       ");
+                //   strB.Append(",[unit]            ");
+                //   strB.Append(",[labelmark]       ");
+                //   strB.Append(",[boxdetail]       ");
+                //   strB.Append(",[matebatch]       ");
+                //   strB.Append(",[mixdate]         ");
+                //   strB.Append(",[relaweight]      ");
+                //   strB.Append(",[productclass]    ");
+                //   strB.Append(",[itemqty]         ");
+                //   strB.Append(",[workno]          ");
+                //   strB.Append(",[mtypef]          ");
+                //   strB.Append(",[prorowno]        ");
+                //   strB.Append(",[prorownodel]     ");
+                //   strB.Append(",[boxcount]        ");
+                //   strB.Append(",[dimension]       ");
+                //   strB.Append(",[ean]             ");
+                //   strB.Append(",[fserialno]       ");
+                //   strB.Append(",[standard]        ");
+                //   strB.Append(",[erpmateid]       ");
+                //   strB.Append(",[subiarrsid]      ");
+                //   strB.Append(",[originalCode]    ");
+                //   strB.Append(",[status]          ");
+                //   strB.Append(",[ReceiveTime]     ");
+                //   strB.Append(",");
+                //   strB.Append(", ");
+                //   strB.Append(" )");
+                //    strB.Append(" VALUES ");
+                //    strB.Append("('"+item.VoucherNo+ "' ");
+                //    strB.Append("," + item.RowNo + " ");
+                //    strB.Append(",<erpvoucherno, nvarchar(50),>' ");
+                //    strB.Append(",<vouchertype, nvarchar(10),>' ");
+                //    strB.Append(",<materialno, nvarchar(50),>' ");
+                //    strB.Append(",<materialdesc, nvarchar(100),>' ");
+                //    strB.Append(",<cuscode, nvarchar(50),>' ");
+                //    strB.Append(",<cusname, nvarchar(100),>' ");
+                //    strB.Append(",<supcode, nvarchar(50),>' ");
+                //    strB.Append(",<supname, nvarchar(100),>' ");
+                //    strB.Append(",<outpackqty, decimal (18,4),>' ");
+                //    strB.Append(",<innerpackqty, decimal (18,4),>' ");
+                //    strB.Append(",<voucherqty, decimal (18,4),>' ");
+                //    strB.Append(",<qty, decimal (18,2),>' ");
+                //    strB.Append(",<nopack, decimal (18,4),>' ");
+                //    strB.Append(",<printqty, decimal (18,4),>' ");
+                //    strB.Append(",<barcode, varchar(100),>' ");
+                //    strB.Append(",<barcodetype, int,>' ");
+                //    strB.Append(",<serialno, varchar(150),>' ");
+                //    strB.Append(",<barcodeno, decimal (18,4),>' ");
+                //    strB.Append(",<outcount, decimal (18,4),>' ");
+                //    strB.Append(",<innercount, decimal (18,4),>' ");
+                //    strB.Append(",<mantissaqty, decimal (18,4),>' ");
+                //    strB.Append(",<isrohs, decimal (18,4),>' ");
+                //    strB.Append(",<outbox_id, int,>' ");
+                //    strB.Append(",<abatchqty, decimal (18,4),>' ");
+                //    strB.Append(",<isdel, int,>' ");
+                //    strB.Append(",<creater, nvarchar(50),>' ");
+                //    strB.Append(",<createtime, datetime,>' ");
+                //    strB.Append(",<modifyer, nvarchar(50),>' ");
+                //    strB.Append(",<modifytime, datetime,>' ");
+                //    strB.Append(",<materialnoid, int,>' ");
+                //    strB.Append(",<strongholdcode, nvarchar(10),>' ");
+                //    strB.Append(",<strongholdname, nvarchar(50),>' ");
+                //    strB.Append(",<companycode, nvarchar(20),>' ");
+                //    strB.Append(",<productdate, datetime,>' ");
+                //    strB.Append(",<supprdbatch, nvarchar(50),>' ");
+                //    strB.Append(",<supprddate, datetime,>' ");
+                //    strB.Append(",<productbatch, nvarchar(50),>' ");
+                //    strB.Append(",<edate, datetime,>' ");
+                //    strB.Append(",<storecondition, nvarchar(150),>' ");
+                //    strB.Append(",<specialrequire, nvarchar(150),>' ");
+                //    strB.Append(",<batchno, nvarchar(50),>' ");
+                //    strB.Append(",<barcodemtype, nvarchar(30),>' ");
+                //    strB.Append(",<rownodel, nvarchar(10),>' ");
+                //    strB.Append(",<protectway, nvarchar(150),>' ");
+                //    strB.Append(",<boxweight, nvarchar(20),>' ");
+                //    strB.Append(",<unit, nvarchar(20),>' ");
+                //    strB.Append(",<labelmark, nvarchar(20),>' ");
+                //    strB.Append(",<boxdetail, nvarchar(50),>' ");
+                //    strB.Append(",<matebatch, nvarchar(20),>' ");
+                //    strB.Append(",<mixdate, datetime,>' ");
+                //    strB.Append(",<relaweight, nvarchar(50),>' ");
+                //    strB.Append(",<productclass, nvarchar(50),>' ");
+                //    strB.Append(",<itemqty, decimal (18,4),>' ");
+                //    strB.Append(",<workno, nvarchar(50),>' ");
+                //    strB.Append(",<mtypef, nvarchar(10),>' ");
+                //    strB.Append(",<prorowno, nvarchar(30),>' ");
+                //    strB.Append(",<prorownodel, nvarchar(30),>' ");
+                //    strB.Append(",<boxcount, decimal (18,4),>' ");
+                //    strB.Append(",<dimension, nvarchar(50),>' ");
+                //    strB.Append(",<ean, nvarchar(50),>' ");
+                //    strB.Append(",<fserialno, varchar(100),>' ");
+                //    strB.Append(",<status, int,>' ");
+                //    strB.Append(",<ReceiveTime, datetime,>' ");
+
+                //    strB.Append(" ) ");
+
+                listSql.Add(strSql1);
+            }
+            return listSql;
         }
 
     }

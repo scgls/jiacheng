@@ -584,9 +584,9 @@ namespace BILWeb.DAL
             {
                
                     sb = new StringBuilder();
-                    sb.Append("　INSERT INTO  ");
+                    sb.Append("INSERT INTO  ");
                     sb.Append(tablename);
-                    sb.Append("(id,");
+                    sb.Append("(");
 
                     foreach (PropertyInfo pi in propertys)
                     {
@@ -600,8 +600,9 @@ namespace BILWeb.DAL
                     sb.Remove(sb.Length - 1, 1);
                     sb.Append(")");
                     sb.Append("values");
-                    sb.Append("("+seq+".nextval,");
-                    int i = 0;
+                    //sb.Append("("+seq+".nextval,");
+                sb.Append("( ");
+                int i = 0;
                     foreach (PropertyInfo pi in propertys)
                     {
                         string name = pi.Name;
@@ -612,22 +613,26 @@ namespace BILWeb.DAL
                         switch (obj.GetType().Name.ToLower())
                         {
                             case "int32":
-                                //  sb.Append(pi.GetValue(t, null).ToString());
-                                sb.Append("{" + i.ToString() + "}");
+                                sb.Append((pi.GetValue(t, null) == null ? "100" : pi.GetValue(t, null)).ToString());
+                                //sb.Append("{" + i.ToString() + "}");
                                 sb.Append(",");
                                 break;
                             case "decimal":
-                                //  sb.Append(pi.GetValue(t, null).ToString());
-                                sb.Append("{" + i.ToString() + "}");
+                                sb.Append((pi.GetValue(t, null) == null ? "0" : pi.GetValue(t, null)).ToString());
+                                //sb.Append("{" + i.ToString() + "}");
                                 sb.Append(",");
                                 break;
-
-                            case "datetime":
+                        case "decimal?":
+                            sb.Append((pi.GetValue(t, null) == null ? "0" : pi.GetValue(t, null)).ToString());
+                            //sb.Append("{" + i.ToString() + "}");
+                            sb.Append(",");
+                            break;
+                        case "datetime":
                             //sb.Append(" TO_DATE('");
-                            sb.Append(pi.GetValue(t, null).ToString());
+                            sb.Append(pi.GetValue(t, null).ToString().Contains("0001-01-01")?"null": ("'" + pi.GetValue(t, null).ToString() + "'"));
                             //sb.Append("{" + i.ToString() + "}");
                             //sb.Append("','yyyy/mm/dd hh24:mi:ss')");
-                            //sb.Append(",");
+                            sb.Append(",");
                             break;
 
                             default:
