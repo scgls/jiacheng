@@ -103,7 +103,7 @@ namespace BILWeb.OutBarCode
             t_outbarcode.receivetime = dbFactory.ToModelValue(reader, "RECEIVETIME")==null?DateTime.MinValue: (DateTime)dbFactory.ToModelValue(reader, "RECEIVETIME");
             t_outbarcode.WorkNo = dbFactory.ToModelValue(reader, "WorkNo").ToDBString();
             t_outbarcode.ProductClass = dbFactory.ToModelValue(reader, "ProductClass").ToDBString();
-            t_outbarcode.InvoiceNo = GetInvoiceNo(t_outbarcode.WorkNo).Trim();
+            //t_outbarcode.InvoiceNo = GetInvoiceNo(t_outbarcode.WorkNo).Trim();
             t_outbarcode.Status = dbFactory.ToModelValue(reader, "Status").ToInt32();
             t_outbarcode.fserialno = dbFactory.ToModelValue(reader, "fserialno").ToDBString();
             t_outbarcode.BarcodeType = dbFactory.ToModelValue(reader, "BarcodeType").ToInt32();

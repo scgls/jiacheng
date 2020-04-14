@@ -192,16 +192,16 @@ namespace BILWeb.OutBarCode
             {
                 BarCodeType = OutBarCode_DeCode.GetSubBarcodeType(BarCode);
 
-                if (BarCodeType=="3" ) 
+                if (BarCodeType=="1" ) 
                 {
                     BarCodeType = "1";
                     SerialNo = OutBarCode_DeCode.GetSubBarcodeSerialNo(BarCode);
                     deCodeResult = true;
                 }
-                else if (BarCodeType == "4")
+                else if (BarCodeType == "2")
                 {
                     BarCodeType = "2";
-                    SerialNo = BarCode;
+                    SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
                     deCodeResult = true;
                 }
                 else 

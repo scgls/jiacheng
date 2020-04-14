@@ -8,7 +8,7 @@ namespace BILWeb.OutBarCode
     public class OutBarCode_DeCode
     {
         private static int BarcodeType = 0;
-        private static int SerialNo = 7;
+        private static int SerialNo =5;
         private static int MaterialNo = 2;
         private static int EAN = 3;
         
@@ -59,8 +59,8 @@ namespace BILWeb.OutBarCode
 
         public static string GetSubBarcodeSerialNo(string strBarcode)
         {
-            string strSplit = strBarcode.Substring(strBarcode.Length-14, 14);
-            return strSplit;
+            string[] strSplit = strBarcode.Split('@');
+            return strSplit[SerialNo];
         }
         
 

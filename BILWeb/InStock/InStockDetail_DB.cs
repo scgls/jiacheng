@@ -283,6 +283,8 @@ namespace BILWeb.InStock
             t_instockdetail.EDate = dbFactory.ToModelValue(reader, "EDate").ToDateTime();
             t_instockdetail.InvoiceNo = dbFactory.ToModelValue(reader, "InvoiceNo").ToDBString();
 
+            t_instockdetail.TracNo = dbFactory.ToModelValue(reader, "TracNo").ToDBString();
+            t_instockdetail.ProjectNo = dbFactory.ToModelValue(reader, "ProjectNo").ToDBString();
             return t_instockdetail;
         }
 

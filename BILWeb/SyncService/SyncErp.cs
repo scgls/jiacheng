@@ -20,8 +20,8 @@ namespace BILWeb.SyncService
             try
             {
                 int autoSync = String.IsNullOrEmpty(InJsonData) ? 1 : 0;
-                 //根据单据类型和出库入类型获取同步字段
-                List<Sync_Model> syncModelList = SyncManager.GetInstance().GetSyncModelList(stockType,erpVoucherNo, wmsVourcherType, autoSync); //同步字段
+                //根据单据类型和出库入类型获取同步字段
+                List<Sync_Model> syncModelList = SyncManager.GetInstance().GetSyncModelList(stockType, erpVoucherNo, wmsVourcherType, autoSync); //同步字段
                 if (syncModelList == null || syncModelList.Count == 0)
                 {
                     errMsg += wmsVourcherType + "|单据类型未配置！\r\n";
@@ -74,7 +74,7 @@ namespace BILWeb.SyncService
                         }
                         continue;
                     }
-                    if(wmsVourcherType != 21)
+                    if (wmsVourcherType != 21)
                         LogNet.SyncInfo(wmsType.WmsName + ":\r\n" + dataJson);
                     else
                         LogNet.SyncWarn(wmsType.WmsName + ":\r\n" + dataJson);
@@ -156,7 +156,7 @@ namespace BILWeb.SyncService
                                 if (String.IsNullOrEmpty(insertHeadSQL))
                                 {
                                     insertHeadSQL = SqlModel.InsertSAPTitleSql;
-                                    insertDetailSQL =(WmsvouType=="47" ?SqlModel.InsertU8DetailSql: SqlModel.InsertSAPDetailSql);
+                                    insertDetailSQL = (WmsvouType == "47" ? SqlModel.InsertU8DetailSql : SqlModel.InsertSAPDetailSql);
                                     //  string WmsVourcherNo = db.GetWmsWoucherNo(pmListbyType[0].WmsVoucherNoRual, headTableName, null);
                                     insertHeadSQL = String.Format(insertHeadSQL, "{4}", "{2}", "{1}", "{0}", "{3}", "{5}", wmsType.ErpType.ToString(), WmsvouType);
                                 }
@@ -198,11 +198,12 @@ namespace BILWeb.SyncService
                                     isNoChangeDetail = detauLCount == Detail.Count;
 
                                 }
-                            }else
+                            }
+                            else
                             {
                                 isNoChangeDetail = true;
                             }
-          
+
 
                             bool isFormart = true;
                             foreach (Sync_Model sync in pmListbyType)
@@ -315,7 +316,7 @@ namespace BILWeb.SyncService
                                     result = false;
                                     isFormart = false;
                                     errMsg += wmsVourcherType + "|" + sync.FieldHD + "|" + sync.ErpField + "|" + sync.WmsType + ex.Message + "\r\n";
-                                 
+
                                 }
                             }
 
@@ -335,7 +336,7 @@ namespace BILWeb.SyncService
                                         //"IF NOT EXISTS (SELECT id FROM {0} WHERE {1}) INSERT INTO {0} ({2},HEADERID,VOUCHERNO,SUBIARRSID) SELECT {3},'{4}','{5}','{6}'";
                                         //   string insertDetail = WmsvouType == "47" ? 
                                         //       String.Format(insertDetailSQL, detailTableName[0], detailWhereStringList[k], String.Join(",", detailInsertKeys.ToArray()).ToString(), String.Join(",", detailValues[k].ToArray()), NewTableID, WmsVourcherNo):
-                                        string insertDetail = String.Format(insertDetailSQL, detailTableName[0], detailWhereStringList[k],String.Join(",", detailInsertKeys.ToArray()).ToString(), String.Join(",", detailValues[k].ToArray()), NewTableID, WmsVourcherNo, NewTableID + "-" + k);
+                                        string insertDetail = String.Format(insertDetailSQL, detailTableName[0], detailWhereStringList[k], String.Join(",", detailInsertKeys.ToArray()).ToString(), String.Join(",", detailValues[k].ToArray()), NewTableID, WmsVourcherNo, NewTableID + "-" + k);
                                         LogNet.SyncInfo(insertDetail);
                                         sqlList.Add(insertDetail);
 
@@ -390,7 +391,7 @@ namespace BILWeb.SyncService
                                         updateDetailValues.Add(detailUpdateKeys[m] + "=" + detailValues[l][m]);
 
                                     }
-                                   
+
                                     if (isNoChangeDetail)
                                     {
                                         string updateDSQL = String.Format(updateDetailSQL, detailTableName[0], String.Join(",", updateDetailValues.ToArray()), detailWhereStringList[l]);
@@ -404,10 +405,10 @@ namespace BILWeb.SyncService
                                     }
                                     else
                                     {
-                                           insertDetailSQL =(WmsvouType=="47" ?SqlModel.InsertU8DetailSql: SqlModel.InsertSAPDetailSql);
-                                        string insertDSQL = String.Format(insertDetailSQL, detailTableName[0], detailWhereStringList[l], String.Join(",", detailInsertKeys.ToArray()).ToString(), String.Join(",", detailInsertOrUpdateValues[l].ToArray()), ID, OMDWmsVourcherNo, ID + "-" + (detauLCount+l));
+                                        insertDetailSQL = (WmsvouType == "47" ? SqlModel.InsertU8DetailSql : SqlModel.InsertSAPDetailSql);
+                                        string insertDSQL = String.Format(insertDetailSQL, detailTableName[0], detailWhereStringList[l], String.Join(",", detailInsertKeys.ToArray()).ToString(), String.Join(",", detailInsertOrUpdateValues[l].ToArray()), ID, OMDWmsVourcherNo, ID + "-" + (detauLCount + l));
                                         string updateDSQL = String.Format(updateDetailSQL, detailTableName[0], String.Join(",", updateDetailValues.ToArray()), detailWhereStringList[l]);
-                                        updateDSQL = insertDSQL+" ELSE "+updateDSQL;
+                                        updateDSQL = insertDSQL + " ELSE " + updateDSQL;
                                         LogNet.SyncInfo(updateDSQL);
                                         sqlList.Add(updateDSQL);
                                         if (headTableName.Length > 1)
@@ -419,7 +420,7 @@ namespace BILWeb.SyncService
                                         }
                                     }
                                 }
-                               
+
 
                             }
 
@@ -449,10 +450,10 @@ namespace BILWeb.SyncService
 
 
                 }
-  
+
                 GC.Collect();
-                
-            
+
+
 
             }
             catch (Exception ex)
@@ -462,12 +463,12 @@ namespace BILWeb.SyncService
             }
             if (wmsVourcherType != 21) LogNet.SyncError(errMsg);
             else LogNet.SyncWarn(errMsg);
-            LogNet.SyncInfo(wmsVourcherType + "|"+result + "\r\n");
+            LogNet.SyncInfo(wmsVourcherType + "|" + result + "\r\n");
             return result;
         }
 
 
-     
+
 
 
 
@@ -494,7 +495,7 @@ namespace BILWeb.SyncService
         private static string customKey = "CUSTOMERCODE";
         private static string warehouseNoKey = "WAREHOUSENO";
 
-     
+
 
         /// <summary>
         /// 获取单据同步数据Json
@@ -519,15 +520,15 @@ namespace BILWeb.SyncService
                 if (StockType != 99) //99：基础资料同步
                 {
                     //获取最大单号特殊处理
-                    lastSyncErpVoucherNo = db.getLastSyncErpVoucherNo(StockType, Type.VoucherType.ToString(), Type.ErpVouType,Type.ErpVourcherType);
+                    lastSyncErpVoucherNo = db.getLastSyncErpVoucherNo(StockType, Type.VoucherType.ToString(), Type.ErpVouType, Type.ErpVourcherType);
                 }
-                    
+
             }
             BILBasic.Interface.T_Interface_Func TIF = new BILBasic.Interface.T_Interface_Func();
             string json = "{\"data_no\":\"" + ErpVoucherNo + "\",\"VoucherType\":\"" + Type.VoucherType.ToString() + "\",\"max_code\":\"" + lastSyncErpVoucherNo + "\",\"edit_time\":\"";
-            json += !String.IsNullOrEmpty(LastSyncTime)?DateTime.Parse(LastSyncTime).ToString("yyyy-MM-dd"):"";
-            json += "\",\"erp_vourcher_type\":\"" + Type.ErpVourcherType + "\"}";
-            
+            json += !String.IsNullOrEmpty(LastSyncTime) ? DateTime.Parse(LastSyncTime).ToString("yyyy-MM-dd") : "";
+            json += "\",\"erp_vourcher_type\":\"" + Type.ErpVourcherType;
+            json += "\",\"company_no\":\"" + Type.CompanyNo + "\"}";
             return TIF.GetModelListByInterface(json);
         }
 
@@ -559,8 +560,8 @@ namespace BILWeb.SyncService
                     return false;
                 }
 
-                var TypeList = pmList.Where(p=>p.ErpVourcherType != null).DistinctBy(s=> new { s.ErpVourcherType, s.VoucherType }); //获取同步单据类型
-               //按照单据类型循环
+                var TypeList = pmList.Where(p => p.ErpVourcherType != null).DistinctBy(s => new { s.ErpVourcherType, s.VoucherType }); //获取同步单据类型
+                                                                                                                                       //按照单据类型循环
                 foreach (var Type in TypeList)
                 {
                     //获取单据同步数据Json
@@ -568,20 +569,20 @@ namespace BILWeb.SyncService
                     string ErpvouType = Type.ErpVourcherType.ToString();
                     string WmsvouType = Type.VoucherType.ToString();
 
-                 //   string time = "";
-                 //   System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-                //    stopwatch.Start();
+                    //   string time = "";
+                    //   System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                    //    stopwatch.Start();
 
                     string Json = //"{\"result\":\"1\",\"resultValue\":\"\",\"data\":[{\"Head\":{\"darvdate\":\"2018-01-02\",\"cvenname\":\"供应商名称1\",\"cvencode\":\"供应商编码1\",\"carvcode\":\"\",\"cbustype\":\"业务类型1\",\"ipurarriveid\":\"到货单ID2\",\"itaxrate\":\"121\",\"iexchrate\":\"131\",\"cexch_name\":\"币种\",\"body\":[{\"iarrsid\":\"到货单子表ID\",\"POID\":\"到货单ID2\",\"cinvcode\":\"存货编码1\",\"cinvname\":\"存货名称1\",\"cinvstd\":\"规格型号1\",\"cvencode\":\"供应商编码1\",\"cbatch\":\"\",\"iNQuantity\":\"2500\"},{\"iarrsid\":\"到货单子表ID3\",\"POID\":\"到货单ID2\",\"cinvcode\":\"存货编码3\",\"cinvname\":\"存货名称3\",\"cinvstd\":\"规格型号3\",\"cvencode\":\"供应商编码3\",\"cbatch\":\"\",\"iNQuantity\":\"900\"}]}},{\"Head\":{\"darvdate\":\"2018-01-03\",\"cvenname\":\"供应商名称2\",\"cvencode\":\"供应商编码2\",\"carvcode\":\"\",\"cbustype\":\"业务类型2\",\"ipurarriveid\":\"到货单ID3\",\"itaxrate\":\"132\",\"iexchrate\":\"142\",\"cexch_name\":\"币种\",\"body\":[{\"iarrsid\":\"到货单子表ID\",\"POID\":\"到货单ID3\",\"cinvcode\":\"存货编码2\",\"cinvname\":\"存货名称2\",\"cinvstd\":\"规格型号2\",\"cvencode\":\"供应商编码\",\"cbatch\":\"\",\"iNQuantity\":\"2500\"}]}}]}";
                         GetErpJson(StockType, LastSyncTime, ErpVoucherNo, Type, db); //获取JSON
-                    //LogNet.LogInfo("SyncJsonFromErp:" + Json);
-                    //string Json = "{\"result\":\"1\",\"resultValue\":\"\",\"data\":[{\"head\":{\"standard_box2\":null,\"standard_box3\":null,\"sto_condition\":null,\"spc_require\":null,\"protect_way\":null,\"EntId\":null,\"item_spec\":\"个\",\"item_unit\":null,\"group_code\":null,\"group_name\":null,\"classfiy_code\":null,\"classfiy_name\":null,\"purchase_group_code\":null,\"purchase_group_name\":null,\"main_supplier\":null,\"quality_month\":null,\"quality_day\":0,\"item_brand\":null,\"origin_place\":null,\"life_cycle\":null,\"pack_quantity\":0,\"item_size\":null,\"pallet_size\":null,\"pallet_amount\":null,\"all_size\":null,\"item_weight\":null,\"status\":null,\"standard_box1\":null,\"customer\":null,\"standard_box\":null,\"brand_intro\":null,\"bar_code\":\"\",\"Companyid\":null,\"item_name_us\":null,\"item_no\":\"14H22Q1\",\"item_name\":\"ALBION产品托盘\",\"Detail\":[{\"base_num\":0,\"base_unit\":null,\"unit_num\":0,\"Companyid\":\"ABH\",\"from_unit\":null,\"water_code\":\"\",\"item_no\":\"14H22Q1\",\"unit\":null,\"pack_amount\":0,\"EntId\":10,\"USNAM\":null,\"GUID\":null}]}}],\"MaterialDoc\":null,\"MaterialYear\":null,\"QualityNo\":null,\"GUID\":null,\"DeliveryNo\":null}";
-                //    time += "获取json：" + stopwatch.Elapsed.TotalSeconds;
-                  //  stopwatch.Reset(); stopwatch.Start();
-                    
+                                                                                     //LogNet.LogInfo("SyncJsonFromErp:" + Json);
+                                                                                     //string Json = "{\"result\":\"1\",\"resultValue\":\"\",\"data\":[{\"head\":{\"standard_box2\":null,\"standard_box3\":null,\"sto_condition\":null,\"spc_require\":null,\"protect_way\":null,\"EntId\":null,\"item_spec\":\"个\",\"item_unit\":null,\"group_code\":null,\"group_name\":null,\"classfiy_code\":null,\"classfiy_name\":null,\"purchase_group_code\":null,\"purchase_group_name\":null,\"main_supplier\":null,\"quality_month\":null,\"quality_day\":0,\"item_brand\":null,\"origin_place\":null,\"life_cycle\":null,\"pack_quantity\":0,\"item_size\":null,\"pallet_size\":null,\"pallet_amount\":null,\"all_size\":null,\"item_weight\":null,\"status\":null,\"standard_box1\":null,\"customer\":null,\"standard_box\":null,\"brand_intro\":null,\"bar_code\":\"\",\"Companyid\":null,\"item_name_us\":null,\"item_no\":\"14H22Q1\",\"item_name\":\"ALBION产品托盘\",\"Detail\":[{\"base_num\":0,\"base_unit\":null,\"unit_num\":0,\"Companyid\":\"ABH\",\"from_unit\":null,\"water_code\":\"\",\"item_no\":\"14H22Q1\",\"unit\":null,\"pack_amount\":0,\"EntId\":10,\"USNAM\":null,\"GUID\":null}]}}],\"MaterialDoc\":null,\"MaterialYear\":null,\"QualityNo\":null,\"GUID\":null,\"DeliveryNo\":null}";
+                                                                                     //    time += "获取json：" + stopwatch.Elapsed.TotalSeconds;
+                                                                                     //  stopwatch.Reset(); stopwatch.Start();
+
                     //解析JSON格式
                     result = GetDataJson(Json, ref dataJson, WmsvouType, ref ErrMsg);
-                    
+
                     if (result)
                     {
                         ErrMsg += " \r\nerp类型：" + ErpvouType + "\r\n" + dataJson + "\r\n";
@@ -590,20 +591,20 @@ namespace BILWeb.SyncService
                             //单据类型对应字段
                             List<ParamaterField_Model> pmListbyType = pmList.FindAll(p => p.VoucherType.ToString() == WmsvouType && p.ErpVourcherType == ErpvouType);
                             //生成SQL语句
-                            List<string> SQList = CreateSqlList(db,pmListbyType, dataJson, wmsVourcherType, ref ErrMsg);
-                       //     time += "生成SQL：" + stopwatch.Elapsed.TotalSeconds;
-                       //     stopwatch.Reset(); stopwatch.Start();
-                            result = db.SaveSqlList(SQList,ref ErrMsg);
+                            List<string> SQList = CreateSqlList(db, pmListbyType, dataJson, wmsVourcherType, ref ErrMsg);
+                            //     time += "生成SQL：" + stopwatch.Elapsed.TotalSeconds;
+                            //     stopwatch.Reset(); stopwatch.Start();
+                            result = db.SaveSqlList(SQList, ref ErrMsg);
                             iresult += 1;
-                        //    time += "插入SQL：" + stopwatch.Elapsed.TotalSeconds;
-                         //   stopwatch.Reset(); stopwatch.Start();
+                            //    time += "插入SQL：" + stopwatch.Elapsed.TotalSeconds;
+                            //   stopwatch.Reset(); stopwatch.Start();
                             //if (!result)
                             //    break;
                         }
                     }
 
-                  //  time += "解析SQL：" + stopwatch.Elapsed.TotalSeconds;
-                  //  stopwatch.Stop();
+                    //  time += "解析SQL：" + stopwatch.Elapsed.TotalSeconds;
+                    //  stopwatch.Stop();
                 }
 
                 if (iresult > 0) { result = true; }
@@ -627,7 +628,7 @@ namespace BILWeb.SyncService
         /// <param name="errMsg">错误消息</param>
         /// <param name="syncType">同步类型 10：入库 20:出库  99:基础资料</param>
         /// <returns></returns>
-        private static List<string> CreateSqlList(ParamaterFiled_DB db,List<ParamaterField_Model> pmListbyType,
+        private static List<string> CreateSqlList(ParamaterFiled_DB db, List<ParamaterField_Model> pmListbyType,
             string dataJson, int wmsVourcherType, ref string errMsg)
         {
             List<string> SQLIST = new List<string>();
@@ -640,7 +641,7 @@ namespace BILWeb.SyncService
             JArray headJarray = JArray.Parse(dataJson);
             for (int i = 0; i < headJarray.Count; i++)
             {
-                
+
                 ////------------测试用
                 //if (i == 2)
                 //    break;
@@ -657,7 +658,7 @@ namespace BILWeb.SyncService
                         int headID = 0;
                         List<int> BeforeIDs = new List<int>();  //同步前表体ID集合
                         List<int> AfterIDs = new List<int>();  //同步后表体ID集合
-                        string headsql = GetSql(headJToken,db, pmListbyType, Headkeys, MatrtialKeys, headTableName,true,ref headID,ref WmsVourcherNo,ref BeforeIDs,ref AfterIDs);
+                        string headsql = GetSql(headJToken, db, pmListbyType, Headkeys, MatrtialKeys, headTableName, true, ref headID, ref WmsVourcherNo, ref BeforeIDs, ref AfterIDs);
                         SQLIST.Add(headsql);
                         foreach (JProperty hjp in headJToken)
                         {
@@ -695,13 +696,13 @@ namespace BILWeb.SyncService
         /// <summary>
         /// 获取SQL
         /// </summary>
-        private static string  GetSql(JToken JToken,ParamaterFiled_DB db, List<ParamaterField_Model> pmListbyType, 
-            string[] keys, string[] MatrtialKeys, string TableName,bool isHead,ref int headID,
+        private static string GetSql(JToken JToken, ParamaterFiled_DB db, List<ParamaterField_Model> pmListbyType,
+            string[] keys, string[] MatrtialKeys, string TableName, bool isHead, ref int headID,
             ref string WmsHeadVourcherNo, ref List<int> BeforeIDs, ref List<int> AfterIDs)
         {
             string sql = String.Empty;
             string whereString = GetwhereString(isHead, keys, pmListbyType, JToken);
-          
+
 
             int TableID = db.checkRecode(whereString, pmListbyType, JToken, TableName);
             if (TableID == 0) //新增
@@ -714,7 +715,7 @@ namespace BILWeb.SyncService
                 {
                     headID = TableID;
                     WmsHeadVourcherNo = db.GetWmsWoucherNo(pmListbyType[0].WMSTableNameH, TableID);
-                    if(!String.IsNullOrEmpty(pmListbyType[0].WMSTableNameD))
+                    if (!String.IsNullOrEmpty(pmListbyType[0].WMSTableNameD))
                         BeforeIDs = db.getDetailIDs(pmListbyType[0].WMSTableNameD, TableID);
                 }
                 else //获取修改表体ID
@@ -727,13 +728,13 @@ namespace BILWeb.SyncService
             return sql;
         }
 
-    
+
 
         /// <summary>
         /// 获取updateSql
         /// </summary>
         /// <returns></returns>
-        private static string GetUpdateSql(JToken JToken, ParamaterFiled_DB db, List<ParamaterField_Model> pmListbyType, 
+        private static string GetUpdateSql(JToken JToken, ParamaterFiled_DB db, List<ParamaterField_Model> pmListbyType,
             string[] MatrtialKeys, string TableName, bool isHead, string whereString)
         {
             string sql;
@@ -744,11 +745,11 @@ namespace BILWeb.SyncService
                 if (index != -1)
                 {
                     string value = FilteSQLStr(jp.Value.ToString());
-                    value = pmListbyType[index].DefaultType==0? "'" + pmListbyType[index].DefaultValue + "',":pmListbyType[index].DefaultType == 1 ? "CONVERT(varchar(100),'" + value + "', 20)," : "'" + value + "',";
+                    value = pmListbyType[index].DefaultType == 0 ? "'" + pmListbyType[index].DefaultValue + "'," : pmListbyType[index].DefaultType == 1 ? "CONVERT(varchar(100),'" + value + "', 20)," : "'" + value + "',";
                     valueList.Append(pmListbyType[index].WMSField + "=" + value);
                 }
             }
-            var defaultValueList = pmListbyType.FindAll(p => !String.IsNullOrEmpty(p.DefaultValue) && (p.DefaultType == 2  || p.DefaultType==3 || p.DefaultType == 4 || p.DefaultType == 5)
+            var defaultValueList = pmListbyType.FindAll(p => !String.IsNullOrEmpty(p.DefaultValue) && (p.DefaultType == 2 || p.DefaultType == 3 || p.DefaultType == 4 || p.DefaultType == 5)
             && p.FieldHD.ToUpper() == (isHead ? "H" : "D")
               && String.IsNullOrEmpty(p.ERPField)).DistinctBy(s => new { s.WMSField, s.DefaultValue });
             foreach (var pmodel in defaultValueList)
@@ -760,13 +761,13 @@ namespace BILWeb.SyncService
                     valueList.Append(pmodel.WMSField + "=" + materialSubSql + ",");
                 }
                 //出库单自动分配客户对应发货仓库 只有发货单需要处理
-                if (pmodel.DefaultType == 3 || pmodel.DefaultType==4)
+                if (pmodel.DefaultType == 3 || pmodel.DefaultType == 4)
                 {
                     int index = pmListbyType.FindIndex(p => p.WMSField.ToUpper() == customKey && p.FieldHD.ToUpper() == "D");
                     if (index != -1)
                     {
                         string customerno = ((JObject)JToken).GetValue(pmListbyType[index].ERPField.ToString()).ToString();
-                        string warehouseIDSubSql = String.Format(pmodel.DefaultType == 3?SqlModel.GetWhareHouseID: SqlModel.GetWhareHouseNo, customerno);
+                        string warehouseIDSubSql = String.Format(pmodel.DefaultType == 3 ? SqlModel.GetWhareHouseID : SqlModel.GetWhareHouseNo, customerno);
                         valueList.Append(pmodel.WMSField + "=(" + warehouseIDSubSql + "),");
                     }
                 }
@@ -804,8 +805,8 @@ namespace BILWeb.SyncService
                 int index = pmListbyType.FindIndex(p => p.ERPField.ToUpper() == jp.Name.ToUpper() && p.FieldHD.ToUpper() == (isHead ? "H" : "D"));
                 if (index != -1)
                 {
-                    string value =  FilteSQLStr(jp.Value.ToString());
-                    value = pmListbyType[index].DefaultType==0? "'" + pmListbyType[index].DefaultValue + "',":pmListbyType[index].DefaultType == 1 ? "CONVERT(varchar(100),'" + value + "', 20)," : "'" + value + "',";
+                    string value = FilteSQLStr(jp.Value.ToString());
+                    value = pmListbyType[index].DefaultType == 0 ? "'" + pmListbyType[index].DefaultValue + "'," : pmListbyType[index].DefaultType == 1 ? "CONVERT(varchar(100),'" + value + "', 20)," : "'" + value + "',";
 
                     contextList.Append(pmListbyType[index].WMSField + ",");
                     valueList.Append(value.Trim());
@@ -824,7 +825,7 @@ namespace BILWeb.SyncService
                     value = "(" + materialSubSql + ")";
                 }
                 //出库单自动分配客户对应发货仓库 只有发货单需要处理
-                if (pmodel.DefaultType == 3 || pmodel.DefaultType == 4 )
+                if (pmodel.DefaultType == 3 || pmodel.DefaultType == 4)
                 {
                     int index = pmListbyType.FindIndex(p => p.WMSField.ToUpper() == customKey && p.FieldHD.ToUpper() == "D");
                     if (index != -1)
@@ -888,11 +889,11 @@ namespace BILWeb.SyncService
         /// <param name="dataJson">返回数据JSON</param>
         /// <param name="errMsg"></param>
         /// <returns></returns>
-        private static bool GetDataJson(string json, ref string dataJson,string wmstypeName, ref string errMsg)
+        private static bool GetDataJson(string json, ref string dataJson, string wmstypeName, ref string errMsg)
         {
             bool result = false;
             JsonModel jsmodel = JsonConvert.DeserializeObject<JsonModel>(json);
-            if (jsmodel.result.ToString()=="1")
+            if (jsmodel.result.ToString() == "1")
             {
                 result = true;
                 if (jsmodel.data != null)
@@ -902,7 +903,7 @@ namespace BILWeb.SyncService
             }
             else
             {
-                errMsg += wmstypeName+"|"+jsmodel.resultValue+ "\r\n";
+                errMsg += wmstypeName + "|" + jsmodel.resultValue + "\r\n";
             }
             return result;
         }
@@ -931,7 +932,7 @@ namespace BILWeb.SyncService
                     type = 35;
                     break;
             }
-          
+
             return type;
         }
         #endregion

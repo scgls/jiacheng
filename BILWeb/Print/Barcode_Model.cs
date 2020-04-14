@@ -586,6 +586,8 @@ namespace BILWeb.Print
         [DBAttribute(NotDBField = true)]
         public int day { get; set; }
 
-
+        public string TracNo { get; set; }
+ 
+        public string ProjectNo { get; set; }
     }
 }

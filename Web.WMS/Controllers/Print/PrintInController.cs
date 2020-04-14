@@ -103,7 +103,7 @@ namespace Web.WMS.Controllers.Print
 
         string sq = "";
         [HttpPost]
-        public JsonResult SaveBarcode(string erpvoucherno, string materialno, string materialdesc, string ean, string batch, string edate, string num, string everynum, string receivetime, string RowNO, string RowNODel,string MaterialNoID,string StrongHoldCode,string CompanyCode,string Createname,string WarehouseName)
+        public JsonResult SaveBarcode(string erpvoucherno, string materialno, string materialdesc, string ean, string batch, string edate, string num, string everynum, string receivetime, string RowNO, string RowNODel,string MaterialNoID,string StrongHoldCode,string CompanyCode,string Createname,string WarehouseName, string TracNo, string ProjectNo)
         {
            
             if (string.IsNullOrEmpty(Userno))
@@ -154,6 +154,8 @@ namespace Web.WMS.Controllers.Print
                     model.BarcodeType = 1;
                     model.ProductClass = Createname;
                     model.WorkNo = WarehouseName;
+                    model.TracNo = TracNo;
+                    model.ProjectNo = ProjectNo;
                     listbarcode.Add(model);
                     //本体打印
                     for (int ii = 0; ii < Convert.ToDecimal(everynum); ii++)
@@ -176,6 +178,8 @@ namespace Web.WMS.Controllers.Print
                         modelIn1.BarcodeType = 2;
                         modelIn1.ProductClass = Createname;
                         modelIn1.WorkNo = WarehouseName;
+                        modelIn1.TracNo = TracNo;
+                        modelIn1.ProjectNo = ProjectNo;
                         listbarcode.Add(modelIn1);
                     }
                 }
@@ -201,6 +205,8 @@ namespace Web.WMS.Controllers.Print
                     model.BarcodeType = 1;
                     model.ProductClass = Createname;
                     model.WorkNo = WarehouseName;
+                    model.TracNo = TracNo;
+                    model.ProjectNo = ProjectNo;
                     listbarcode.Add(model);
                     //本体打印
                     for (int ii = 0; ii < Convert.ToDecimal(everynum); ii++)
@@ -223,17 +229,25 @@ namespace Web.WMS.Controllers.Print
                         modelIn2.BarcodeType = 2;
                         modelIn2.ProductClass = Createname;
                         modelIn2.WorkNo = WarehouseName;
+                        modelIn2.TracNo = TracNo;
+                        modelIn2.ProjectNo = ProjectNo;
                         listbarcode.Add(modelIn2);
                     }
                 }
                 if (print_DB.SubBarcodes(listbarcode, "sup", 1, ref err))
                 {
-                    string serialnos = "";
+                    string serialnosB = "";
+                    string serialnosS= "";
                     for (int i = 0; i < listbarcode.Count; i++)
                     {
-                        serialnos += listbarcode[i].SerialNo + ",";
+                        if (listbarcode[i].BarcodeType == 1) {
+                            serialnosB += listbarcode[i].SerialNo + ",";
+                        } else {
+                            serialnosS += listbarcode[i].SerialNo + ",";
+                        }
+                       
                     }
-                    return Json(new { state = true, obj = serialnos }, JsonRequestBehavior.AllowGet);
+                    return Json(new { state = true, obj = serialnosB }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

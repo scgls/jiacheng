@@ -112,6 +112,8 @@ namespace BILWeb.SyncService
         /// </summary>
         public int DefaultType{ get; set; }
 
+        public string CompanyNo { get; set; }
+
     }
 
     public class deleteModel

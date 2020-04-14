@@ -44,26 +44,28 @@
                         {
                             foreach (T_InStockDetailInfo row in pageData.data)
                             {
-                                <tr>
-                                    <td style="display:none"><input type="checkbox" value="@row.ID" class="minimal" /></td>
-                                    <td>@row.ErpVoucherNo</td>
-                                    <td>@row.MaterialNo</td>
-                                    <td>@row.MaterialDesc</td>
-                                    @*<td>@row.BatchNo</td>
-                                        <td>@row.EDate</td>*@
-                                    <td>@row.InStockQty</td>
-                                    <td>@row.ReceiveQty</td>
-                                    <td>@row.RemainQty</td>
-                                    <td style="display:none;">@row.RowNo</td>
-                                    <td style="display:none;">@row.RowNoDel</td>
-                                    <td style="display:none;">@row.MaterialNoID</td>
-                                    <td style="display:none;">@row.StrongHoldCode</td>
-                                    <td style="display:none;">@row.CompanyCode</td>
-                                    <td style="display:none;">@row.FromBatchNo</td>
-                                    <td style="display:none;">@row.EDate</td>
-                                    <td style="display:none;">@row.VoucherType</td>
-                                    <td><a class="PrintIn"><i class="fa fa-print"></i></a></td>
-                                </tr>
+                                        <tr>
+                                            <td style="display:none"><input type="checkbox" value="@row.ID" class="minimal" /></td>
+                                            <td>@row.ErpVoucherNo</td>
+                                            <td>@row.MaterialNo</td>
+                                            <td>@row.MaterialDesc</td>
+                                            @*<td>@row.BatchNo</td>
+        <td>@row.EDate</td>*@
+                                            <td>@row.InStockQty</td>
+                                            <td>@row.ReceiveQty</td>
+                                            <td>@row.RemainQty</td>
+                                            <td style="display:none;">@row.RowNo</td>
+                                            <td style="display:none;">@row.RowNoDel</td>
+                                            <td style="display:none;">@row.MaterialNoID</td>
+                                            <td style="display:none;">@row.StrongHoldCode</td>
+                                            <td style="display:none;">@row.CompanyCode</td>
+                                            <td style="display:none;">@row.FromBatchNo</td>
+                                            <td style="display:none;">@row.EDate</td>
+                                            <td style="display:none;">@row.VoucherType</td>
+                                            <td style="display:none;">@row.TracNo</td>
+                                            <td style="display:none;">@row.ProjectNo</td>
+                                            <td><a class="PrintIn"><i class="fa fa-print"></i></a></td>
+                                        </tr>
                             }
                         }
                         else
@@ -108,23 +110,23 @@
                             </div>
                         </div>
                         @*<div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">ENA号:</span>
-                                <input id="ean"  class="form-control" readonly="readonly">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">有效期:</span>
-                                <input id="edate" class="form-control laydateX">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">批次号:</span>
-                                <input id="batch" class="form-control">
-                            </div>
-                        </div>*@
+            <div class="input-group">
+                <span class="input-group-addon">ENA号:</span>
+                <input id="ean"  class="form-control" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">有效期:</span>
+                <input id="edate" class="form-control laydateX">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">批次号:</span>
+                <input id="batch" class="form-control">
+            </div>
+        </div>*@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">收货数:</span>
@@ -142,6 +144,8 @@
                         <input id="MaterialNoID" style="display:none;">
                         <input id="StrongHoldCode" style="display:none;">
                         <input id="CompanyCode" style="display:none;">
+                        <input id="TracNo" style="display:none;">
+                        <input id="ProjectNo" style="display:none;">
                     </div>
                     <div class="modal-footer clearfix">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>关闭</button>
@@ -172,7 +176,8 @@
         $("#MaterialNoID").val(tds.eq(9).html());
         $("#StrongHoldCode").val(tds.eq(10).html());
         $("#CompanyCode").val(tds.eq(11).html());
-
+        $("#TracNo").val(tds.eq(15).html());
+        $("#ProjectNo").val(tds.eq(16).html());
 
         //销售退货单 27
         //杂入 28
@@ -245,7 +250,9 @@
                     RowNODel: $("#RowNODel").val(),
                     MaterialNoID: $("#MaterialNoID").val(),
                     StrongHoldCode: $("#StrongHoldCode").val(),
-                    CompanyCode: $("#CompanyCode").val()
+                    CompanyCode: $("#CompanyCode").val(),
+                    TracNo: $("#TracNo").val(),
+                    ProjectNo: $("#ProjectNo").val()
                 },
                 success: function (msg) {
                     if (msg.state) {

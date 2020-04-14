@@ -373,6 +373,10 @@ namespace BILWeb.InStock
         public bool ischeck { get; set; }
 
         public string InvoiceNo { get; set; }
-        
+
+        public string TracNo { get; set; }
+        public string ProjectNo { get; set; }
+
+
     }
 }

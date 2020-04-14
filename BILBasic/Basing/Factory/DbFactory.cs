@@ -34,7 +34,7 @@ namespace BILBasic.Basing
         //   public readonly string ConnectionStringLocalTransaction = "server=192.168.45.2;database=ZTWMS;uid=sa;password=SCG@123456";
         //server=192.168.100.86;database=ABH_SCG;uid=sa;password=chinetek
        
-        public readonly string ConnectionStringLocalTransaction = ConfigurationManager.ConnectionStrings["ConnOracleWithAddress"]==null? "server=192.168.100.86;database=ABH_SCG;uid=sa;password=chinetek" : ConfigurationManager.ConnectionStrings["ConnOracleWithAddress"].ToString();
+        public readonly string ConnectionStringLocalTransaction = ConfigurationManager.ConnectionStrings["ConnOracleWithAddress"]==null? "server=192.168.10.227;database=JCWMSTEST;uid=sa;password=scG_123456" : ConfigurationManager.ConnectionStrings["ConnOracleWithAddress"].ToString();
         //   public readonly string ConnectionStringLocalTransaction = ConfigurationManager.ConnectionStrings["ConnOracleWithAddress"] == null ? "Data Source=(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 180.166.173.214)(PORT = 1521))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = dswms)));Persist Security Info=True;User ID=c##dswms;Password=c##dswms;" : ConfigurationManager.ConnectionStrings["ConnOracleWithAddress"].ConnectionString;//防止空引用异常 modify by gzw 181227
 
         /// <summary>
