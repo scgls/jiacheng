@@ -1132,7 +1132,7 @@ namespace BILWeb.Print
         /// <returns></returns>
         public bool SubBarcodes(List<Barcode_Model> list, string ipport, decimal hasprint, ref string ErrMsg, int type = 0)
         {
-            string strError = "";
+            ErrMsg = "";
             try
             {
                 List<string> lstSql = new List<string>();
@@ -1144,7 +1144,7 @@ namespace BILWeb.Print
                     string strSql1 = Common_DB2.GetInertSqlCache(item, "t_outbarcode", "");
                     lstSql.Add(strSql1);
                 }
-                int i = dbFactory.ExecuteNonQueryList(lstSql, ref strError);
+                int i = dbFactory.ExecuteNonQueryList(lstSql, ref ErrMsg);
                 if (i > 0)
                 {
                     return true;
@@ -1156,7 +1156,7 @@ namespace BILWeb.Print
             }
             catch (Exception ex)
             {
-                strError = ex.Message;
+                ErrMsg = ex.Message;
                 return false;
             }
 
@@ -1213,11 +1213,11 @@ namespace BILWeb.Print
             //在条码中插入打印日期
             foreach (var item in list)
             {
-                if (item.EDate == DateTime.MinValue || item.EDate.ToString("yyyy/MM/dd") == "0001/01/01")
-                {
-                    ErrMsg = "行号：" + item.RowNo + "，" + item.RowNoDel + "的有效期不能为最小值";
-                    return false;
-                }
+                //if (item.EDate == DateTime.MinValue || item.EDate.ToString("yyyy/MM/dd") == "0001/01/01")
+                //{
+                //    ErrMsg = "行号：" + item.RowNo + "，" + item.RowNoDel + "的有效期不能为最小值";
+                //    return false;
+                //}
                 if (item.CreateTime == DateTime.MinValue)
                     item.CreateTime = DateTime.Now;
             }
@@ -1256,7 +1256,7 @@ namespace BILWeb.Print
         //期初条码生成
         public string GetInsertSQL(Barcode_Model model)
         {
-            return "insert into t_outbarcode (materialno,materialdesc,qty,barcode,barcodetype,serialno,batchno,ean,edate,status,receivetime,erpvoucherno,strongholdcode,strongholdname,companycode) values ('" + model.MaterialNo + "','" + model.MaterialDesc + "'," + model.Qty + ",'" + model.BarCode + "'," + model.BarcodeType + ",'" + model.SerialNo + "','" + model.BatchNo + "','" + model.EAN + "','" + model.EDate + "',0,'" + model.ReceiveTime + "','" + model.ErpVoucherNo + "','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "')";
+            return "insert into t_outbarcode (materialno,materialdesc,qty,barcode,barcodetype,serialno,batchno,ean,status,receivetime,erpvoucherno,strongholdcode,strongholdname,companycode,tracno,projectno) values ('" + model.MaterialNo + "','" + model.MaterialDesc + "'," + model.Qty + ",'" + model.BarCode + "'," + model.BarcodeType + ",'" + model.SerialNo + "','" + model.BatchNo + "','" + model.EAN + "',0,'" + model.ReceiveTime + "','" + model.ErpVoucherNo + "','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "','" + model.TracNo + "','" + model.ProjectNo + "')";
         }
         #endregion
 

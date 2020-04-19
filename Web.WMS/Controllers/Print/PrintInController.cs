@@ -180,6 +180,7 @@ namespace Web.WMS.Controllers.Print
                         modelIn1.WorkNo = WarehouseName;
                         modelIn1.TracNo = TracNo;
                         modelIn1.ProjectNo = ProjectNo;
+                        modelIn1.fserialno = model.SerialNo;
                         listbarcode.Add(modelIn1);
                     }
                 }
@@ -231,6 +232,7 @@ namespace Web.WMS.Controllers.Print
                         modelIn2.WorkNo = WarehouseName;
                         modelIn2.TracNo = TracNo;
                         modelIn2.ProjectNo = ProjectNo;
+                        modelIn2.fserialno = model.SerialNo;
                         listbarcode.Add(modelIn2);
                     }
                 }
@@ -247,7 +249,7 @@ namespace Web.WMS.Controllers.Print
                         }
                        
                     }
-                    return Json(new { state = true, obj = serialnosB }, JsonRequestBehavior.AllowGet);
+                    return Json(new { state = true, obj = serialnosB, objS = serialnosS }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -261,7 +263,7 @@ namespace Web.WMS.Controllers.Print
         }
 
 
-        private List<string> GetSerialnos(int v,string flag, ref string err)
+        public List<string> GetSerialnos(int v,string flag, ref string err)
         {
             List<string> serialnos = new List<string>();
             for (int i = 0; i < v; i++)

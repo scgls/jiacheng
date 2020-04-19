@@ -186,54 +186,88 @@ namespace BILWeb.OutBarCode
         public   bool GetSerialNoByBarCode(string BarCode,   ref string SerialNo,ref string BarCodeType,ref string strError)
         {
             bool deCodeResult = false;
-
             //如果没有@分隔符，就认为是序列号
-            if (OutBarCode_DeCode.InvalidBarcode(BarCode) == false)
+            if (OutBarCode_DeCode.InvalidBarcode(BarCode))
             {
                 BarCodeType = OutBarCode_DeCode.GetSubBarcodeType(BarCode);
-
-                if (BarCodeType=="1" ) 
+                if (BarCodeType == "1")
                 {
                     BarCodeType = "1";
                     SerialNo = OutBarCode_DeCode.GetSubBarcodeSerialNo(BarCode);
                     deCodeResult = true;
                 }
-                else if (BarCodeType == "2")
-                {
-                    BarCodeType = "2";
-                    SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
-                    deCodeResult = true;
-                }
-                else 
+                else
                 {
                     deCodeResult = false;
                     strError = "您扫描的不是外箱条码或者托盘条码，请确认！";
                 }
-                //if (BarCode.Contains("P"))
-                //{
-                //    BarCodeType = "2";
-                //}
-                //else 
-                //{
-                //    BarCodeType = "1";
-                //}                
-                //SerialNo = BarCode;
-                //deCodeResult = true;
             }
             else
             {
-                if (OutBarCode_DeCode.GetBarcodeType(BarCode) == "0")
+                //序列号或者托盘
+                if (BarCode.Contains("P"))
                 {
-                    deCodeResult = false;
-                    strError = "您扫描的不是外箱条码或者托盘条码，请确认！";
+                    BarCodeType = "2";
                 }
                 else
                 {
-                    BarCodeType = OutBarCode_DeCode.GetBarcodeType(BarCode);
-                    deCodeResult = true;
-                    SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
+                    BarCodeType = "1";
                 }
+                SerialNo = BarCode;
+                deCodeResult = true;
             }
+
+
+
+
+            ////如果没有@分隔符，就认为是序列号
+            //if (OutBarCode_DeCode.InvalidBarcode(BarCode) == false)
+            //{
+            //    BarCodeType = OutBarCode_DeCode.GetSubBarcodeType(BarCode);
+
+            //    if (BarCodeType=="1" ) 
+            //    {
+            //        BarCodeType = "1";
+            //        SerialNo = OutBarCode_DeCode.GetSubBarcodeSerialNo(BarCode);
+            //        deCodeResult = true;
+            //    }
+            //    //暂不支持内核
+            //    //else if (BarCodeType == "2")
+            //    //{
+            //    //    BarCodeType = "2";
+            //    //    SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
+            //    //    deCodeResult = true;
+            //    //}
+            //    else 
+            //    {
+            //        deCodeResult = false;
+            //        strError = "您扫描的不是外箱条码或者托盘条码，请确认！";
+            //    }
+            //    //if (BarCode.Contains("P"))
+            //    //{
+            //    //    BarCodeType = "2";
+            //    //}
+            //    //else 
+            //    //{
+            //    //    BarCodeType = "1";
+            //    //}                
+            //    //SerialNo = BarCode;
+            //    //deCodeResult = true;
+            //}
+            //else
+            //{
+            //    if (OutBarCode_DeCode.GetBarcodeType(BarCode) == "0")
+            //    {
+            //        deCodeResult = false;
+            //        strError = "您扫描的不是外箱条码或者托盘条码，请确认！";
+            //    }
+            //    else
+            //    {
+            //        BarCodeType = OutBarCode_DeCode.GetBarcodeType(BarCode);
+            //        deCodeResult = true;
+            //        SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
+            //    }
+            //}
 
             return deCodeResult;
         }

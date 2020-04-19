@@ -14,9 +14,9 @@
             <div class="layui-inline layui-show-xs-block">
                 @Html.EditorFor(model => model.MaterialNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料编号" } })
             </div>
-            <div class="layui-inline layui-show-xs-block">
+            @*<div class="layui-inline layui-show-xs-block">
                 @Html.EditorFor(model => model.EAN, new { htmlAttributes = new { @class = "form-control", @placeholder = "EAN" } })
-            </div>
+            </div>*@
             <div class="layui-inline layui-show-xs-block">
                 @Html.EditorFor(model => model.MaterialDesc, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料名" } })
             </div>
@@ -56,12 +56,12 @@
                     @* 产品名称 *@
                     <th>@Html.DisplayNameFor(model => model.MaterialDesc)</th>
                     @* 厂内批号 *@
-                    <th>@Html.DisplayNameFor(model => model.EAN)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.EAN)</th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.BatchNo)
                     </th>
                     @* 到期日期 *@
-                    <th>@Html.DisplayNameFor(model => model.EDate)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.EDate)</th>*@
 
                     @* 数量 *@
                     <th>@Html.DisplayNameFor(model => model.Qty)</th>
@@ -92,9 +92,9 @@
                                 @*<td>@Row.StrongHoldCode</td>*@
                                 <td>@Row.MaterialNo</td>
                                 <td>@Row.MaterialDesc</td>
-                                <td>@Row.EAN</td>
+                                @*<td>@Row.EAN</td>*@
                                 <td>@Row.BatchNo</td>
-                                <td>@Row.EDate.ToString("yyyy/MM/dd")</td>
+                                @*<td>@Row.EDate.ToString("yyyy/MM/dd")</td>*@
                                 <td>@Row.Qty</td>
                                 @*<td>@Row.StatusName</td>*@
                                 <td>@Row.AreaNo</td>

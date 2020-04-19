@@ -589,5 +589,8 @@ namespace BILWeb.Print
         public string TracNo { get; set; }
  
         public string ProjectNo { get; set; }
+
+        public string fserialno { get; set; }
+        
     }
 }

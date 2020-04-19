@@ -11,12 +11,13 @@
                 html += "<td>" + data[i].AreaNo + "</td>"
                 html += "<td>" + data[i].MaterialNo + "</td>"
                 html += "<td>" + data[i].MaterialDesc + "</td>"
+                html += "<td>" + data[i].QualityQty + "</td>"
                 html += "<td>" + data[i].TaskQty + "</td>"
                 html += "<td>" + data[i].RemainQty + "</td>"
                 html += "<td>" + data[i].ShelveQty + "</td>"
                 html += "<td>" + data[i].StrLineStatus + "</td>"
                 html += "<td>" + data[i].OperatorUserName + "</td>"
-                html += "<td>" + data[i].BatchNo + "</td>"
+                //html += "<td>" + data[i].BatchNo + "</td>"
                 html += "</tr>";
                 $("#detailTable").append(html);
             }

@@ -153,13 +153,14 @@ namespace BILWeb.InStock
             //汇总生成上架任务不汇总收货数据
             foreach (var item in NewModelList)
             {
-                strSql6 = "insert into t_Taskdetails (headerid,Materialno,materialdesc,Taskqty,Remainqty,LineStatus,Creater,Createtime,Unit,Unitname,erpvoucherno,materialnoid,toareano,voucherno," +
-                "STRONGHOLDCODE,STRONGHOLDNAME,COMPANYCODE,batchno,Productbatch,Supprdbatch,Frombatchno,Fromerpareano,Fromerpwarehouse,isdel)" +
+                //taskqty》QualityQty
+                strSql6 = "insert into t_Taskdetails (headerid,Materialno,materialdesc,QualityQty,Remainqty,LineStatus,Creater,Createtime,Unit,Unitname,erpvoucherno,materialnoid,toareano,voucherno," +
+                "STRONGHOLDCODE,STRONGHOLDNAME,COMPANYCODE,batchno,Productbatch,Supprdbatch,Frombatchno,Fromerpareano,Fromerpwarehouse,isdel,iarrsid)" +
                    "values('" + taskid + "','" + item.MaterialNo + "','" + item.MaterialDesc + "','" + item.ScanQty + "','" + item.ScanQty + "'," +
                    "'1','" + user.UserNo + "',getdate(),'" + item.Unit + "','" + item.UnitName + "','" + item.ErpVoucherNo + "','" + item.MaterialNoID + "','" + user.ReceiveAreaID + "','" + item.VoucherNo + "'," +
                    "'" + item.StrongHoldCode + "','" + item.StrongHoldName + "','" + item.CompanyCode + "','" + item.BatchNo + "'," +
                 "'" + item.ProductBatch + "','" + item.SupPrdBatch + "'," +
-                "'" + item.BatchNo + "','" + user.ReceiveAreaNo + "','" + user.ReceiveWareHouseNo + "','1')";
+                "'" + item.BatchNo + "','" + user.ReceiveAreaNo + "','" + user.ReceiveWareHouseNo + "','1','"+ modelList[0].iarrsid + "')";
 
                 lstSql.Add(strSql6);
             }
@@ -285,6 +286,7 @@ namespace BILWeb.InStock
 
             t_instockdetail.TracNo = dbFactory.ToModelValue(reader, "TracNo").ToDBString();
             t_instockdetail.ProjectNo = dbFactory.ToModelValue(reader, "ProjectNo").ToDBString();
+            t_instockdetail.ProjectNo = dbFactory.ToModelValue(reader, "iarrsid").ToDBString();
             return t_instockdetail;
         }
 
@@ -409,6 +411,14 @@ namespace BILWeb.InStock
                 strSql += strAnd;
                 strSql += " erpvoucherno = '"+model.ErpVoucherNo+ "' ";
             }
+            if (!string.IsNullOrEmpty(model.MaterialNo))
+            {
+                strSql += strAnd;
+                strSql += " MaterialNo like '%" + model.MaterialNo + "%' ";
+            }
+            strSql += strAnd;
+            strSql += " VoucherType != 39 ";
+
             return strSql; //+ " order by id desc";
         }
 

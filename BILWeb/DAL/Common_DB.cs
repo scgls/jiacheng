@@ -629,7 +629,7 @@ namespace BILWeb.DAL
                             break;
                         case "datetime":
                             //sb.Append(" TO_DATE('");
-                            sb.Append(pi.GetValue(t, null).ToString().Contains("0001-01-01")?"null": ("'" + pi.GetValue(t, null).ToString() + "'"));
+                            sb.Append(pi.GetValue(t, null).ToString().Contains("0001")?"null": ("'" + pi.GetValue(t, null).ToString() + "'"));
                             //sb.Append("{" + i.ToString() + "}");
                             //sb.Append("','yyyy/mm/dd hh24:mi:ss')");
                             sb.Append(",");

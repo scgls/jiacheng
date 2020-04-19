@@ -18,6 +18,9 @@
                         @Html.EditorFor(model => model.ErpVoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "ERP单号" } })
                     </div>
                     <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.MaterialNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料号" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
                         <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                     </div>
                 </div>
@@ -44,28 +47,28 @@
                         {
                             foreach (T_InStockDetailInfo row in pageData.data)
                             {
-                                        <tr>
-                                            <td style="display:none"><input type="checkbox" value="@row.ID" class="minimal" /></td>
-                                            <td>@row.ErpVoucherNo</td>
-                                            <td>@row.MaterialNo</td>
-                                            <td>@row.MaterialDesc</td>
-                                            @*<td>@row.BatchNo</td>
-        <td>@row.EDate</td>*@
-                                            <td>@row.InStockQty</td>
-                                            <td>@row.ReceiveQty</td>
-                                            <td>@row.RemainQty</td>
-                                            <td style="display:none;">@row.RowNo</td>
-                                            <td style="display:none;">@row.RowNoDel</td>
-                                            <td style="display:none;">@row.MaterialNoID</td>
-                                            <td style="display:none;">@row.StrongHoldCode</td>
-                                            <td style="display:none;">@row.CompanyCode</td>
-                                            <td style="display:none;">@row.FromBatchNo</td>
-                                            <td style="display:none;">@row.EDate</td>
-                                            <td style="display:none;">@row.VoucherType</td>
-                                            <td style="display:none;">@row.TracNo</td>
-                                            <td style="display:none;">@row.ProjectNo</td>
-                                            <td><a class="PrintIn"><i class="fa fa-print"></i></a></td>
-                                        </tr>
+                                <tr>
+                                    <td style="display:none"><input type="checkbox" value="@row.ID" class="minimal" /></td>
+                                    <td>@row.ErpVoucherNo</td>
+                                    <td>@row.MaterialNo</td>
+                                    <td>@row.MaterialDesc</td>
+                                    @*<td>@row.BatchNo</td>
+                                        <td>@row.EDate</td>*@
+                                    <td>@row.InStockQty</td>
+                                    <td>@row.ReceiveQty</td>
+                                    <td>@row.RemainQty</td>
+                                    <td style="display:none;">@row.RowNo</td>
+                                    <td style="display:none;">@row.RowNoDel</td>
+                                    <td style="display:none;">@row.MaterialNoID</td>
+                                    <td style="display:none;">@row.StrongHoldCode</td>
+                                    <td style="display:none;">@row.CompanyCode</td>
+                                    <td style="display:none;">@row.FromBatchNo</td>
+                                    <td style="display:none;">@row.EDate</td>
+                                    <td style="display:none;">@row.VoucherType</td>
+                                    <td style="display:none;">@row.TracNo</td>
+                                    <td style="display:none;">@row.ProjectNo</td>
+                                    <td><a class="PrintIn"><i class="fa fa-print"></i></a></td>
+                                </tr>
                             }
                         }
                         else
@@ -110,23 +113,23 @@
                             </div>
                         </div>
                         @*<div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon">ENA号:</span>
-                <input id="ean"  class="form-control" readonly="readonly">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon">有效期:</span>
-                <input id="edate" class="form-control laydateX">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon">批次号:</span>
-                <input id="batch" class="form-control">
-            </div>
-        </div>*@
+                                <div class="input-group">
+                                    <span class="input-group-addon">ENA号:</span>
+                                    <input id="ean"  class="form-control" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">有效期:</span>
+                                    <input id="edate" class="form-control laydateX">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">批次号:</span>
+                                    <input id="batch" class="form-control">
+                                </div>
+                            </div>*@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">收货数:</span>
@@ -162,7 +165,7 @@
         $("#batch").attr("disabled", false);
         $("#edate").attr("disabled", false);
         $("#ean").attr("disabled", false);
-        
+
         $('#compose-modal').modal({ keyboard: false }, 'show');
         var tds = $(this).parent().parent().find("td");
         $("#erpvoucherno").val(tds.eq(1).html());
@@ -288,7 +291,17 @@
                 },
                 success: function (msg) {
                     if (msg.state) {
-                        window.open($("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj);
+                        alert(msg.obj);
+                        if (msg.obj != null && msg.obj != "") {
+                            window.open($("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj);
+                        }
+                        alert(msg.objS);
+                        if (msg.obj != null && msg.obj != "") {
+                            window.open($("#printIP").val() + "Main.aspx?flag=InS&parameter1=" + msg.objS);
+                        }
+
+
+
                         //var newA = document.createElement("a");
                         //newA.id = 'gg'
                         //newA.target = '_blank';

@@ -466,5 +466,9 @@ namespace BILWeb.InStockTask
         public string WareHouseName { get; set; }
 
         public int WareHouseID { get; set; }
+
+        public string PcOrPda { get; set; }
+        
+
     }
 }

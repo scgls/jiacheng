@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using Web.WMS.Report.Print;
 using WMS.Web.Filter;
 
 namespace Web.WMS.Controllers.Print
@@ -80,48 +81,46 @@ namespace Web.WMS.Controllers.Print
                 string[] ids = IDs.Split(',');
                 for (int i = 0; i < ids.Length; i++)
                 {
-                    List<Barcode_Model> barcodes = new List<Barcode_Model>();
-                    barcodes.AddRange(barcodelist.Where(P => P.RowNo == ids[i]));
-
-                    if (barcodes.Count==1&& barcodes[0].BoxCount>=1)
-                    {
-                        for (int j = 0; j < barcodes[0].BoxCount; j++)
-                        {
-                            Barcode_Model model = (Barcode_Model)DeepCopy(barcodes[0]);
-                            barcodelistnew.Add(model);
-                        }
+                    if (ids[i] != "") {
+                        List<Barcode_Model> barcodes = new List<Barcode_Model>();
+                        barcodes.AddRange(barcodelist.Where(P => P.RowNo == ids[i]));
+                        Barcode_Model model = (Barcode_Model)DeepCopy(barcodes[0]);
+                        barcodelistnew.Add(model);
                     }
+
+
+                    //if (barcodes.Count==1&& barcodes[0].BoxCount>=1)
+                    //{
+                    //    for (int j = 0; j < barcodes[0].BoxCount; j++)
+                    //    {
+                    //        Barcode_Model model = (Barcode_Model)DeepCopy(barcodes[0]);
+                    //        barcodelistnew.Add(model);
+                    //    }
+                    //}
                 }
 
                 if (barcodelistnew != null && barcodelistnew.Count > 0)
                 {
                     string strMsg = "";
-                    List<string> squence = GetSerialnos(barcodelistnew.Count, ref strMsg);
+                    PrintInController printIn = new PrintInController();
+                    List<string> squence = printIn.GetSerialnos(barcodelistnew.Count,"外",ref strMsg);
                     int k = 0;
                     DateTime time = DateTime.Now;
                     for (int i = 0; i < barcodelistnew.Count; i++)
                     {
-                        barcodelistnew[i].CompanyCode = "10";
-                        barcodelistnew[i].BarcodeType = 3;
+                        barcodelistnew[i].CompanyCode = "SHJC";
+                        barcodelistnew[i].BarcodeType = 1;
                         barcodelistnew[i].SerialNo = squence[k++];
                         barcodelistnew[i].Creater = currentUser.UserNo;
                         barcodelistnew[i].ReceiveTime = time;
-                        barcodelistnew[i].BarCode = "3" + barcodelistnew[i].MaterialNo.PadLeft(16, '0') +  barcodelistnew[i].BatchNo.PadLeft(11, '0') + barcodelistnew[i].SerialNo;
+                        barcodelistnew[i].BarCode = "1@" + barcodelistnew[i].StrongHoldCode + "@" + barcodelistnew[i].MaterialNo + "@" + barcodelistnew[i].BatchNo + "@" + barcodelistnew[i].Qty + "@" + barcodelistnew[i].SerialNo;
 
                     }
 
                     Print_DB func = new Print_DB();
                     if (func.SubBarcodesNoPrint(barcodelistnew, ref strMsg))
                     {
-                        //string serialnos = "";
-                        //for (int j = 0; j < barcodelistnew.Count; j++)
-                        //{
-                        //    serialnos += barcodelistnew[j].SerialNo + ",";
-                        //}
-
                         return Json(new { state = true, obj = time.ToString("yyyy/MM/dd HH:mm:ss") }, JsonRequestBehavior.AllowGet);
-                        //保存ok，打印
-                        //Redirect("/Report/Print/PrintIn.aspx?serialnos= " + serialnos);
                     }
                     else
                     {

@@ -183,31 +183,32 @@ namespace BILBasic.Interface
                 
 
                 ErpJson = CreateInterfacePost(modelPost, VoucherJson);
-                              
+
+                LogNet.LogInfo("ymh00000000000000000000000000000----" + ErpJson);
 
                 jtoken = JToken.Parse(ErpJson);
 
                 if (jtoken.GetType().Name == "JObject")
                 {
-                    Result = jtoken["Result"].ToString();
+                    Result = jtoken["result"].ToString();
                 }
                 else
                 {
-                    Result = jtoken[0]["Result"].ToString();
+                    Result = jtoken[0]["result"].ToString();
                 }
 
-                if (Result == "false" )
+                if (Result == "0" )
                 {
                     messageModel.HeaderStatus = "E";
                     messageModel.MaterialDoc = string.Empty;
                     messageModel.ModelJson = null;
-                    messageModel.Message ="ERP接口"+ jtoken["ErrMsg"].ToString();
+                    messageModel.Message ="ERP接口"+ jtoken["resultValue"].ToString();
                     return JSONUtil.JSONHelper.ObjectToJson<BaseMessage_Model<List<T_InterfaceInfo>>>(messageModel);
                 }
                 else 
                 {
                     messageModel.HeaderStatus = "S";
-                    messageModel.MaterialDoc = jtoken["ErrMsg"].ToString();
+                    messageModel.MaterialDoc = jtoken["resultValue"].ToString();
                     messageModel.ModelJson = null;
                     messageModel.Message = string.Empty;
                     return JSONUtil.JSONHelper.ObjectToJson<BaseMessage_Model<List<T_InterfaceInfo>>>(messageModel);

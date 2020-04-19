@@ -23,7 +23,7 @@ namespace BILWeb.OutBarCode
         {
             string[] strSplit = strBarcode.Split('@');
 
-            if (strSplit.Length == 8) return true;
+            if (strSplit.Length == 6) return true;
             else return false;
         }
 

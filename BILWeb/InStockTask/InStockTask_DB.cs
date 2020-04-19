@@ -239,7 +239,13 @@ namespace BILWeb.InStockTask
             //}
 
             strSql += strAnd;
-            strSql += " tasktype ='1'";
+            strSql += " tasktype ='1' ";
+
+            if (model.PcOrPda !="1")
+            {
+                strSql += strAnd;
+                strSql += "  taskqty is not null ";
+            }
 
             return strSql; //+ "order by id desc";
         }

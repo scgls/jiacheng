@@ -730,5 +730,10 @@ namespace BILWeb.InStockTask
         public string ToErpWarehouse { get; set; }
 
         public string UserNo { get; set; }
+
+        public string iarrsid { get; set; }
+
+        public decimal TaskQty1 { get; set; }//质检数量
+        
     }
 }

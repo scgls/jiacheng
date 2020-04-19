@@ -7,7 +7,7 @@
     var printIP = System.Web.HttpContext.Current.Session["printIP"];
 }
 
-    <form method="post" enctype="multipart/form-data" action="/PrintFirst/ImportExcel" class="form-group">
+    <form method="post" enctype="multipart/form-data" action="/PrintFirst/ImportExcel" class="form-group" style="margin-left:20px;">
         <input name="file" type="file" id="file" />
         <input type="submit" style="" class="btn btn-google-plus margin " value="导 入" onclick="saveExcel()">
         <input type="button" class="btn btn-google-plus margin dayin" value="打 印" onclick="saveExcel()">
@@ -15,7 +15,7 @@
 
 <input type="hidden" value="@Path" id="Path" />
 <input type="hidden" id="printIP" value="@printIP" />
-<div class="mailbox row">
+<div class="mailbox row" style="margin-bottom:20px;margin-left:20px;">
     <div class="col-xs-12">
         <div class="box box-solid">
             <div class="box-body">
@@ -33,8 +33,8 @@
                                     <th>物料号</th>
                                     <th>物料描述</th>
                                     <th>批次</th>
-                                    <th>效期</th>
-                                    <th>EAN</th>
+                                    <th>项目号</th>
+                                    <th>需求跟踪号</th>
                                     <th>数量</th>
                                     <th>库位</th>
                                 </tr>
@@ -53,8 +53,8 @@
                                                 <td>@row.MaterialNo </td>
                                                 <td>@row.MaterialDesc </td>
                                                 <td>@row.BatchNo </td>
-                                                <td>@row.EDate </td>
-                                                <td>@row.EAN </td>
+                                                <td>@row.ProjectNo </td>
+                                                <td>@row.TracNo </td>
                                                 <td>@row.Qty </td>
                                                 <td>@row.ErpVoucherNo </td>
                                             </tr>

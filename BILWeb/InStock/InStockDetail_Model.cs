@@ -376,7 +376,8 @@ namespace BILWeb.InStock
 
         public string TracNo { get; set; }
         public string ProjectNo { get; set; }
+        public string iarrsid { get; set; }
 
-
+        
     }
 }

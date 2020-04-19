@@ -1,208 +1,325 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- wms传入实体类与erp过账实体类间字段映射（只填必填项，erp直接从上游单据赋值时，wms字段填空） -->
 <setting>
+  <!--erp info-->
+  <dbconfig>
+    <servername>192.168.10.247</servername>
+    <dbname_shjc>ufdata_801_2014</dbname_shjc>
+    <dbname_shsy>ufdata_802_2016</dbname_shsy>
+    <dbname_jsjc>ufdata_803_2019</dbname_jsjc>
+    <sqluser>sa</sqluser>
+    <sqlpass>Sqlsa2014</sqlpass>
+  </dbconfig>
+  <!-- 采购订到获取 -->
+  <getArriveByPO datainfo="OperateDetails" name="单据操作明细字段名称">
+    <cmemo head="true" wms="purchase_tyname" name="单据类型" def="01"/>
+    <cmemo head="true" wms="purchase_remark" name="备注" def=""/>
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cdepcode head="true" wms="dept_no" name="部门编号" def=""/>
+    <cdepname head="true" wms="dept_name" name="部门名称" def=""/>
+    <cvencode head="true" wms="supplier_no" name="供应商编码" def=""/>
+    <cvenabbname head="true" wms="supplier_name" name="供应商名称" def=""/>
+    <cOrderCode head="true" wms="purchase_no" name="采购订单号" def=""/>
+    <ddate head="true" wms="purchase_date" name="订单日期" def=""/>
+    <cpersonname head="true" wms="staff_name" name="业务员" def="staff_name"/>
+    <!--表体-->
+    <iVouchRowNo head="false" wms="purchase_seq" name="行号" def=""/>
+    <cInvCode head="false" wms="item_no" name="存货编码" def=""/>
+    <cInvName head="false" wms="item_name" name="物料描述" def=""/>
+    <iQuantity head="false" wms="purchase_amount" name="订单数量" def=""/>
+    <iarrqty head="false" wms="reviced_amount" name="收货数量" def=""/>
+    <cbmemo head="false" wms="row_remark" name="行备注" def=""/>
+    <cOrderCode head="false" wms="purchase_no" name="采购订单号" def=""/>
 
-  <!--getERPTest>{"key":"f5458f5c0f9022db743a7c0710145903","type":"sync","host":{"prod":"APP","ip":"10.40.71.91","lang":"zh_CN","acct":"tiptop","timestamp":"20151211123204361"},"service":{"prod":"T100","name":"%","ip":"10.1.254.26","id":"topprd"},"datakey":{"EntId":"10","CompanyId":"$"},"payload":{"std_data":{"parameter":@}}} </getERPTest-->
-  <!--getERP>{"key":"f5458f5c0f9022db743a7c0710145903","type":"sync","host":{"prod":"WMS","ip":"10.40.71.91","lang":"zh_CN","acct":"tiptop","timestamp":"20151211123204361"},"service":{"prod":"T100","name":"%","ip":"10.1.254.26","id":"topprd"},"datakey":{"EntId":"10","CompanyId":"$"},"payload":{"std_data":{"parameter":@}}} </getERP-->
-  <!--测试地址-->
-  <getERP>{"key":"f5458f5c0f9022db743a7c0710145903","type":"sync","host":{"prod":"APP","ip":"10.40.71.91","lang":"zh_CN","acct":"tiptop","timestamp":"20151211123204361"},"service":{"prod":"T100","name":"%","ip":"10.1.254.26","id":"toptst"},"datakey":{"EntId":"10","CompanyId":"$"},"payload":{"std_data":{"parameter":@}}} </getERP>
+  </getArriveByPO>
+  <!-- 到货单提交 -->
+  <postarrive datainfo="OperateDetails" name="单据操作明细字段名称">
+    <corderCode head="true" wms="ErpVoucherNo" name="到货单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="remainqty" name="扫描数量" def=""/>
+    <iUnitCost head="false" wms="" name="单价" def=""/>
+    <iPrice head="false" wms="" name="金额" def=""/>
+    <iUnitCost head="false" wms="" name="价税" def=""/>
+    <iPOsID head="false" wms="" name="采购订单子表ID" def=""/>
+    <iOriTaxCost head="false" wms="" name="原币含税单价" def=""/>
+    <iOriCost head="false" wms="" name="原币无税单价" def=""/>
+    <iOriMoney head="false" wms="" name="原币无税金额" def=""/>
+    <iOriTaxPrice head="false" wms="" name="原币税额" def=""/>
+    <ioriSum head="false" wms="" name="原币价税合计" def=""/>
+    <iTaxRate head="false" wms="" name="税率" def=""/>
+    <iTaxPrice head="false" wms="" name="本币税额" def=""/>
+    <iSum head="false" wms="" name="本币价税合计" def=""/>
+    <bTaxCost head="false" wms="" name="记税方式" def=""/>
+    <dpdate head="false" wms="madedate" name="生产日期" def=""/>
+  </postarrive>
+  <!-- 采购入库获取 -->
+  <getpustorein datainfo="OperateDetails" name="单据操作明细字段名称">
+    <cbustype head="true" wms="" name="业务类型" def="普通采购"/>
+    <iExchRate head="true" wms="" name="汇率" def=""/>
+    <crdcode head="true" wms="" name="入库类别编码" def=""/>
+    <cptcode head="true" wms="" name="cptcode" def=""/>
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cdepcode head="true" wms="" name="部门" def=""/>
+    <cbarvcode head="true" wms="ErpInVoucherNo" name="到货单号" def=""/>
+    <cvencode head="true" wms="" name="供应商编码" def=""/>
+    <cOrderCode head="true" wms="ErpVoucherNo" name="采购订单号" def=""/>
+    <cCheckCode head="true" wms="ErpInVoucherNo" name="检验单号" def=""/>
+    <dARVDate head="true" wms="" name="到货单日期" def=""/>
+    <ipurarriveid head="true" wms="" name="到货单ID" def=""/>
+    <iTaxRate head="true" wms="" name="税率" def=""/>
+    <cExch_Name head="true" wms="" name="币种" def=""/>
+    <cpersoncode head="true" wms="" name="业务员" def=""/>
+    <iarrsid head="false" wms="" name="采购到货单子表标识" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <iQuantity head="false" wms="taskqty" name="数量" def=""/>
+    <iUnitCost head="false" wms="" name="单价" def=""/>
+    <iPrice head="false" wms="" name="金额" def=""/>
+    <iUnitCost head="false" wms="" name="价税" def=""/>
+    <iPOsID head="false" wms="" name="采购订单子表ID" def=""/>
+    <iOriTaxCost head="false" wms="" name="原币含税单价" def=""/>
+    <iOriCost head="false" wms="" name="原币无税单价" def=""/>
+    <iOriMoney head="false" wms="" name="原币无税金额" def=""/>
+    <iOriTaxPrice head="false" wms="" name="原币税额" def=""/>
+    <ioriSum head="false" wms="" name="原币价税合计" def=""/>
+    <iTaxRate head="false" wms="" name="税率" def=""/>
+    <iTaxPrice head="false" wms="" name="本币税额" def=""/>
+    <iSum head="false" wms="" name="本币价税合计" def=""/>
+    <bTaxCost head="false" wms="" name="记税方式" def=""/>
+    <cOrderCode head="false" wms="" name="采购订单号" def=""/>
+    <iPOsID head="false" wms="" name="委外订单子表ID" def=""/>
+    <supcode head="false" wms="" name="代管商编码" def=""/>
 
-  <!--测试机地址-->
-  <url>http://10.1.254.26/wtoptst/ws/r/awsp920</url>
+    <cBatch head="false" wms="BatchNo" name="BatchNo" def=""/>
+  </getpustorein>
+  <!-- 采购入库过账 -->
+  <postpustorein datainfo="OperateDetails">
+    <companyNo head="true" wms="companyid" name="制单人" def=""/>
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cwhcode head="true" wms="ToErpWarehouse" name="部门" def=""/>
+    <ipurarriveid head="true" wms="" name="到货单ID" def=""/>  
+    <iarrsid head="false" wms="" name="采购到货单子表标识" def=""/>
+    <cInvCode head="false" wms="materialno" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="cbatch" def=""/>
+    <iQuantity head="false" wms="remainqty" name="数量" def=""/>
+    <iPOsID head="false" wms="" name="采购订单子表ID" def=""/>
+    <supcode head="false" wms="" name="代管商编码" def=""/>
+  </postpustorein>
+  <!-- 调拨单获取 -->
+  <gettransmove datainfo="tranMoveOperation" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <ciwhcode head="true" wms="toerpwarehouse" name="调入仓库编码" def=""/>
+    <cowhcode head="true" wms="FromErpWarehouse" name="调入仓库编码" def=""/>
+    <codepcode head="true" wms="fromstorageloc" name="转出部门编码" def=""/>
+    <cidepcode head="true" wms="tostorageloc" name="转入部门编码" def=""/>
+    <cordcode head="true" wms="FromBatchNo" name="出库类别编码" def=""/>
+    <cirdcode head="true" wms="ToBatchNo" name="入库类别编码" def=""/>
+    <ctranrequestcode head="true" wms="ErpInVoucherNo" name="调拨申请单号" def=""/>
+    <ctvcode head="true" wms="ErpVoucherNo" name="调拨单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <ctvbatch head="false" wms="batchno" name="批号" def=""/>
+    <itvquantity head="false" wms="taskqty" name="数量" def=""/>
+  </gettransmove>
+  <!-- 调拨单保存 -->
+  <posttransmove datainfo="tranMoveOperation" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <ciwhcode head="true" wms="toerpwarehouse" name="调入仓库编码" def=""/>
+    <cowhcode head="true" wms="FromErpWarehouse" name="调入仓库编码" def=""/>
+    <codepcode head="true" wms="fromstorageloc" name="转出部门编码" def=""/>
+    <cidepcode head="true" wms="tostorageloc" name="转入部门编码" def=""/>
+    <cordcode head="true" wms="FromBatchNo" name="出库类别编码" def=""/>
+    <cirdcode head="true" wms="ToBatchNo" name="入库类别编码" def=""/>
+    <ctranrequestcode head="true" wms="ErpInVoucherNo" name="调拨申请单号" def=""/>
+    <ctvcode head="true" wms="ErpVoucherNo" name="调拨单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <ctvbatch head="false" wms="batchno" name="批号" def=""/>
+    <itvquantity head="false" wms="taskqty" name="数量" def=""/>
+  </posttransmove>
+  <!-- 审核调拨单 -->
+  <audittransmove datainfo="tranMoveOperation" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <ctvcode head="true" wms="ErpVoucherNo" name="调拨单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <ctvbatch head="false" wms="batchno" name="批号" def=""/>
+    <itvquantity head="false" wms="taskqty" name="数量" def=""/>
+    <itvsumquantity head="false" wms="remainqty" name="已扫数量" def=""/>
+  </audittransmove>
+  <!-- 领料单获取 -->
+  <getmaterialout datainfo="OperateDetails" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <MoCode head="true" wms="ErpVoucherNo" name="生产订单号" def=""/>
+    <invcode head="false" wms="TMaterialNo" name="产品编码" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="原料编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQty head="false" wms="taskqty" name="数量" def=""/>
+    <IsnQty head="false" wms="reviewqty" name="应收数量" def=""/>
+  </getmaterialout>
+  <!-- 材料出库单过账 -->
+  <postmaterialout datainfo="OperateDetails" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <crdcode head="true" wms="StrVoucherType" name="出入库类别" def="102"/>
+    <cwhcode head="true" wms="fromerpwarehouse" name="仓库" def=""/>
+    <cdepcode head="true" wms="" name="部门" def=""/>
+    <cpspcode head="true" wms="tmaterialno" name="产品编码" def=""/>
+    <cmaker head="true" wms="" name="制单人" def=""/>
+    <supcode head="true" wms="" name="代管商编码" def=""/>
+    <MoCode head="true" wms="ErpVoucherNo" name="生产订单号" def=""/>
+    <istsodid head="true" wms="" name="生产订单子表ID" def=""/>
+    <imoseq head="true" wms="" name="生产订单行号" def=""/>
+    <irowno head="false" wms="voucher_seq" name="行号" def=""/>
+    <istsotype head="false" wms="" name="需求跟踪方式" def=""/>
+    <ipesodid head="false" wms="" name="销售订单子表" def=""/>
+    <cpesocode head="false" wms="" name="需求跟踪号" def=""/>
+    <ipesoseq head="false" wms="" name="需求跟踪行号" def=""/>
+    <invcode head="false" wms="TMaterialNo" name="产品编码" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="原料编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iqty head="false" wms="operated_amount" name="应收数量" def=""/>
+  </postmaterialout>
+  <!-- 生产订单获取 -->
+  <getproductin datainfo="STInProductOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cMPoCode head="true" wms="ErpVoucherNo" name="生产订单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <iquantity head="false" wms="taskqty" name="数量" def=""/>
+    <inquantity head="false" wms="taskqty" name="应收数量" def=""/>
+    <MoCode head="false" wms="ErpVoucherNo" name="生产订单号" def=""/>
+    <iMoSeq head="false" wms="rowno" name="生产订单行号" def=""/>
+  </getproductin>
+  <!-- 产成品入库单过账 -->
+  <postproductin datainfo="STInProductOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cMPoCode head="true" wms="ErpVoucherNo" name="生产订单号" def=""/>
+    <cwhcode head="true" wms="toerpwarehouse" name="仓库编码" def=""/>
+    <cdepcode head="true" wms="" name="部门编码" def=""/>
+    <crdcode head="true" wms="StrVoucherType" name="出入库类别" def="202"/>
+    <MoId head="true" wms="" name="生产订单id" def=""/>
+    <MoCode head="false" wms="ErpVoucherNo" name="生产订单号" def=""/>
+    <iMoSeq head="false" wms="rowno" name="生产订单行号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <impoids head="false" wms="" name="生产订单子表ID" def=""/>
+    <isodid head="false" wms="" name="销售订单子表ID" def=""/>
+    <iordertype head="false" wms="" name="销售订单类别" def=""/>
+    <iorderdid head="false" wms="" name="iorderdid" def=""/>
+    <iordercode head="false" wms="" name="销售订单号" def=""/>
+    <iorderseq head="false" wms="" name="销售订单行号" def=""/>
+    <isotype head="false" wms="" name="需求跟踪方式" def=""/>
+    <isoseq head="false" wms="" name="需求跟踪行号" def=""/>
+    <csocode head="false" wms="" name="需求跟踪号" def=""/>
+    <iExpiratDateCalcu head="false" wms="" name="有效期推算方式" def=""/>
+    <iquantity head="false" wms="remainqty" name="数量" def=""/>
+    <inquantity head="false" wms="remainqty" name="应收数量" def=""/>
+  </postproductin>
+  <!-- 发货单获取 -->
+  <getdispatch datainfo="STStockOutOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <voucherno head="true" wms="ErpVoucherNo" name="销售发货单号" def=""/>
+    <csocode head="true" wms="ErpInVoucherNo" name="销售订单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="taskqty" name="数量" def=""/>
+    <inquantity head="false" wms="reviewqty" name="应收数量" def=""/>
+  </getdispatch>
+  <!-- 发货单修改 -->
+  <modifydispatch datainfo="STStockOutOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <voucherno head="true" wms="ErpVoucherNo" name="销售发货单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="RemainQty" name="数量" def=""/>
+    <iquotedprice head="false" wms="" name="报价" def=""/>
+    <inatunitprice head="false" wms="" name="本币无税单价" def=""/>
+     
+    <inquantity head="false" wms="reviewqty" name="应收数量" def=""/>
+  </modifydispatch>
+  <!-- 销售发货单新增 -->
+  <postdispatch datainfo="STStockOutOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cSTCode head="true" wms="" name="销售类型编码" def=""/>
+    <cexch_name head="true" wms="" name="币种" def=""/>
+    <cDepCode head="true" wms="fromstorageloc" name="部门" def=""/>
+    <iexchrate head="true" wms="" name="汇率" def=""/>
+    <cCusCode head="true" wms="" name="客户编码" def=""/>
+    <cgatheringplan head="true" wms="" name="收付款协议编码" def=""/>
+    <voucherno head="true" wms="ErpVoucherNo" name="销售发货单号" def=""/>
+    <csocode head="true" wms="ErpInVoucherNo" name="销售订单号" def=""/>
+    <itaxrate head="false" wms="" name="税率" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="RemainQty" name="数量" def=""/>
+    <iquotedprice head="false" wms="" name="报价" def=""/>
+    <inatunitprice head="false" wms="" name="本币无税单价" def=""/>
+    <kl2 head="false" wms="" name="扣率2" def=""/>
+    <kl head="false" wms="" name="扣率" def=""/>
+    <iorderrowno head="false" wms="" name="需求跟踪行号" def=""/>
+    <csocode head="false" wms="" name="销售订单号" def=""/>
+    <cordercode head="false" wms="" name="需求跟踪号" def=""/>
+    <cgroupcode head="false" wms="" name="计量单位组" def=""/>
+    <cinvm_unit head="false" wms="" name="主计量单位" def=""/>
+    <cWhCode head="false" wms="WareHouseNo" name="仓库编码" def=""/>
+    <inquantity head="false" wms="reviewqty" name="应收数量" def=""/>
+    <isosid head="false" wms="" name="对应订单子表ID" def=""/>
 
-  <timeout>300000</timeout>
-
-  <!--采购入库过账-->
-  <postpo>
-    <purchase_no wms="ErpVoucherNo" name="采购单单号" def=""/>
-    <purchase_seq wms="RowNo" name="项次" def=""/>
-    <purchase_seq1 wms="RowNoDel" name="项序" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <EntId wms="CompanyCode" name="企业编号" def=""/>
-    <Companyid wms="StrongHoldCode" name="据点" def=""/>
-    <rec_amount wms="ScanQty" name="实际收货数量" def=""/>
-    <rev_unit wms="Unit" name="收货单位" def=""/>
-    <sup_batch wms="SupPrdBatch" name="供应商批次" def=""/>
-    <rev_Inv wms="ReceiveWareHouseNo" name="收货仓库" def=""/>
-    <rev_location wms="ReceiveAreaNo" name="收货储位" def=""/>
-    <rev_batch wms="BatchNo" name="收货批次" def=""/>
-    <rev_person wms="ReceiveUserNo" name="收货人" def=""/>
-    <make_date wms="StrSupPrdDate" name="制造日期" def=""/>
-    <valid_date wms="StrEDate" name="效期" def=""/>
-  </postpo>
-  
-    <!--杂入单过账-->
-  <OtherIn>
-    <receipt_no wms="ErpVoucherNo" name="杂入单号" def=""/>
-    <receipt_seq wms="RowNo" name="项次" def=""/>
-    <receipt_seq1 wms="RowNoDel" name="项序" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <receipt_amount wms="ScanQty" name="数量" def=""/>
-    <receipt_unit wms="Unit" name="单位" def=""/>
-    <receipt_Inv wms="ReceiveWareHouseNo" name="仓库" def=""/>
-    <receipt_location wms="ReceiveAreaNo" name="储位" def=""/>
-    <receipt_batch wms="BatchNo" name="批次" def=""/>
-    <receipt_person wms="ReceiveUserNo" name="过账人" def=""/>
-	<expiry_date wms="StrEDate" name="效期" def=""/>
-  </OtherIn>
-
-
-  <!--销售退货单过账-->
-  <SaleOutRet>
-    <return_no wms="ErpVoucherNo" name="销售退货单号" def=""/>
-    <return_seq wms="RowNo" name="项次" def=""/>
-    <return_seq1 wms="RowNoDel" name="项序" def=""/>
-    <return_amount wms="ScanQty" name="销售退货数量" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <return_unit wms="Unit" name="单位" def=""/>
-    <return_Inv wms="ReceiveWareHouseNo" name="仓库" def=""/>
-    <return_location wms="ReceiveAreaNo" name="储位" def=""/>
-    <return_batch wms="BatchNo" name="销退批次" def=""/>
-    <return_person wms="ReceiveUserNo" name="销退过账人" def=""/>
-	<expiry_date wms="StrEDate" name="效期" def=""/>
-  </SaleOutRet>
-  
-    <!--调拨单过账-->
-  <PostTransMaterial>
-    <EntId wms="CompanyCode" name="企业编号" def=""/>
-    <Companyid wms="StrongHoldCode" name="据点" def=""/>
-    <trans_no wms="ErpVoucherNo" name="领料单号" def=""/>
-    <trans_seq wms="RowNo" name="项次" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <trans_amount wms="ScanQty" name="调拨数量" def=""/>
-    <trans_unit wms="Unit" name="单位" def=""/>
-    <out_inv wms="FromErpWarehouse" name="拨出仓库,WMS的待发区" def=""/>
-    <out_location wms="FromErpAreaNo" name="拨出储位,WMS的待发区" def=""/>
-    <out_batch wms="FromBatchNo" name="拨出批次,WMS的拨出批次" def=""/>
-    <in_inv wms="ToErpWarehouse" name="拨入仓库,ERP订单的仓库" def=""/>
-    <in_location wms="ToErpAreaNo" name="拨入储位,ERP订单的库位" def=""/>
-    <in_batch wms="ToBatchno" name="拨入储位,WMS的拨出批次" def=""/>
-    <trans_person wms="PostUser" name="过账人" def=""/>
-	<ship_guid wms="GUID" name="GUID" def=""/>
-  </PostTransMaterial>
-
-  <!--生成调拨单-->
-  <makedb>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <EntId wms="CompanyCode" name="企业编号" def=""/>
-    <Companyid wms="StrongHoldCode" name="据点" def=""/>
-    <trans_type wms="ERPVoucherType" name="ERP上游单据类型" def=""/>
-    <trans_amount wms="ScanQty" name="调拨数量" def=""/>
-    <out_inv wms="FromErpWarehouse" name="拨出仓库" def=""/>
-    <out_location wms="FromErpAreaNo" name="拨出储位" def=""/>
-    <out_batch wms="FromBatchNo" name="拨出批次" def=""/>
-    <in_inv wms="ToErpWarehouse" name="拨入仓库" def=""/>
-    <in_location wms="ToErpAreaNo" name="拨入储位" def=""/>
-    <trans_person wms="PostUser" name="调拨人" def=""/>
-  </makedb>
-
-
-  <!--生产调拨发料过账-->
-  <PostProTransMaterial>
-    <EntId wms="CompanyCode" name="企业编号" def=""/>
-    <Companyid wms="StrongHoldCode" name="据点" def=""/>
-    <trans_no wms="ErpVoucherNo" name="领料单号" def=""/>
-    <trans_seq wms="RowNo" name="项次" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <trans_amount wms="ScanQty" name="调拨数量" def=""/>
-    <trans_unit wms="Unit" name="单位" def=""/>
-    <out_inv wms="FromErpWarehouse" name="拨出仓库,WMS的待发区" def=""/>
-    <out_location wms="FromErpAreaNo" name="拨出储位,WMS的待发区" def=""/>
-    <out_batch wms="FromBatchNo" name="拨出批次,WMS的拨出批次" def=""/>
-    <in_inv wms="ToErpWarehouse" name="拨入仓库,ERP订单的仓库" def=""/>
-    <in_location wms="ToErpAreaNo" name="拨入储位,ERP订单的库位" def=""/>
-    <in_batch wms="ToBatchno" name="拨入储位,WMS的拨出批次" def=""/>
-    <trans_person wms="PostUser" name="过账人" def=""/>
-  </PostProTransMaterial>
-
-  <!--销售出库过账-->
-  <PostSaleOutStock>
-    <ship_no wms="ErpVoucherNo" name="销售出库单号" def=""/>
-    <ship_seq wms="RowNo" name="项次" def=""/>
-    <ship_seq1 wms="RowNoDel" name="项序" def=""/>
-    <EntId wms="CompanyCode" name="企业编号" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <Companyid wms="StrongHoldCode" name="据点" def=""/>
-    <ship_amount wms="ScanQty" name="销售出库数量" def=""/>
-    <ship_unit wms="Unit" name="单位" def=""/>
-    <ship_Inv wms="FromErpWarehouse" name="仓库" def=""/>
-    <ship_location wms="FromErpAreaNo" name="储位" def=""/>
-    <ship_batch wms="FromBatchNo" name="批次" def=""/>
-    <ship_person wms="PostUser" name="过账人" def=""/>
-	<ship_valide_preson wms="PostUser" name="过账人" def=""/>
-	<ship_valide_time wms="StrPostDate" name="过账时间" def=""/>
-	<ship_exp_no wms="ExpNo" name="物流单号" def=""/>
-	<ship_exp_amount wms="ExpAmount" name="物流费用" def=""/>
-	<ship_guid wms="GUID" name="GUID" def=""/>
-	
-  </PostSaleOutStock>
-
-  <!--仓退单过账-->
-  <PostWareHouseReturn>
-    <return_no wms="ErpVoucherNo" name="仓退单号" def=""/>
-    <return_seq wms="RowNo" name="项次" def=""/>
-    <return_seq1 wms="RowNoDel" name="项序" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <EntId wms="CompanyCode" name="企业编号" def=""/>    
-    <Companyid wms="StrongHoldCode" name="据点" def=""/>
-    <return_amount wms="ScanQty" name="仓退数量" def=""/>
-    <return_unit wms="Unit" name="单位" def=""/>
-    <return_Inv wms="FromErpWarehouse" name="仓库" def=""/>
-    <return_location wms="FromErpAreaNo" name="储位" def=""/>
-    <return_batch wms="FromBatchNo" name="批次" def=""/>
-    <return_person wms="PostUser" name="过账人" def=""/>
-    <source_no wms="SourceVoucherNo" name="来源单号" def=""/>
-    <source_seq wms="SourceRowNo" name="来源项次" def=""/>
-	<logistics_no wms="ExpNo" name="物流单号" def=""/>
-	<cost wms="ExpAmount" name="物流费用" def=""/>
-	<GUID wms="GUID" name="GUID" def=""/>
-  </PostWareHouseReturn>
-
-  <!--杂出单过账-->
-  <PostOtherOut>
-    <ship_no wms="ErpVoucherNo" name="杂出单号" def=""/>
-    <ship_seq wms="RowNo" name="项次" def=""/>
-    <ship_seq1 wms="RowNoDel" name="项序" def=""/>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <ship_amount wms="ScanQty" name="杂出数量" def=""/>
-    <ship_unit wms="Unit" name="单位" def=""/>
-    <ship_Inv wms="FromErpWarehouse" name="仓库" def=""/>
-    <ship_location wms="FromErpAreaNo" name="储位" def=""/>
-    <ship_batch wms="FromBatchNo" name="批次" def=""/>
-    <ship_person wms="PostUser" name="过账人" def=""/>
-    
-  </PostOtherOut>
-
-   <!--更新发货单和调拨出库单状态-->
-   <WoUpdate>
-    <docno def="" name="工单单号" wms="ErpVoucherNo"/>
-    <doctype def="" name="工单类型" wms="ERPVoucherType"/>
-    <status def="" name="状态" wms="WmsStatus"/>
-  </WoUpdate>
-
-
-  <!--质量状态变更单生成-->
-  <PostQualityChange>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <qc_Inv wms="WareHouseNo" name="仓库" def=""/>
-    <qc_location wms="AreaNo" name="储位" def=""/>
-    <qc_batch wms="BatchNo" name="批次" def=""/>
-    <qc_code wms="QResoneCode" name="状态值" def=""/>
-    <qc_person wms="PostUser" name="过账人" def=""/>
-  </PostQualityChange>
-
-  <!--库存留置单生成-->
-  <PostRetentionChange>
-    <item_no wms="MaterialNo" name="物料编号" def=""/>
-    <retain_Inv wms="WareHouseNo" name="仓库" def=""/>
-    <retain_location wms="AreaNo" name="储位" def=""/>
-    <retain_batch wms="BatchNo" name="批次" def=""/>
-    <retain_reason wms="QresoneCode" name="留置原因" def=""/>
-    <retain_type wms="RetainType" name="类型" def=""/>
-    <retain_person wms="PostUser" name="过账人" def=""/>
-  </PostRetentionChange>
-
-
-
-
-
+  </postdispatch>
+  <!-- 销售出库单新增 -->
+  <postsaleout datainfo="STStockOutOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cSTCode head="true" wms="" name="销售类型编码" def=""/>
+    <cexch_name head="true" wms="" name="币种" def=""/>
+    <cDepCode head="true" wms="" name="部门" def=""/>
+    <iexchrate head="true" wms="" name="汇率" def=""/>
+    <cCusCode head="true" wms="" name="客户编码" def=""/>
+    <cgatheringplan head="true" wms="" name="收付款协议编码" def=""/>
+    <voucherno head="true" wms="ErpVoucherNo" name="销售发货单号" def=""/>
+    <csocode head="true" wms="ErpInVoucherNo" name="销售订单号" def=""/>
+    <itaxrate head="false" wms="" name="税率" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="RemainQty" name="数量" def=""/>
+    <iquotedprice head="false" wms="" name="报价" def=""/>
+    <inatunitprice head="false" wms="" name="本币无税单价" def=""/>
+    <kl2 head="false" wms="" name="扣率2" def=""/>
+    <kl head="false" wms="" name="扣率" def=""/>
+    <iorderrowno head="false" wms="" name="需求跟踪行号" def=""/>
+    <cdlcode head="true" wms="voucherno" name="销售发货单号" def=""/>
+    <cordercode head="false" wms="" name="需求跟踪号" def=""/>
+    <cgroupcode head="false" wms="" name="计量单位组" def=""/>
+    <cinvm_unit head="false" wms="" name="主计量单位" def=""/>
+    <cWhCode head="false" wms="WareHouseNo" name="仓库编码" def=""/>
+    <inquantity head="false" wms="reviewqty" name="应收数量" def=""/>
+    <isosid head="false" wms="" name="对应订单子表ID" def=""/>
+  </postsaleout>
+  <!-- 发货单审核 -->
+  <auditdispatch datainfo="STStockOutOperateDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <voucherno head="true" wms="ErpVoucherNo" name="销售发货单号" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="taskqty" name="数量" def=""/>
+    <ScanQuantity head="false" wms="remainqty" name="扫描数量" def=""/>
+  </auditdispatch>
+  <!-- 其他出库获取 -->
+  <getstockotherout datainfo="OperateStockOtherOutDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cCode head="true" wms="ErpVoucherNo" name="其他出库单号" def=""/>
+    <crdcode head="true" wms="FromBatchNo" name="出入库类别" def=""/>
+    <cwhcode head="true" wms="FromErpWarehouse" name="仓库编码" def=""/>
+    <cdepcode head="true" wms="fromstorageloc" name="部门编码" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="taskqty" name="数量" def=""/>
+  </getstockotherout>
+  <!-- 其他出库过账 -->
+  <poststockotherout datainfo="OperateStockOtherOutDetail" name="单据操作明细字段名称">
+    <cmaker head="true" wms="UserNo" name="制单人" def=""/>
+    <cCode head="true" wms="ErpVoucherNo" name="其他出库单号" def=""/>
+    <crdcode head="true" wms="FromBatchNo" name="出入库类别" def=""/>
+    <cwhcode head="true" wms="FromErpWarehouse" name="仓库编码" def=""/>
+    <cdepcode head="true" wms="fromstorageloc" name="部门编码" def=""/>
+    <cInvCode head="false" wms="MaterialNo" name="存货编码" def=""/>
+    <cbatch head="false" wms="batchno" name="批号" def=""/>
+    <iQuantity head="false" wms="taskqty" name="数量" def=""/>
+    <ScanQty head="false" wms="remainqty" name="扫描数量" def=""/>
+  </poststockotherout>
 </setting>

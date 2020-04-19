@@ -210,7 +210,7 @@ namespace BILWeb.InStockTask
             //t_taskdetails.ToAreaNo = (string)dbFactory.ToModelValue(reader, "TOAREANO");
             t_taskdetails.MaterialNo = (string)dbFactory.ToModelValue(reader, "MATERIALNO");
             t_taskdetails.MaterialDesc = (string)dbFactory.ToModelValue(reader, "MATERIALDESC");
-            t_taskdetails.TaskQty = (decimal?)dbFactory.ToModelValue(reader, "TASKQTY");
+            t_taskdetails.TaskQty = ((decimal?)dbFactory.ToModelValue(reader, "TASKQTY1") == null || (decimal?)dbFactory.ToModelValue(reader, "TASKQTY1") == 0) ? (decimal?)dbFactory.ToModelValue(reader, "TASKQTY") : (decimal?)dbFactory.ToModelValue(reader, "TASKQTY1");
             t_taskdetails.QualityQty = (decimal?)dbFactory.ToModelValue(reader, "QUALITYQTY");
             t_taskdetails.RemainQty = dbFactory.ToModelValue(reader, "REMAINQTY").ToDecimal();
             t_taskdetails.ShelveQty = (decimal)dbFactory.ToModelValue(reader, "SHELVEQTY");
@@ -285,8 +285,9 @@ namespace BILWeb.InStockTask
             t_taskdetails.CompanyCode = dbFactory.ToModelValue(reader, "CompanyCode").ToDBString();
             t_taskdetails.StrVoucherType = dbFactory.ToModelValue(reader, "strVoucherType").ToDBString();
             t_taskdetails.ERPVoucherType = dbFactory.ToModelValue(reader, "ErpVoucherType").ToDBString();
-
-
+            t_taskdetails.iarrsid = dbFactory.ToModelValue(reader, "iarrsid").ToDBString();
+            t_taskdetails.TaskQty1 = (dbFactory.ToModelValue(reader, "TaskQty1")==null?0: (decimal)dbFactory.ToModelValue(reader, "TaskQty1"));
+            
             return t_taskdetails;
         }
 
@@ -495,6 +496,12 @@ namespace BILWeb.InStockTask
             List<T_AreaInfo> areaList = new List<T_AreaInfo>();
             T_Stock_Func tfunc = new T_Stock_Func();
             List<T_InStockTaskDetailsInfo> list = base.GetModelListByHeaderID(headerID);
+
+            foreach (T_InStockTaskDetailsInfo item in list)
+            {
+                item.RemainQty = item.TaskQty1;
+            }
+
             //获取推荐库位
             if (GetRecommendAreaNo(list, ref areaList, ref strErrMsg) == false)
             {

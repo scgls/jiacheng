@@ -487,7 +487,7 @@ namespace BILWeb.InStock
         private bool GetPalletDetailBySerialNo(ref List<T_OutBarCodeInfo> modelList, string SerialNo, ref string strError, string BarCodeType)
         {
 
-            //外箱条码
+            //外箱条码序列号
             if (BarCodeType == "1")
             {
                 if (GetPalletInfoBySerialNo(SerialNo, ref modelList, ref strError) == false)

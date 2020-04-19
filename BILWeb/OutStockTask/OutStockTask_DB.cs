@@ -253,7 +253,7 @@ namespace BILWeb.OutStockTask
             if (model.PcOrPda != 1) 
             {
                 strSql += strAnd;
-                strSql += " id in (select headerid from t_Taskdetails a where a.Fromerpwarehouse = '" + user.WarehouseCode + "') ";
+                strSql += " id in (select headerid from t_Taskdetails a where a.Fromerpwarehouse = '" + user.WarehouseCode + "' or a.Fromerpwarehouse is null) ";
             }
 
             if (model.TaskType > 0)
