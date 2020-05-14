@@ -192,7 +192,7 @@ namespace BILWeb.OutStockTask
             if (!string.IsNullOrEmpty(model.ErpVoucherNo))
             {
                 strSql += strAnd;
-                strSql += " ErpVoucherNo like '" + model.ErpVoucherNo.Trim() + "%'";
+                strSql += " ErpVoucherNo like '%" + model.ErpVoucherNo.Trim() + "%'";
             }
 
             //if (!string.IsNullOrEmpty(model.PickLeaderUserNo))
@@ -217,6 +217,12 @@ namespace BILWeb.OutStockTask
             {
                 strSql += strAnd;
                 strSql += " (StrongHoldName like '" + model.StrongHoldName + "%' )";
+            }
+
+            if (!user.UserNo.Equals("admin"))
+            {
+                strSql += strAnd;
+                strSql += " StrongHoldCode = '" + user.StrongHoldCode + "' and (warehouseno ='" + user.WarehouseCode + "' or isnull(fromerpwarehouse,'')='')";
             }
 
             if (model.WareHouseID > 0) 

@@ -33,14 +33,15 @@
                     @*<th>选择</th>*@
                     <th>@Html.DisplayNameFor(model => model.MaterialNo)</th>
                     <th>@Html.DisplayNameFor(model => model.MaterialDesc)</th>
-                    <th>@Html.DisplayNameFor(model => model.Length)</th>
-                    <th>@Html.DisplayNameFor(model => model.Wide)</th>
-                    <th>@Html.DisplayNameFor(model => model.Hight)</th>
-                    <th>@Html.DisplayNameFor(model => model.Volume)</th>
-                    <th>@Html.DisplayNameFor(model => model.Weight)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.Length)</th>
+        <th>@Html.DisplayNameFor(model => model.Wide)</th>
+        <th>@Html.DisplayNameFor(model => model.Hight)</th>
+        <th>@Html.DisplayNameFor(model => model.Volume)</th>
+        <th>@Html.DisplayNameFor(model => model.Weight)</th>*@
                     <th>@Html.DisplayNameFor(model => model.NetWeight)</th>
                     <th>@Html.DisplayNameFor(model => model.Unit)</th>
-                    <th>@Html.DisplayNameFor(model => model.DisRule)</th>
+                    <th>@Html.DisplayNameFor(model => model.sku)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrongHoldCode)</th>
                     <th>编辑</th>
                 </tr>
             </thead>
@@ -50,30 +51,31 @@
                     {
                         foreach (T_MaterialInfo t_MaterialInfo in pageData.data)
                         {
-                            <tr>
+                                <tr>
 
-                                @*<td>
-                                        <label>
-                                            <input type="checkbox" class="minimal" value="@t_MaterialInfo.ID" />
-                                        </label>
-                                    </td>*@
-                                <td>@t_MaterialInfo.MaterialNo</td>
-                                <td>@t_MaterialInfo.MaterialDesc</td>
-                                <td>@t_MaterialInfo.Length</td>
-                                <td>@t_MaterialInfo.Wide</td>
-                                <td>@t_MaterialInfo.Hight</td>
-                                <td>@t_MaterialInfo.Volume</td>
-                                <td>@t_MaterialInfo.Weight</td>
-                                <td>@t_MaterialInfo.NetWeight</td>
-                                <td>@t_MaterialInfo.Unit</td>
-                                <td>@t_MaterialInfo.DisRule</td>
-                                <td>
+                                    @*<td>
+            <label>
+                <input type="checkbox" class="minimal" value="@t_MaterialInfo.ID" />
+            </label>
+        </td>*@
+                                    <td>@t_MaterialInfo.MaterialNo</td>
+                                    <td>@t_MaterialInfo.MaterialDesc</td>
+                                    @*<td>@t_MaterialInfo.Length</td>
+        <td>@t_MaterialInfo.Wide</td>
+        <td>@t_MaterialInfo.Hight</td>
+        <td>@t_MaterialInfo.Volume</td>
+        <td>@t_MaterialInfo.Weight</td>*@
+                                    <td>@t_MaterialInfo.NetWeight</td>
+                                    <td>@t_MaterialInfo.Unit</td>
+                                    <td>@t_MaterialInfo.sku</td>
+                                    <td>@t_MaterialInfo.StrongHoldCode</td>
+                                    <td>
 
-                                    <a title="编辑" href="/material/getmodel?ID=@t_MaterialInfo.ID">
-                                        <i class="layui-icon">&#xe642;</i>
-                                    </a>
-                                </td>
-                            </tr>
+                                        <a title="编辑" href="/material/getmodel?ID=@t_MaterialInfo.ID">
+                                            <i class="layui-icon">&#xe642;</i>
+                                        </a>
+                                    </td>
+                                </tr>
                         }
                     }
                     else

@@ -1,5 +1,6 @@
 ﻿using BILWeb.AdvInStock;
 using BILWeb.Login.User;
+using BILWeb.Material;
 using BILWeb.OutBarCode;
 using BILWeb.Print;
 using System;
@@ -55,7 +56,7 @@ namespace Web.WMS.Controllers.Print
             //每行打印
             if (lstAdvInStockDetailInfo != null && lstAdvInStockDetailInfo.Count != 0)
             {
-                List<string> squence = GetSerialnos(lstAdvInStockDetailInfo.Count,"外", ref err);
+                List<string> squence = GetSerialnos(lstAdvInStockDetailInfo.Count, "外", ref err);
                 int k = 0;
                 for (int i = 0; i < lstAdvInStockDetailInfo.Count; i++)
                 {
@@ -103,15 +104,26 @@ namespace Web.WMS.Controllers.Print
 
         string sq = "";
         [HttpPost]
-        public JsonResult SaveBarcode(string erpvoucherno, string materialno, string materialdesc, string ean, string batch, string edate, string num, string everynum, string receivetime, string RowNO, string RowNODel,string MaterialNoID,string StrongHoldCode,string CompanyCode,string Createname,string WarehouseName, string TracNo, string ProjectNo)
+        public JsonResult SaveBarcode(string erpvoucherno, string materialno, string materialdesc, string ean, string batch, string edate, string num, string everynum, string receivetime, string RowNO, string RowNODel, string MaterialNoID, string StrongHoldCode, string CompanyCode, string Createname, string WarehouseName, string TracNo, string ProjectNo,string flag="")//flag=1 是预留释放打印
         {
-           
+            //查物料
+            T_Material_Func funM = new T_Material_Func();
+            string strErrMsg = "";
+            List<T_MaterialInfo> modelList = funM.GetMaterialModelBySql(materialno, ref strErrMsg);
+            if (modelList == null || modelList.Count == 0)
+            {
+                //失败
+                return Json(new { state = false, obj = "没有该物料号" + materialno }, JsonRequestBehavior.AllowGet);
+            }
+
             if (string.IsNullOrEmpty(Userno))
             {
                 return Json(new { state = false, obj = "Cookie失效，重新登陆！" }, JsonRequestBehavior.AllowGet);
             }
             try
             {
+                DateTime time1 = DateTime.Now;
+                DateTime time2 = DateTime.Now.AddSeconds(1);
                 string err = "";
                 //计算外箱数量,和尾箱数量,和尾箱里面的个数
                 int outboxnum = 0;
@@ -122,7 +134,7 @@ namespace Web.WMS.Controllers.Print
                     return Json(new { state = false, obj = "打印数量为0" }, JsonRequestBehavior.AllowGet);
 
                 Print_DB print_DB = new Print_DB();
-                List<string> squence = GetSerialnos(outboxnum + inboxnum,"外", ref err);//外箱码序列号
+                List<string> squence = GetSerialnos(outboxnum + inboxnum, "外", ref err);//外箱码序列号
                 List<string> squenceforin = GetSerialnos(Int16.Parse(num), "内", ref err);//本体序列号
 
                 //int matenoid = selectItem.MaterialNoID;
@@ -137,7 +149,7 @@ namespace Web.WMS.Controllers.Print
                     Barcode_Model model = new Barcode_Model();
                     model.CompanyCode = CompanyCode;
                     model.StrongHoldCode = StrongHoldCode;
-                    model.MaterialNoID =Convert.ToInt32(MaterialNoID);
+                    model.MaterialNoID = Convert.ToInt32(MaterialNoID);
                     model.MaterialNo = materialno;
                     model.MaterialDesc = materialdesc;
                     model.BatchNo = DateTime.Now.ToString("yyyyMMdd");
@@ -147,7 +159,8 @@ namespace Web.WMS.Controllers.Print
                     model.SerialNo = squence[k++];
                     model.Creater = Userno;
                     //model.EAN = ean;
-                    model.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
+                    //model.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
+                    model.ReceiveTime = time1;
                     model.BarCode = "1@" + model.StrongHoldCode + "@" + model.MaterialNo + "@" + model.BatchNo + "@" + model.Qty + "@" + model.SerialNo;
                     model.RowNo = RowNO;
                     model.RowNoDel = RowNODel;
@@ -156,32 +169,38 @@ namespace Web.WMS.Controllers.Print
                     model.WorkNo = WarehouseName;
                     model.TracNo = TracNo;
                     model.ProjectNo = ProjectNo;
+                    model.originalCode = flag;
                     listbarcode.Add(model);
-                    //本体打印
-                    for (int ii = 0; ii < Convert.ToDecimal(everynum); ii++)
+                    if (modelList[0].sku == "是")
                     {
-                        Barcode_Model modelIn1 = new Barcode_Model();
-                        modelIn1.CompanyCode = CompanyCode;
-                        modelIn1.StrongHoldCode = StrongHoldCode;
-                        modelIn1.MaterialNoID = Convert.ToInt32(MaterialNoID);
-                        modelIn1.MaterialNo = materialno;
-                        modelIn1.MaterialDesc = materialdesc;
-                        modelIn1.BatchNo = DateTime.Now.ToString("yyyyMMdd");
-                        modelIn1.ErpVoucherNo = erpvoucherno;
-                        modelIn1.Qty = 1;
-                        modelIn1.SerialNo = squenceforin[kIn++];
-                        modelIn1.Creater = Userno;
-                        modelIn1.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
-                        modelIn1.BarCode = "2@" + modelIn1.StrongHoldCode + "@" + modelIn1.MaterialNo + "@" + modelIn1.BatchNo + "@" + modelIn1.Qty + "@" + modelIn1.SerialNo;
-                        modelIn1.RowNo = RowNO;
-                        modelIn1.RowNoDel = RowNODel;
-                        modelIn1.BarcodeType = 2;
-                        modelIn1.ProductClass = Createname;
-                        modelIn1.WorkNo = WarehouseName;
-                        modelIn1.TracNo = TracNo;
-                        modelIn1.ProjectNo = ProjectNo;
-                        modelIn1.fserialno = model.SerialNo;
-                        listbarcode.Add(modelIn1);
+                        //本体打印
+                        for (int ii = 0; ii < Convert.ToDecimal(everynum); ii++)
+                        {
+                            Barcode_Model modelIn1 = new Barcode_Model();
+                            modelIn1.CompanyCode = CompanyCode;
+                            modelIn1.StrongHoldCode = StrongHoldCode;
+                            modelIn1.MaterialNoID = Convert.ToInt32(MaterialNoID);
+                            modelIn1.MaterialNo = materialno;
+                            modelIn1.MaterialDesc = materialdesc;
+                            modelIn1.BatchNo = DateTime.Now.ToString("yyyyMMdd");
+                            modelIn1.ErpVoucherNo = erpvoucherno;
+                            modelIn1.Qty = 1;
+                            modelIn1.SerialNo = squenceforin[kIn++];
+                            modelIn1.Creater = Userno;
+                            modelIn1.ReceiveTime = time2;
+                            //modelIn1.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
+                            modelIn1.BarCode = "2@" + modelIn1.StrongHoldCode + "@" + modelIn1.MaterialNo + "@" + modelIn1.BatchNo + "@" + modelIn1.Qty + "@" + modelIn1.SerialNo;
+                            modelIn1.RowNo = RowNO;
+                            modelIn1.RowNoDel = RowNODel;
+                            modelIn1.BarcodeType = 2;
+                            modelIn1.ProductClass = Createname;
+                            modelIn1.WorkNo = WarehouseName;
+                            modelIn1.TracNo = TracNo;
+                            modelIn1.ProjectNo = ProjectNo;
+                            modelIn1.fserialno = model.SerialNo;
+                            modelIn1.originalCode = flag;
+                            listbarcode.Add(modelIn1);
+                        }
                     }
                 }
                 if (inboxnum == 1)
@@ -199,7 +218,8 @@ namespace Web.WMS.Controllers.Print
                     model.SerialNo = squence[k++];
                     model.Creater = Userno;
                     //model.EAN = ean;
-                    model.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
+                    //model.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
+                    model.ReceiveTime = time1;
                     model.BarCode = "1@" + model.StrongHoldCode + "@" + model.MaterialNo + "@" + model.BatchNo + "@" + model.Qty + "@" + model.SerialNo;
                     model.RowNo = RowNO;
                     model.RowNoDel = RowNODel;
@@ -208,48 +228,65 @@ namespace Web.WMS.Controllers.Print
                     model.WorkNo = WarehouseName;
                     model.TracNo = TracNo;
                     model.ProjectNo = ProjectNo;
+                    model.originalCode = flag;
                     listbarcode.Add(model);
-                    //本体打印
-                    for (int ii = 0; ii < Convert.ToDecimal(everynum); ii++)
+                    if (modelList[0].sku == "是")
                     {
-                        Barcode_Model modelIn2 = new Barcode_Model();
-                        modelIn2.CompanyCode = CompanyCode;
-                        modelIn2.StrongHoldCode = StrongHoldCode;
-                        modelIn2.MaterialNoID = Convert.ToInt32(MaterialNoID);
-                        modelIn2.MaterialNo = materialno;
-                        modelIn2.MaterialDesc = materialdesc;
-                        modelIn2.BatchNo = DateTime.Now.ToString("yyyyMMdd");
-                        modelIn2.ErpVoucherNo = erpvoucherno;
-                        modelIn2.Qty = 1;
-                        modelIn2.SerialNo = squenceforin[kIn++];
-                        modelIn2.Creater = Userno;
-                        modelIn2.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
-                        modelIn2.BarCode = "2@" + modelIn2.StrongHoldCode + "@" + modelIn2.MaterialNo + "@" + modelIn2.BatchNo + "@" + modelIn2.Qty + "@" + modelIn2.SerialNo;
-                        modelIn2.RowNo = RowNO;
-                        modelIn2.RowNoDel = RowNODel;
-                        modelIn2.BarcodeType = 2;
-                        modelIn2.ProductClass = Createname;
-                        modelIn2.WorkNo = WarehouseName;
-                        modelIn2.TracNo = TracNo;
-                        modelIn2.ProjectNo = ProjectNo;
-                        modelIn2.fserialno = model.SerialNo;
-                        listbarcode.Add(modelIn2);
+                        //本体打印
+                        for (int ii = 0; ii < Convert.ToDecimal(tailnum); ii++)
+                        {
+                            Barcode_Model modelIn2 = new Barcode_Model();
+                            modelIn2.CompanyCode = CompanyCode;
+                            modelIn2.StrongHoldCode = StrongHoldCode;
+                            modelIn2.MaterialNoID = Convert.ToInt32(MaterialNoID);
+                            modelIn2.MaterialNo = materialno;
+                            modelIn2.MaterialDesc = materialdesc;
+                            modelIn2.BatchNo = DateTime.Now.ToString("yyyyMMdd");
+                            modelIn2.ErpVoucherNo = erpvoucherno;
+                            modelIn2.Qty = 1;
+                            modelIn2.SerialNo = squenceforin[kIn++];
+                            modelIn2.Creater = Userno;
+                            modelIn2.ReceiveTime = time2;
+                            //modelIn2.ReceiveTime = string.IsNullOrEmpty(receivetime) ? DateTime.Now : Convert.ToDateTime(receivetime);
+                            modelIn2.BarCode = "2@" + modelIn2.StrongHoldCode + "@" + modelIn2.MaterialNo + "@" + modelIn2.BatchNo + "@" + modelIn2.Qty + "@" + modelIn2.SerialNo;
+                            modelIn2.RowNo = RowNO;
+                            modelIn2.RowNoDel = RowNODel;
+                            modelIn2.BarcodeType = 2;
+                            modelIn2.ProductClass = Createname;
+                            modelIn2.WorkNo = WarehouseName;
+                            modelIn2.TracNo = TracNo;
+                            modelIn2.ProjectNo = ProjectNo;
+                            modelIn2.fserialno = model.SerialNo;
+                            modelIn2.originalCode = flag;
+                            listbarcode.Add(modelIn2);
+                        }
                     }
                 }
                 if (print_DB.SubBarcodes(listbarcode, "sup", 1, ref err))
                 {
                     string serialnosB = "";
-                    string serialnosS= "";
+                    string serialnosS = "";
                     for (int i = 0; i < listbarcode.Count; i++)
                     {
-                        if (listbarcode[i].BarcodeType == 1) {
+                        if (listbarcode[i].BarcodeType == 1)
+                        {
                             serialnosB += listbarcode[i].SerialNo + ",";
-                        } else {
+                        }
+                        else
+                        {
                             serialnosS += listbarcode[i].SerialNo + ",";
                         }
-                       
+
                     }
-                    return Json(new { state = true, obj = serialnosB, objS = serialnosS }, JsonRequestBehavior.AllowGet);
+                    if (serialnosS == "")
+                    {
+                        return Json(new { state = true, obj = time1.ToString("yyyy/MM/dd HH:mm:ss") }, JsonRequestBehavior.AllowGet);
+                    }
+                    else {
+                        return Json(new { state = true, obj = time1.ToString("yyyy/MM/dd HH:mm:ss"), objS = time2.ToString("yyyy/MM/dd HH:mm:ss") }, JsonRequestBehavior.AllowGet);
+                    }
+                    
+                    //return Json(new { state = true, obj = serialnosB, objS = serialnosS }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -263,13 +300,13 @@ namespace Web.WMS.Controllers.Print
         }
 
 
-        public List<string> GetSerialnos(int v,string flag, ref string err)
+        public List<string> GetSerialnos(int v, string flag, ref string err)
         {
             List<string> serialnos = new List<string>();
             for (int i = 0; i < v; i++)
             {
                 var seed = Guid.NewGuid().GetHashCode();
-                string code = DateTime.Now.ToString("yyMMddHHmmss") + new Random(seed).Next(0, 99999999).ToString().PadLeft(8, '0')+ (flag=="外"?"01":"02");
+                string code = DateTime.Now.ToString("yyMMddHHmmss") + new Random(seed).Next(0, 99999999).ToString().PadLeft(8, '0') + (flag == "外" ? "01" : "02");
                 if (serialnos.Find(t => t == code) == null)
                 {
                     serialnos.Add(code);
@@ -300,14 +337,14 @@ namespace Web.WMS.Controllers.Print
         }
 
 
-      
+
         public JsonResult DeleteForAdv(string ID)
         {
             try
             {
-                T_AdvInStockDetailInfo model = new T_AdvInStockDetailInfo{ ID = Convert.ToInt32(ID) };
+                T_AdvInStockDetailInfo model = new T_AdvInStockDetailInfo { ID = Convert.ToInt32(ID) };
                 string strmsg = "";
-                advInStockDetailService.GetModelByID(ref model,ref strmsg);
+                advInStockDetailService.GetModelByID(ref model, ref strmsg);
                 T_AdvInStockDetail_DB advdb = new T_AdvInStockDetail_DB();
                 if (advdb.SaveDeleteAdvDetail(model, out strmsg))
                 {

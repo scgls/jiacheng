@@ -51,19 +51,20 @@ namespace BILWeb.OutStockTask
             }
             else 
             {
-                int houseProp = modelList[0].HouseProp;
+                //int houseProp = modelList[0].HouseProp;
                 //物料有库存，先按照整箱区和零拣区过滤
-                stockList = stockList.Where(t => t.HouseProp == houseProp).ToList();
+                //stockList = stockList.Where(t => t.HouseProp == houseProp).ToList();
 
-                if (stockList == null || stockList.Count == 0)
-                {
-                    modelList.ForEach(t => t.RePickQty = 0);
-                }
-                else 
-                {
-                    //需要按照库位拆分库存
-                    modelList = CreateNewListByPickRuleAreaNo(modelList, stockList);
-                }                
+                //if (stockList == null || stockList.Count == 0)
+                //{
+                //    modelList.ForEach(t => t.RePickQty = 0);
+                //}
+                //else 
+                //{
+                //    //需要按照库位拆分库存
+                //    modelList = CreateNewListByPickRuleAreaNo(modelList, stockList);
+                //}
+                modelList = CreateNewListByPickRuleAreaNo(modelList, stockList);
             }
                        
 
@@ -81,9 +82,10 @@ namespace BILWeb.OutStockTask
             string strAreaNo = string.Empty;
 
             foreach (var item in modelList)
-            {                
+            {
                 //查找物料可分配库存
-                stockModelList = stockList.FindAll(t => t.MaterialNoID == item.MaterialNoID && t.StrongHoldCode==item.StrongHoldCode && t.WarehouseNo==item.FromErpWarehouse && t.HouseProp==item.HouseProp && t.Qty>0 && t.BatchNo==item.FromBatchNo ).OrderBy(t=>t.EDate).OrderBy(t=>t.SortArea).ToList();
+                stockModelList = stockList.FindAll(t => t.MaterialNoID == item.MaterialNoID && t.StrongHoldCode == item.StrongHoldCode && t.WarehouseNo == item.FromErpWarehouse && t.Qty > 0).OrderBy(t => t.BatchNo).OrderBy(t => t.SortArea).ToList();
+                //stockModelList = stockList.FindAll(t => t.MaterialNoID == item.MaterialNoID && t.StrongHoldCode==item.StrongHoldCode && t.WarehouseNo==item.FromErpWarehouse && t.HouseProp==item.HouseProp && t.Qty>0 && t.BatchNo==item.FromBatchNo ).OrderBy(t=>t.EDate).OrderBy(t=>t.SortArea).ToList();
                 stockModelListSum = CreateNewStockInfoSum(stockModelList);
 
                 if (stockModelListSum != null && stockModelListSum.Count > 0) 

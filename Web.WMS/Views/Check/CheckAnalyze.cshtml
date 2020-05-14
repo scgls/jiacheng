@@ -45,9 +45,9 @@
                 </div>
             </form>
             <P>
-                <button class="btn bg-olive margin tiaozheng" onclick="tiaozheng()">期初调整</button>
+                <button class="btn bg-olive margin tiaozheng " onclick="tiaozheng()">调整</button>
+                <button class="btn bg-olive margin tiaozheng daochu" >导出</button>
                 @*<button class="btn bg-olive margin tiaozheng" onclick="tiaozheng_ms()">库存调整</button>*@
-                @*<button class="btn bg-olive margin daochu" onclick="daochu()">导出</button>*@
                 <a class="btn bg-olive margin daochu" href="/check/GetModellist">返回</a>
             </P>
             <table class="layui-table layui-form">
@@ -115,3 +115,10 @@
 
 
 <script src="~/Content/SCG/js/Check/Check.js"></script>
+<script type="text/javascript">
+
+    $('.daochu').click(function () {
+        window.open('Excel?CHECKNO=' + $("#CHECKNO").val() + '&remark=' + $("#remark").val());
+    });
+
+</script>

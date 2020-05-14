@@ -67,7 +67,7 @@
                     <th>@Html.DisplayNameFor(model => model.SERIALNO)</th>
                     <th>@Html.DisplayNameFor(model => model.QTY)</th>
                     @*<th>@Html.DisplayNameFor(model => model.itemqty)</th>*@
-                    <th>@Html.DisplayNameFor(model => model.UNIT)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.UNIT)</th>*@
                     @*<th>@Html.DisplayNameFor(model => model.ROWNO)</th>
         <th>@Html.DisplayNameFor(model => model.ROWNODEL)</th>*@
                     <th>@Html.DisplayNameFor(model => model.BATCHNO)</th>
@@ -83,6 +83,8 @@
                     @*<th>@Html.DisplayNameFor(model => model.VOUCHERTYPE)</th>*@
                     <th>@Html.DisplayNameFor(model => model.CREATETIME)</th>
                     <th>@Html.DisplayNameFor(model => model.CREATER)</th>
+                     <th>@Html.DisplayNameFor(model => model.CREATER)</th>
+                    TracNo
                 </tr>
             </thead>
             <tbody>
@@ -100,7 +102,7 @@
                                     <td>@Row.SERIALNO</td>
                                     <td>@Row.QTY</td>
                                     @*<td>@Row.itemqty</td>*@
-                                    <td>@Row.UNIT</td>
+                                    @*<td>@Row.UNIT</td>*@
                                     @*<td>@Row.ROWNO</td>
         <td>@Row.ROWNODEL</td>*@
                                     <td>@Row.BATCHNO</td>

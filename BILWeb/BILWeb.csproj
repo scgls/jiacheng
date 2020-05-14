@@ -148,6 +148,14 @@
     <Compile Include="House\House_Model.cs" />
     <Compile Include="House\IHouseService.cs" />
     <Compile Include="IBaseService.cs" />
+    <Compile Include="YS\IYSDetailService.cs" />
+    <Compile Include="YS\IYSService.cs" />
+    <Compile Include="YS\YSDetail_DB.cs" />
+    <Compile Include="YS\YSDetail_Func.cs" />
+    <Compile Include="YS\YSDetail_Model.cs" />
+    <Compile Include="YS\YS_DB.cs" />
+    <Compile Include="YS\YS_Func.cs" />
+    <Compile Include="YS\YS_Model.cs" />
     <Compile Include="InStockTask\IInStockTaskService.cs" />
     <Compile Include="InStockTask\InStockTaskDetail_DB.cs" />
     <Compile Include="InStockTask\InStockTaskDetail_Func.cs" />
@@ -414,7 +422,9 @@
       <Name>Factory</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SqlSugarModel\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

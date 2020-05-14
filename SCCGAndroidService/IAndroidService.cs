@@ -209,8 +209,13 @@ namespace SCCGAndroidService
         string GetStockModelADF(string ModelStockJson);
 
         [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "GetBarcodeModelForJADF", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string GetBarcodeModelForJADF(string Serialno);
+
+
+        [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "SaveT_OutStockTaskDetailADF", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
-        string SaveT_OutStockTaskDetailADF(string UserJson, string ModelJson);
+        string SaveT_OutStockTaskDetailADF(string UserJson, string ModelJson,string Guid);
 
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "GetCarModelADF", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
@@ -371,7 +376,10 @@ namespace SCCGAndroidService
         [WebInvoke(Method = "POST", UriTemplate = "GetMessageForPrint", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
         string GetMessageForPrint(string filter, string flag);
 
-
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "GetOutBarCodeForPrint", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string GetOutBarCodeForPrint(string BarCode);
+        
         #region 地标模块
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "GetLandmark", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
@@ -388,7 +396,27 @@ namespace SCCGAndroidService
 
         #endregion
 
- 
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "GetErpVoucherNo", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string GetErpVoucherNo(string BarCode);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "GetOutBarCodeForYS", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string GetOutBarCodeForYS(string BarCode);
+
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "YSPost", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string YSPost(string UserJson, string ModelJson);
+        #region 预留释放
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "GetT_YSListADF", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string GetT_YSListADF(string UserJson, string ModelJson);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "GetTYSDetailListByHeaderIDADF", RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json)]
+        string GetTYSDetailListByHeaderIDADF(string ModelDetailJson);
+        #endregion
 
     }
 }

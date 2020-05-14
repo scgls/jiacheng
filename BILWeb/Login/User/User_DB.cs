@@ -15,7 +15,7 @@ namespace BILWeb.Login.User
 
         protected override IDataParameter[] GetSaveModelIDataParameter(UserInfo model)
         {
-            dbFactory.dbF.CreateParameters(32);
+            dbFactory.dbF.CreateParameters(33);
             dbFactory.dbF.AddParameters(0, "@bResult", SqlDbType.Int, 0);
             dbFactory.dbF.AddParameters(1, "@ErrorMsg", SqlDbType.NVarChar, 1000);
             dbFactory.dbF.AddParameters(2, "@v_ID", model.ID.ToOracleValue(), 0);
@@ -49,6 +49,7 @@ namespace BILWeb.Login.User
             dbFactory.dbF.AddParameters(29, "@v_CYAccount", model.CYAccount.ToOracleValue(), 0);
             dbFactory.dbF.AddParameters(30, "@v_CXAccount", model.CXAccount.ToOracleValue(), 0);
             dbFactory.dbF.AddParameters(31, "@v_FCAccount", model.FCAccount.ToOracleValue(), 0);
+            dbFactory.dbF.AddParameters(32, "@v_StrongHoldCode", model.StrongHoldCode.ToOracleValue(), 0);
 
             dbFactory.dbF.Parameters[0].Direction = System.Data.ParameterDirection.Output;
             dbFactory.dbF.Parameters[1].Direction = System.Data.ParameterDirection.Output;
@@ -170,7 +171,8 @@ namespace BILWeb.Login.User
             t_user.PickLeader = t_user.IsPickLeader == 2 ? true : false;
             t_user.CYAccount = dbFactory.ToModelValue(reader, "CYAccount").ToDBString();
             t_user.CXAccount = dbFactory.ToModelValue(reader, "CXAccount").ToDBString();
-            t_user.FCAccount = dbFactory.ToModelValue(reader, "FCAccount").ToDBString();            
+            t_user.FCAccount = dbFactory.ToModelValue(reader, "FCAccount").ToDBString();
+            t_user.StrongHoldCode = dbFactory.ToModelValue(reader, "strongholdcode").ToDBString();
             
             //t_user.PostAccount = GetPostAccount(t_user);
 

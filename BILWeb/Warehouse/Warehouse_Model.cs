@@ -207,6 +207,11 @@ namespace BILWeb.Warehouse
         /// 楼层
         /// </summary>
         public string Floor { get; set; }
+        [Display(Name = "是否上架")]
+        /// <summary>
+        /// 是否上架0：不上架 1：上架
+        /// </summary>
+        public int ISVWAREHOUSE { get; set; }
 
     }
 }

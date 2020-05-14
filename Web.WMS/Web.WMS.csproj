@@ -275,6 +275,8 @@
     <Compile Include="Controllers\DepInterface\DepInterfaceController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Fastmail\FastmailController.cs" />
+    <Compile Include="Controllers\Print\PrintInstockController.cs" />
+    <Compile Include="Controllers\YS\YSController.cs" />
     <Compile Include="Controllers\LandmarkWithTask\LandmarkWithTaskController.cs" />
     <Compile Include="Controllers\Landmark\LandmarkController.cs" />
     <Compile Include="Controllers\Manage\ManageController.cs" />
@@ -286,7 +288,7 @@
     <Compile Include="Controllers\PickRule\PickRuleController.cs" />
     <Compile Include="Controllers\Print\PrintFirstController.cs" />
     <Compile Include="Controllers\Print\PrintInController.cs" />
-    <Compile Include="Controllers\Print\PrintInstockController.cs" />
+    <Compile Include="Controllers\Print\PrintYSController.cs" />
     <Compile Include="Controllers\Query\StockCombineController.cs" />
     <Compile Include="Controllers\Query\StockDetailController.cs" />
     <Compile Include="Controllers\Query\TaskTransController.cs" />
@@ -926,6 +928,7 @@
     <Content Include="Content\SCG\css\Login\Login.css" />
     <Content Include="Content\SCG\css\Role\Role.css" />
     <Content Include="Content\SCG\js\box\box.js" />
+    <Content Include="Content\SCG\js\YS\YS.js" />
     <Content Include="Content\SCG\js\PrintIn\PrintIn.js" />
     <Content Include="Content\SCG\js\area\area.js" />
     <Content Include="Content\SCG\js\Common\Operate.js" />
@@ -1362,6 +1365,8 @@
     <Content Include="Views\LandmarkWithTask\GetModelList.cshtml" />
     <Content Include="Views\T_TransportSupDetail\GetModelList.cshtml" />
     <Content Include="Views\Box\GetModelList.cshtml" />
+    <Content Include="Views\YS\GetModelList.cshtml" />
+    <Content Include="Views\PrintYS\GetModelList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

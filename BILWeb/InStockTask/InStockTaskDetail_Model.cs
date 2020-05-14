@@ -734,6 +734,7 @@ namespace BILWeb.InStockTask
         public string iarrsid { get; set; }
 
         public decimal TaskQty1 { get; set; }//质检数量
-        
+
+        public string PassWord { get; set; }
     }
 }

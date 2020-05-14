@@ -55,7 +55,7 @@
                     <th>@Html.DisplayNameFor(model => model.StrStatus)</th>
                     <th>@Html.DisplayNameFor(model => model.StrTaskIsSuedUser)</th>
                     <th>@Html.DisplayNameFor(model => model.ErpInVoucherNo)</th>
-                    <th>@Html.DisplayNameFor(model => model.VouUser)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.VouUser)</th>*@
                     <th>操作</th>
                 </tr>
             </thead>
@@ -76,7 +76,7 @@
                                 <td>@t_InStockTaskInfo.StrStatus</td>
                                 <td>@t_InStockTaskInfo.StrTaskIsSuedUser</td>
                                 <td>@t_InStockTaskInfo.ErpInVoucherNo</td>
-                                <td>@t_InStockTaskInfo.VouUser</td>
+                                @*<td>@t_InStockTaskInfo.VouUser</td>*@
                                 <td>
                                     <a title="详情" onclick="getDetail(@t_InStockTaskInfo.ID)" class="detail" data-toggle="modal" data-target="#compose-modal">
                                         <i class="layui-icon">&#xe642;</i>
@@ -106,7 +106,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>入库货位</th>
+                                    @*<th>入库货位</th>*@
                                     <th>物料编号</th>
                                     <th>物料描述</th>
                                     <th>收货数量</th>

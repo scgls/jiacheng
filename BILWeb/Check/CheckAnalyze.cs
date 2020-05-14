@@ -98,5 +98,7 @@ namespace BILWeb.Query
 
         public string ean { get; set; }
         public string sean { get; set; }
+        public string ProjectNo { get; set; }
+        public string TracNo { get; set; }
     }
 }

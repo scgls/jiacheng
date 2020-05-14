@@ -150,7 +150,7 @@ namespace BILWeb.InStock
             return "";
         }
 
-        protected override string GetFilterSql(UserModel user,T_InStockInfo model)
+        protected override string GetFilterSql(UserModel user, T_InStockInfo model)
         {
             string strSql = base.GetFilterSql(user, model);
             string strAnd = " and ";
@@ -172,13 +172,13 @@ namespace BILWeb.InStock
                     strSql += "isnull(status,1)= '" + model.Status + "'";
                 }
             }
-            if(!string.IsNullOrEmpty(model.StrVoucherType)&&model.StrVoucherType.Equals("预到货"))
+            if (!string.IsNullOrEmpty(model.StrVoucherType) && model.StrVoucherType.Equals("预到货"))
             {
                 strSql += strAnd;
                 strSql += "(isnull(AdvInStatus,1)=1 or isnull(AdvInStatus,1)=2)";
             }
 
-            if (!string.IsNullOrEmpty(model.SupplierNo)) 
+            if (!string.IsNullOrEmpty(model.SupplierNo))
             {
                 strSql += strAnd;
                 strSql += " (SupplierNo Like '" + model.SupplierNo + "%'  or SupplierName Like '" + model.SupplierNo + "%' )";
@@ -187,7 +187,7 @@ namespace BILWeb.InStock
             if (model.DateFrom != null)
             {
                 strSql += strAnd;
-                strSql += " CreateTime >= " + model.DateFrom.ToDateTime().Date.ToOracleTimeString() + " ";                
+                strSql += " CreateTime >= " + model.DateFrom.ToDateTime().Date.ToOracleTimeString() + " ";
             }
 
             if (model.DateTo != null)
@@ -202,11 +202,71 @@ namespace BILWeb.InStock
                 strSql += " erpvoucherno like  '%" + model.ErpVoucherNo.Trim() + "%'  ";
             }
 
-            if (model.VoucherType > 0) 
+            if (model.VoucherType > 0)
             {
                 strSql += strAnd;
-                strSql += " vouchertype ='"+model.VoucherType+"'  ";
+                strSql += " vouchertype ='" + model.VoucherType + "'  ";
             }
+            //0：PDA 1：PC
+            if (model.PcOrPda == "0")
+            {
+                strSql += strAnd;
+                strSql += " vouchertype!=20 and  vouchertype!=33";
+
+                if (!user.UserNo.Equals("admin"))
+                {
+                    strSql += strAnd;
+                    strSql += " strongholdcode = '" + user.StrongHoldCode + "' and ((strongholdcode+'-'+fromerpwarehouse) ='" + user.WarehouseCode + "' or isnull(fromerpwarehouse,'')='')";
+                }
+            }
+            else {
+                if (!user.UserNo.Equals("admin"))
+                {
+                    strSql += strAnd;
+                    strSql += " strongholdcode = '" + user.StrongHoldCode + "' ";
+                }
+            }
+
+
+
+            //if (!user.UserNo.Equals("admin"))
+            //{
+            //    if (user.WarehouseCode.Split(',').Length > 1)
+            //    {
+            //        //只能华南中山仓库才能看到采购订单和生产订单
+            //        if (!user.WarehouseCode.Contains("2") && !user.WarehouseCode.Contains("1"))
+            //        {
+            //            //不属于华南仓库，仓库ID默认为零
+            //            strSql += strAnd;
+            //            //strSql += "id in (select headerid from t_instockdetail where isnull(warehouseid,0) in (select * from Func_StringSplitTable('" + user.WarehouseCode + "',',')))";//"(select count(1) from t_outstockdetail where warehouseid in (select * from Func_StringSplitTable('"+user.WarehouseCode+"',','))) >1";
+            //            strSql += "EXISTS ( select headerid from t_instockdetail where EXISTS( select id from Func_StringSplitTable('" + user.WarehouseCode + "',',') where isnull(warehouseid,0) = id ) AND HEADERID= V_INSTOCK.ID)";
+
+            //        }
+            //        else
+            //        {
+            //            //不属于华南仓库，仓库ID默认为1
+            //            strSql += strAnd;
+            //            //strSql += "id in (select headerid from t_instockdetail where isnull(warehouseid,1) in (select * from Func_StringSplitTable('" + user.WarehouseCode + "',',')))";//"(select count(1) from t_outstockdetail where warehouseid in (select * from Func_StringSplitTable('"+user.WarehouseCode+"',','))) >1";
+            //            strSql += "EXISTS ( select headerid from t_instockdetail where EXISTS( select id from Func_StringSplitTable('" + user.WarehouseCode + "',',') where isnull(warehouseid,1) = id ) AND HEADERID= V_INSTOCK.ID)";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (!user.WarehouseCode.Contains("2") && !user.WarehouseCode.Contains("1"))
+            //        {
+            //            strSql += strAnd;
+            //            //strSql += "id in (select headerid from t_instockdetail where isnull(warehouseid,0) in (select * from Func_GetAllWareHouseTable('" + user.WarehouseCode + "')))";
+            //            strSql += "EXISTS ( select headerid from t_instockdetail where EXISTS( select id from Func_GetAllWareHouseTable('" + user.WarehouseCode + "') where isnull(warehouseid,0) = id ) AND HEADERID= V_INSTOCK.ID)";
+            //        }
+            //        else
+            //        {
+            //            strSql += strAnd;
+            //            //strSql += "id in (select headerid from t_instockdetail where isnull(warehouseid,1) in (select * from Func_GetAllWareHouseTable('" + user.WarehouseCode + "')))";
+            //            strSql += " EXISTS ( select headerid from t_instockdetail where EXISTS( select id from Func_GetAllWareHouseTable('" + user.WarehouseCode + "') where isnull(warehouseid,1) = id ) AND HEADERID= V_INSTOCK.ID)";
+            //        }
+            //    }
+            //}
+
 
 
             return strSql; //+ "order by id desc";

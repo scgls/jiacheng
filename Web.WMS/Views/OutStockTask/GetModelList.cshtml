@@ -30,9 +30,9 @@
                 <div class="layui-inline layui-show-xs-block">
                     @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control laydateY", @placeholder = "结束时间" } })
                 </div>
-                <div class="layui-inline layui-show-xs-block">
+                @*<div class="layui-inline layui-show-xs-block">
                     @Html.EditorFor(model => model.PickUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "拣货人" } })
-                </div>
+                </div>*@
                 
                 <input type="hidden" name="TaskType" value="4" />
                 <input type="hidden" name="PcOrPda" value="1" />
@@ -63,12 +63,12 @@
                     @*<th>@Html.DisplayNameFor(model => model.SupcusCode)</th>*@
                     <th>@Html.DisplayNameFor(model => model.SupcusName)</th>
                     <th>@Html.DisplayNameFor(model => model.StrStatus)</th>
-                    <th>@Html.DisplayNameFor(model => model.TaskIssued)</th>
-                    <th>@Html.DisplayNameFor(model => model.PickUserName)</th>
-                    <th>@Html.DisplayNameFor(model => model.FloorName)</th>
+                    <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.PickUserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.FloorName)</th>*@
                     @*<th>@Html.DisplayNameFor(model => model.HeightAreaName)</th>*@
                     <th>@Html.DisplayNameFor(model => model.WareHouseName)</th>
-                    <th>@Html.DisplayNameFor(model => model.VouUser)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.VouUser)</th>*@
                     @*<th>@Html.DisplayNameFor(model => model.CarNo)</th>
                     <th>@Html.DisplayNameFor(model => model.LandMarkNo)</th>*@
                     <th>操作</th>
@@ -91,12 +91,12 @@
                                     @*<td> @t_OutStockTaskInfo.SupcusCode </td>*@
                                     <td> @t_OutStockTaskInfo.SupcusName </td>
                                     <td> @t_OutStockTaskInfo.StrStatus </td>
-                                    <td> @t_OutStockTaskInfo.TaskIssued </td>
-                                    <td> @t_OutStockTaskInfo.PickUserName </td>
-                                    <td> @t_OutStockTaskInfo.FloorName </td>
+                                    <td> @t_OutStockTaskInfo.CreateTime </td>
+                                    @*<td> @t_OutStockTaskInfo.PickUserName </td>
+                                    <td> @t_OutStockTaskInfo.FloorName </td>*@
                                     @*<td> @t_OutStockTaskInfo.HeightAreaName </td>*@
                                     <td> @t_OutStockTaskInfo.WareHouseName </td>
-                                    <td> @t_OutStockTaskInfo.VouUser </td>
+                                    @*<td> @t_OutStockTaskInfo.VouUser </td>*@
                                     @*<td> @t_OutStockTaskInfo.CarNo </td>
                                     <td> @t_OutStockTaskInfo.LandMarkNo </td>*@
                                     <td>
@@ -131,7 +131,7 @@
                             <thead>
                                 <tr>
                                     <th>项次</th>
-                                    <th>项序</th>
+                                    @*<th>项序</th>*@
                                     <th>物料编号</th>
                                     <th>物料描述</th>
                                     <th>任务数</th>
@@ -192,6 +192,32 @@
                 }
             });
         }
+    })
+
+        $(".tongbu").click(function () {
+        if ($("#ErpVoucherNo").val() == "") {
+            alert("先输入ERP单号！");
+            return;
+        }
+        var index = layer.load(1);
+        $.ajax({
+            type: "GET",
+            url: "/OutStockQuery/Sync?ErpVoucherNo=" + $("#ErpVoucherNo").val(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.state) {
+                    alert("同步成功！");
+                } else {
+                    alert(data.obj);
+                }
+                layer.close(index);
+            },
+            fail: function () {
+                alert("提交失败！");
+                layer.close(index);
+            }
+        });
     })
 </script>
 

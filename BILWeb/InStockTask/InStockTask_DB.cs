@@ -193,20 +193,20 @@ namespace BILWeb.InStockTask
             if (!string.IsNullOrEmpty(model.ErpVoucherNo))
             {
                 strSql += strAnd;
-                strSql += " (erpvoucherno like '" + model.ErpVoucherNo + "%' )";
+                strSql += " (erpvoucherno like '%" + model.ErpVoucherNo + "%' )";
             }
 
-            if (model.StrongHoldType == 1)
-            {
-                strSql += strAnd;
-                strSql += " StrongHoldCode ='CY1'";
-            }
+            //if (model.StrongHoldType == 1)
+            //{
+            //    strSql += strAnd;
+            //    strSql += " StrongHoldCode ='CY1'";
+            //}
 
-            if (model.StrongHoldType == 2)
-            {
-                strSql += strAnd;
-                strSql += " StrongHoldCode ='CX1'";
-            }
+            //if (model.StrongHoldType == 2)
+            //{
+            //    strSql += strAnd;
+            //    strSql += " StrongHoldCode ='CX1'";
+            //}
 
             if (!string.IsNullOrEmpty(model.MaterialNo))
             {
@@ -226,6 +226,13 @@ namespace BILWeb.InStockTask
                 strSql += "  WareHouseID  = '"+model.WareHouseID+"'";
             }
 
+
+            if (!user.UserNo.Equals("admin"))
+            {
+                strSql += strAnd;
+                strSql += " strongholdcode = '" + user.StrongHoldCode + "' and (fromerpwarehouse ='" + user.WarehouseCode + "' or isnull(fromerpwarehouse,'')='')";
+            }
+
             //if (!string.IsNullOrEmpty(model.StrongHoldCode))
             //{
             //    strSql += strAnd;
@@ -241,7 +248,7 @@ namespace BILWeb.InStockTask
             strSql += strAnd;
             strSql += " tasktype ='1' ";
 
-            if (model.PcOrPda !="1")
+            if (model.PcOrPda =="0")
             {
                 strSql += strAnd;
                 strSql += "  taskqty is not null ";

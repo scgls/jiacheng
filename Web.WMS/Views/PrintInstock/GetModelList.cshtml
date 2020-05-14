@@ -21,6 +21,15 @@
                         @Html.EditorFor(model => model.MaterialNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "物料号" } })
                     </div>
                     <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.ProjectNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "项目号" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.TracNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "跟踪号" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        @Html.EditorFor(model => model.spec, new { htmlAttributes = new { @class = "form-control", @placeholder = "规格" } })
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
                         <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                     </div>
                 </div>
@@ -38,6 +47,9 @@
                         <th>@Html.DisplayNameFor(model => model.InStockQty)</th>
                         <th>@Html.DisplayNameFor(model => model.ReceiveQty)</th>
                         <th>@Html.DisplayNameFor(model => model.RemainQty)</th>
+                        <th>@Html.DisplayNameFor(model => model.TracNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.ProjectNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.spec)</th>
                         <th>打印</th>
                     </tr>
                 </thead>
@@ -65,8 +77,9 @@
                                     <td style="display:none;">@row.FromBatchNo</td>
                                     <td style="display:none;">@row.EDate</td>
                                     <td style="display:none;">@row.VoucherType</td>
-                                    <td style="display:none;">@row.TracNo</td>
-                                    <td style="display:none;">@row.ProjectNo</td>
+                                    <td>@row.TracNo</td>
+                                    <td>@row.ProjectNo</td>
+                                    <td>@row.spec</td>
                                     <td><a class="PrintIn"><i class="fa fa-print"></i></a></td>
                                 </tr>
                             }
@@ -259,7 +272,16 @@
                 },
                 success: function (msg) {
                     if (msg.state) {
-                        window.open($("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj);
+
+                        if (msg.obj != null && msg.obj != "") {
+                            window.open($("#printIP").val() + "Main.aspx?flag=InT&parameter1=" + msg.obj);
+                        }
+
+                        if (msg.objS != null && msg.objS != "") {
+                            window.open($("#printIP").val() + "Main.aspx?flag=InST&parameter1=" + msg.objS);
+                        }
+
+                        //window.open($("#printIP").val() + "Main.aspx?flag=InT&parameter1=" + msg.obj);
                         $('#compose-modal').modal('hide');
                     }
                     else {
@@ -277,54 +299,53 @@
 
     })
 
-    $(".dayin").click(function () {
-        var IDs = "";
-        if (confirm("确定打印这" + $('input[type=checkbox]:checked').length + "条记录?")) {
-            $.each($('input:checkbox:checked'), function () {
-                IDs = (IDs + $(this).val() + ",");
-            });
-            $.ajax({
-                type: "Post",
-                url: "/PrintIn/PrintList",
-                data: {
-                    IDs: IDs
-                },
-                success: function (msg) {
-                    if (msg.state) {
-                        alert(msg.obj);
-                        if (msg.obj != null && msg.obj != "") {
-                            window.open($("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj);
-                        }
-                        alert(msg.objS);
-                        if (msg.obj != null && msg.obj != "") {
-                            window.open($("#printIP").val() + "Main.aspx?flag=InS&parameter1=" + msg.objS);
-                        }
+    //$(".dayin").click(function () {
+    //    var IDs = "";
+    //    if (confirm("确定打印这" + $('input[type=checkbox]:checked').length + "条记录?")) {
+    //        $.each($('input:checkbox:checked'), function () {
+    //            IDs = (IDs + $(this).val() + ",");
+    //        });
+    //        $.ajax({
+    //            type: "Post",
+    //            url: "/PrintIn/PrintList",
+    //            data: {
+    //                IDs: IDs
+    //            },
+    //            success: function (msg) {
+    //                if (msg.state) {
+    //                    if (msg.obj != null && msg.obj != "") {
+    //                        window.open($("#printIP").val() + "Main.aspx?flag=InT&parameter1=" + msg.obj);
+    //                    }
+                     
+    //                    if (msg.objS != null && msg.objS != "") {
+    //                        window.open($("#printIP").val() + "Main.aspx?flag=InST&parameter1=" + msg.objS);
+    //                    }
 
 
 
-                        //var newA = document.createElement("a");
-                        //newA.id = 'gg'
-                        //newA.target = '_blank';
-                        //var aaa = $("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj;
-                        //alert(aaa);
-                        //newA.href = aaa;
-                        //document.body.appendChild(newA);
-                        //newA.click();
-                        //document.body.removeChild(newA);
-                        //PrintNownumbera.val("");
-                        //Bnumberaa.val("");
-                        //Barcodenumbera.html("");
-                    }
-                    else {
-                        alert(msg.obj);
-                    }
-                },
-                fail: function () {
-                    alert("提交失败！")
-                }
-            });
-        }
-    })
+    //                    //var newA = document.createElement("a");
+    //                    //newA.id = 'gg'
+    //                    //newA.target = '_blank';
+    //                    //var aaa = $("#printIP").val() + "Main.aspx?flag=In&parameter1=" + msg.obj;
+    //                    //alert(aaa);
+    //                    //newA.href = aaa;
+    //                    //document.body.appendChild(newA);
+    //                    //newA.click();
+    //                    //document.body.removeChild(newA);
+    //                    //PrintNownumbera.val("");
+    //                    //Bnumberaa.val("");
+    //                    //Barcodenumbera.html("");
+    //                }
+    //                else {
+    //                    alert(msg.obj);
+    //                }
+    //            },
+    //            fail: function () {
+    //                alert("提交失败！")
+    //            }
+    //        });
+    //    }
+    //})
 
 
     $("#batch").click(function () {

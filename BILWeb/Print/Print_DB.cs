@@ -1256,7 +1256,7 @@ namespace BILWeb.Print
         //期初条码生成
         public string GetInsertSQL(Barcode_Model model)
         {
-            return "insert into t_outbarcode (materialno,materialdesc,qty,barcode,barcodetype,serialno,batchno,ean,status,receivetime,erpvoucherno,strongholdcode,strongholdname,companycode,tracno,projectno) values ('" + model.MaterialNo + "','" + model.MaterialDesc + "'," + model.Qty + ",'" + model.BarCode + "'," + model.BarcodeType + ",'" + model.SerialNo + "','" + model.BatchNo + "','" + model.EAN + "',0,'" + model.ReceiveTime + "','" + model.ErpVoucherNo + "','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "','" + model.TracNo + "','" + model.ProjectNo + "')";
+            return "insert into t_outbarcode (materialno,materialdesc,qty,barcode,barcodetype,serialno,batchno,ean,status,receivetime,erpvoucherno,strongholdcode,strongholdname,companycode,tracno,projectno,fserialno,workno) values ('" + model.MaterialNo + "','" + model.MaterialDesc + "'," + model.Qty + ",'" + model.BarCode + "'," + model.BarcodeType + ",'" + model.SerialNo + "','" + model.BatchNo + "','" + model.EAN + "',0,'" + model.ReceiveTime + "','" + model.ErpVoucherNo + "','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "','" + model.TracNo + "','" + model.ProjectNo + "','"+ model.fserialno + "','"+model.WorkNo+"')";
         }
         #endregion
 

@@ -117,14 +117,14 @@ namespace BILWeb.Material
 
         }
 
-        public List<T_MaterialInfo> GetMaterialModelBySql(string MaterialNo, ref string strErrMsg)
-        {
+        public List<T_MaterialInfo> GetMaterialModelBySql(string MaterialNo,ref string strErrMsg)
+        {// string STRONGHOLDCODE,  and STRONGHOLDCODE = '"+ STRONGHOLDCODE + "'
             try
             {
 
                 List<T_MaterialInfo> modelList = new List<T_MaterialInfo>();
 
-                string Filter = " materialno like '" + MaterialNo + "%'";
+                string Filter = " materialno like '%" + MaterialNo + "%' ";
 
                 bool bSucc = base.GetModelListByFilter(ref modelList, ref strErrMsg, "", Filter);
 

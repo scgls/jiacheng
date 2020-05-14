@@ -128,7 +128,7 @@ namespace BILWeb.Material
             t_material.PalletPackQty = dbFactory.ToModelValue(reader, "PalletPackQty").ToDecimal();
             t_material.PackVolume = dbFactory.ToModelValue(reader, "PackVolume").ToDecimal();
             t_material.Status = dbFactory.ToModelValue(reader, "Status").ToInt32();
-
+            t_material.sku = (string)dbFactory.ToModelValue(reader, "sku"); 
             //t_material.WaterCode = (string)dbFactory.ToModelValue(reader, "WaterCode");//ena码
 
             //if (Common_Func.readerExists(reader, "Batchno")) t_material.BatchNo = reader["Batchno"].ToDBString();

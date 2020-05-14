@@ -52,8 +52,8 @@ namespace BILWeb.InStockTask
                 strSql1 = string.Format("update t_taskdetails  set  remainqty =  remainqty-{0}, shelveqty = isnull( shelveqty,0)+{1}," +
                         " toareano = '{2}', operatoruserno = '{3}', operatordatetime = getdate() where  id = '{4}'", item.ScanQty, item.ScanQty, item.AreaID, user.UserNo, item.ID);
                 lstSql.Add(strSql1);
-
-                strSql2 = string.Format("update t_taskdetails  set  linestatus =(case when isnull( remainqty,0)< isnull( taskqty,0) and isnull( remainqty,0)<>0 then 2 when isnull( remainqty,0)  = 0  then 3 end )," +
+                //strSql2 = string.Format("update t_taskdetails  set  linestatus =(case when isnull( remainqty,0)< isnull( taskqty,0) and isnull( remainqty,0)<>0 then 2 when isnull( remainqty,0)  = 0  then 3 end )," +
+                strSql2 = string.Format("update t_taskdetails  set  linestatus =(case when isnull( remainqty,0)>0 and isnull( shelveqty,0)>0 then 2 when isnull( remainqty,0)  = 0  then 3 end )," +
                                         " Toerpareano ='{1}',Toerpwarehouse='{2}' where id = '{0}'", item.ID, item.AreaNo, item.ToErpWarehouse);
                 lstSql.Add(strSql2);
 
@@ -210,7 +210,6 @@ namespace BILWeb.InStockTask
             //t_taskdetails.ToAreaNo = (string)dbFactory.ToModelValue(reader, "TOAREANO");
             t_taskdetails.MaterialNo = (string)dbFactory.ToModelValue(reader, "MATERIALNO");
             t_taskdetails.MaterialDesc = (string)dbFactory.ToModelValue(reader, "MATERIALDESC");
-            t_taskdetails.TaskQty = ((decimal?)dbFactory.ToModelValue(reader, "TASKQTY1") == null || (decimal?)dbFactory.ToModelValue(reader, "TASKQTY1") == 0) ? (decimal?)dbFactory.ToModelValue(reader, "TASKQTY") : (decimal?)dbFactory.ToModelValue(reader, "TASKQTY1");
             t_taskdetails.QualityQty = (decimal?)dbFactory.ToModelValue(reader, "QUALITYQTY");
             t_taskdetails.RemainQty = dbFactory.ToModelValue(reader, "REMAINQTY").ToDecimal();
             t_taskdetails.ShelveQty = (decimal)dbFactory.ToModelValue(reader, "SHELVEQTY");
@@ -276,17 +275,35 @@ namespace BILWeb.InStockTask
             t_taskdetails.BatchNo = dbFactory.ToModelValue(reader, "BatchNo").ToDBString();
             t_taskdetails.FromBatchNo = dbFactory.ToModelValue(reader, "FromBatchNo").ToDBString();
             t_taskdetails.FromErpAreaNo = dbFactory.ToModelValue(reader, "FromErpAreaNo").ToDBString();
-            t_taskdetails.FromErpWarehouse = dbFactory.ToModelValue(reader, "FromErpWarehouse").ToDBString();
-            t_taskdetails.ToBatchNo = dbFactory.ToModelValue(reader, "ToBatchNo").ToDBString();
-            t_taskdetails.ToErpAreaNo = dbFactory.ToModelValue(reader, "ToErpAreaNo").ToDBString();
-            t_taskdetails.ToErpWarehouse = dbFactory.ToModelValue(reader, "ToErpWarehouse").ToDBString();
             t_taskdetails.StrongHoldCode = dbFactory.ToModelValue(reader, "StrongHoldCode").ToDBString();
             t_taskdetails.StrongHoldName = dbFactory.ToModelValue(reader, "StrongHoldName").ToDBString();
+
+            string FromErpWarehouse = dbFactory.ToModelValue(reader, "FromErpWarehouse").ToDBString();
+            t_taskdetails.FromErpWarehouse = string.IsNullOrEmpty(FromErpWarehouse) ? "" : (FromErpWarehouse.Contains("-") ? FromErpWarehouse : (t_taskdetails.StrongHoldCode + "-" + FromErpWarehouse));
+
+            string ToErpWarehouse = dbFactory.ToModelValue(reader, "ToErpWarehouse").ToDBString();
+            t_taskdetails.ToErpWarehouse = string.IsNullOrEmpty(ToErpWarehouse) ? "" : (ToErpWarehouse.Contains("-") ? ToErpWarehouse : (t_taskdetails.StrongHoldCode + "-" + ToErpWarehouse));
+
+            //t_taskdetails.FromErpWarehouse = dbFactory.ToModelValue(reader, "FromErpWarehouse").ToDBString();
+            t_taskdetails.ToBatchNo = dbFactory.ToModelValue(reader, "ToBatchNo").ToDBString();
+            t_taskdetails.ToErpAreaNo = dbFactory.ToModelValue(reader, "ToErpAreaNo").ToDBString();
+            //t_taskdetails.ToErpWarehouse = dbFactory.ToModelValue(reader, "ToErpWarehouse").ToDBString();
+
             t_taskdetails.CompanyCode = dbFactory.ToModelValue(reader, "CompanyCode").ToDBString();
             t_taskdetails.StrVoucherType = dbFactory.ToModelValue(reader, "strVoucherType").ToDBString();
             t_taskdetails.ERPVoucherType = dbFactory.ToModelValue(reader, "ErpVoucherType").ToDBString();
+            t_taskdetails.VoucherType =  dbFactory.ToModelValue(reader, "VoucherType").ToInt32();
             t_taskdetails.iarrsid = dbFactory.ToModelValue(reader, "iarrsid").ToDBString();
-            t_taskdetails.TaskQty1 = (dbFactory.ToModelValue(reader, "TaskQty1")==null?0: (decimal)dbFactory.ToModelValue(reader, "TaskQty1"));
+            if (t_taskdetails.VoucherType==39) {
+                //到货单
+                t_taskdetails.TaskQty = ((decimal?)dbFactory.ToModelValue(reader, "TASKQTY1") == null || (decimal?)dbFactory.ToModelValue(reader, "TASKQTY1") == 0) ? (decimal?)dbFactory.ToModelValue(reader, "TASKQTY") : (decimal?)dbFactory.ToModelValue(reader, "TASKQTY1");
+                decimal qty = (dbFactory.ToModelValue(reader, "TaskQty1") == null ? 0 : (decimal)dbFactory.ToModelValue(reader, "TaskQty1")) - t_taskdetails.ShelveQty;
+                t_taskdetails.TaskQty1 = qty;
+            } else {
+                t_taskdetails.TaskQty = t_taskdetails.RemainQty;
+                t_taskdetails.TaskQty1 = t_taskdetails.RemainQty;
+            }
+
             
             return t_taskdetails;
         }
@@ -497,31 +514,39 @@ namespace BILWeb.InStockTask
             T_Stock_Func tfunc = new T_Stock_Func();
             List<T_InStockTaskDetailsInfo> list = base.GetModelListByHeaderID(headerID);
 
+
             foreach (T_InStockTaskDetailsInfo item in list)
             {
                 item.RemainQty = item.TaskQty1;
+                if (item.VoucherType==39) {
+                    item.VoucherType = 390;
+                }
+                
             }
 
             //获取推荐库位
             if (GetRecommendAreaNo(list, ref areaList, ref strErrMsg) == false)
             {
-                throw new Exception(strErrMsg);
+                //throw new Exception(strErrMsg);
+            }
+            else {
+                foreach (var item in list)
+                {
+                    item.lstArea = areaList.FindAll(t => t.MaterialNo == item.MaterialNo);
+                    if (!(item.lstArea == null || item.lstArea.Count == 0))
+                    {
+                        item.AreaNo = item.lstArea[0].AreaNo;
+                    }
+                    else
+                    {
+                        item.AreaNo = "";
+                    }
+
+                }
             }
 
-            foreach (var item in list)
-            {
-                item.lstArea = areaList.FindAll(t => t.MaterialNo == item.MaterialNo);
-                if (!(item.lstArea == null || item.lstArea. Count == 0))
-                {
-                    item.AreaNo = item.lstArea[0].AreaNo;
-                }
-                else
-                {
-                    item.AreaNo = "";
-                }
 
-            }
-
+            list= list.FindAll(t => t.RemainQty > 0);
             return list;
         }
 
@@ -593,7 +618,7 @@ namespace BILWeb.InStockTask
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 

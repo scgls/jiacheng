@@ -526,7 +526,7 @@ namespace BILWeb.SyncService
             }
             BILBasic.Interface.T_Interface_Func TIF = new BILBasic.Interface.T_Interface_Func();
             string json = "{\"data_no\":\"" + ErpVoucherNo + "\",\"VoucherType\":\"" + Type.VoucherType.ToString() + "\",\"max_code\":\"" + lastSyncErpVoucherNo + "\",\"edit_time\":\"";
-            json += !String.IsNullOrEmpty(LastSyncTime) ? DateTime.Parse(LastSyncTime).ToString("yyyy-MM-dd") : "";
+            //json += !String.IsNullOrEmpty(LastSyncTime)?DateTime.Parse(LastSyncTime).ToString("yyyy-MM-dd"):"";
             json += "\",\"erp_vourcher_type\":\"" + Type.ErpVourcherType;
             json += "\",\"company_no\":\"" + Type.CompanyNo + "\"}";
             return TIF.GetModelListByInterface(json);
@@ -560,8 +560,9 @@ namespace BILWeb.SyncService
                     return false;
                 }
 
-                var TypeList = pmList.Where(p => p.ErpVourcherType != null).DistinctBy(s => new { s.ErpVourcherType, s.VoucherType }); //获取同步单据类型
-                                                                                                                                       //按照单据类型循环
+                //var TypeList = pmList.Where(p=>p.ErpVourcherType != null).DistinctBy(s=> new { s.ErpVourcherType, s.VoucherType }); //获取同步单据类型
+                var TypeList = pmList.Where(p => p.ErpVourcherType != null && p.CompanyNo != null).DistinctBy(s => new { s.ErpVourcherType, s.VoucherType, s.CompanyNo }); //多账套获取同步单据类型
+                                                                                                                                                                           //按照单据类型循环
                 foreach (var Type in TypeList)
                 {
                     //获取单据同步数据Json
@@ -573,13 +574,14 @@ namespace BILWeb.SyncService
                     //   System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                     //    stopwatch.Start();
 
-                    string Json = //"{\"result\":\"1\",\"resultValue\":\"\",\"data\":[{\"Head\":{\"darvdate\":\"2018-01-02\",\"cvenname\":\"供应商名称1\",\"cvencode\":\"供应商编码1\",\"carvcode\":\"\",\"cbustype\":\"业务类型1\",\"ipurarriveid\":\"到货单ID2\",\"itaxrate\":\"121\",\"iexchrate\":\"131\",\"cexch_name\":\"币种\",\"body\":[{\"iarrsid\":\"到货单子表ID\",\"POID\":\"到货单ID2\",\"cinvcode\":\"存货编码1\",\"cinvname\":\"存货名称1\",\"cinvstd\":\"规格型号1\",\"cvencode\":\"供应商编码1\",\"cbatch\":\"\",\"iNQuantity\":\"2500\"},{\"iarrsid\":\"到货单子表ID3\",\"POID\":\"到货单ID2\",\"cinvcode\":\"存货编码3\",\"cinvname\":\"存货名称3\",\"cinvstd\":\"规格型号3\",\"cvencode\":\"供应商编码3\",\"cbatch\":\"\",\"iNQuantity\":\"900\"}]}},{\"Head\":{\"darvdate\":\"2018-01-03\",\"cvenname\":\"供应商名称2\",\"cvencode\":\"供应商编码2\",\"carvcode\":\"\",\"cbustype\":\"业务类型2\",\"ipurarriveid\":\"到货单ID3\",\"itaxrate\":\"132\",\"iexchrate\":\"142\",\"cexch_name\":\"币种\",\"body\":[{\"iarrsid\":\"到货单子表ID\",\"POID\":\"到货单ID3\",\"cinvcode\":\"存货编码2\",\"cinvname\":\"存货名称2\",\"cinvstd\":\"规格型号2\",\"cvencode\":\"供应商编码\",\"cbatch\":\"\",\"iNQuantity\":\"2500\"}]}}]}";
+                    string Json = 
+                        //"{\"result\":\"1\",\"resultValue\":\"\",\"data\":[{\"Head\":{\"darvdate\":\"2018-01-02\",\"cvenname\":\"供应商名称1\",\"cvencode\":\"供应商编码1\",\"carvcode\":\"\",\"cbustype\":\"业务类型1\",\"ipurarriveid\":\"到货单ID2\",\"itaxrate\":\"121\",\"iexchrate\":\"131\",\"cexch_name\":\"币种\",\"body\":[{\"iarrsid\":\"到货单子表ID\",\"POID\":\"到货单ID2\",\"cinvcode\":\"存货编码1\",\"cinvname\":\"存货名称1\",\"cinvstd\":\"规格型号1\",\"cvencode\":\"供应商编码1\",\"cbatch\":\"\",\"iNQuantity\":\"2500\"},{\"iarrsid\":\"到货单子表ID3\",\"POID\":\"到货单ID2\",\"cinvcode\":\"存货编码3\",\"cinvname\":\"存货名称3\",\"cinvstd\":\"规格型号3\",\"cvencode\":\"供应商编码3\",\"cbatch\":\"\",\"iNQuantity\":\"900\"}]}},{\"Head\":{\"darvdate\":\"2018-01-03\",\"cvenname\":\"供应商名称2\",\"cvencode\":\"供应商编码2\",\"carvcode\":\"\",\"cbustype\":\"业务类型2\",\"ipurarriveid\":\"到货单ID3\",\"itaxrate\":\"132\",\"iexchrate\":\"142\",\"cexch_name\":\"币种\",\"body\":[{\"iarrsid\":\"到货单子表ID\",\"POID\":\"到货单ID3\",\"cinvcode\":\"存货编码2\",\"cinvname\":\"存货名称2\",\"cinvstd\":\"规格型号2\",\"cvencode\":\"供应商编码\",\"cbatch\":\"\",\"iNQuantity\":\"2500\"}]}}]}";
                         GetErpJson(StockType, LastSyncTime, ErpVoucherNo, Type, db); //获取JSON
                                                                                      //LogNet.LogInfo("SyncJsonFromErp:" + Json);
                                                                                      //string Json = "{\"result\":\"1\",\"resultValue\":\"\",\"data\":[{\"head\":{\"standard_box2\":null,\"standard_box3\":null,\"sto_condition\":null,\"spc_require\":null,\"protect_way\":null,\"EntId\":null,\"item_spec\":\"个\",\"item_unit\":null,\"group_code\":null,\"group_name\":null,\"classfiy_code\":null,\"classfiy_name\":null,\"purchase_group_code\":null,\"purchase_group_name\":null,\"main_supplier\":null,\"quality_month\":null,\"quality_day\":0,\"item_brand\":null,\"origin_place\":null,\"life_cycle\":null,\"pack_quantity\":0,\"item_size\":null,\"pallet_size\":null,\"pallet_amount\":null,\"all_size\":null,\"item_weight\":null,\"status\":null,\"standard_box1\":null,\"customer\":null,\"standard_box\":null,\"brand_intro\":null,\"bar_code\":\"\",\"Companyid\":null,\"item_name_us\":null,\"item_no\":\"14H22Q1\",\"item_name\":\"ALBION产品托盘\",\"Detail\":[{\"base_num\":0,\"base_unit\":null,\"unit_num\":0,\"Companyid\":\"ABH\",\"from_unit\":null,\"water_code\":\"\",\"item_no\":\"14H22Q1\",\"unit\":null,\"pack_amount\":0,\"EntId\":10,\"USNAM\":null,\"GUID\":null}]}}],\"MaterialDoc\":null,\"MaterialYear\":null,\"QualityNo\":null,\"GUID\":null,\"DeliveryNo\":null}";
                                                                                      //    time += "获取json：" + stopwatch.Elapsed.TotalSeconds;
                                                                                      //  stopwatch.Reset(); stopwatch.Start();
-
+                    //LogNet.LogInfo("SyncYMH:"+ Type+"--" + Json);
                     //解析JSON格式
                     result = GetDataJson(Json, ref dataJson, WmsvouType, ref ErrMsg);
 

@@ -203,6 +203,22 @@ namespace BILWeb.InStockTask
             return modelList;
         }
 
+        /// <summary>
+        /// 重写过账提交信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        protected override string GetModelListByJsonToERP(UserModel user, List<T_InStockTaskDetailsInfo> modelList)
+        {
+
+            modelList.ForEach(t => t.PostUser = user.UserNo);
+            modelList.ForEach(t => t.PassWord = user.PassWord);
+            modelList.ForEach(t => t.WareHouseNo = t.WareHouseNo.Replace("SHJC-", "").Replace("JSJC-", "").Replace("SHSY-", ""));
+            return JSONHelper.ObjectToJson<List<T_InStockTaskDetailsInfo>>(modelList);
+        }
+
+
         public string LockTaskOperUser(string TaskDetailsJson, string UserJson)
         {
             BaseMessage_Model<T_InStockTaskDetailsInfo> messageModel = new BaseMessage_Model<T_InStockTaskDetailsInfo>();

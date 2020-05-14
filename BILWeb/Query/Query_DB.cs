@@ -959,6 +959,34 @@ namespace BILWeb.Query
                 {
                     TMM.tasktypename = "复核";
                 }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 201)
+                {
+                    TMM.tasktypename = "调整上架";
+                }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 202)
+                {
+                    TMM.tasktypename = "调整下架";
+                }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 200)
+                {
+                    TMM.tasktypename = "拆零";
+                }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 203)
+                {
+                    TMM.tasktypename = "盘点上架";
+                }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 204)
+                {
+                    TMM.tasktypename = "盘点下架";
+                }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 205)
+                {
+                    TMM.tasktypename = "预留上架";
+                }
+                else if (Convert.ToInt32(dr["TASKTYPE"]) == 206)
+                {
+                    TMM.tasktypename = "预留下架";
+                }
             }
             qtyall += (decimal)TMM.QTY;
             return TMM;

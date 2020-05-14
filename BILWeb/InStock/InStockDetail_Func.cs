@@ -119,13 +119,14 @@ namespace BILWeb.InStock
                             stockDetailInfo.ScanQty = Convert.ToDecimal(item.Qty);
                             stockDetailInfo.Unit = modelList[i].Unit;
                             stockDetailInfo.SupPrdBatch = modelList[i].SupPrdBatch;
-                            stockDetailInfo.ReceiveWareHouseNo = modelList[i].ReceiveWareHouseNo;
+                            stockDetailInfo.ReceiveWareHouseNo = modelList[i].ReceiveWareHouseNo.Replace("SHJC-","").Replace("JSJC-", "").Replace("SHSY-", "");
+                            stockDetailInfo.WareHouseNo = stockDetailInfo.ReceiveWareHouseNo;
                             stockDetailInfo.ReceiveAreaNo = modelList[i].ReceiveAreaNo;
                             stockDetailInfo.BatchNo = item.BatchNo;
                             stockDetailInfo.ReceiveUserNo = user.UserNo;
                             stockDetailInfo.PostUser = user.UserNo;
                             stockDetailInfo.StrSupPrdDate = modelList[i].StrSupPrdDate;
-
+                            stockDetailInfo.PassWord = user.PassWord;
                             stockDetailInfo.FromErpWarehouse = modelList[i].FromErpWarehouse;
                             stockDetailInfo.ToErpWarehouse = modelList[i].ToErpWarehouse;
                             stockDetailInfo.FromBatchNo = modelList[i].FromBatchNo;

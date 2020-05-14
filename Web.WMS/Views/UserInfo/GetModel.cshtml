@@ -11,6 +11,20 @@
 }
 
 <script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $('form').bind('submit',check);
+    });
+   
+
+    function check() {
+        if ($("#PassWord").val() == "" || $("#RePassWord").val() == "") {
+            alert("密码不能为空！");
+            return false;
+        } 
+    }
+
     //得到所有选中的值 type ：1所属权限，2所属仓库
     function buttonOnClick(type) {
         //记录选中id
@@ -186,7 +200,13 @@
                                 @Html.DropDownList("Sex", Commom.GetList("cbxSex") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </td>
-                        <td></td>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label">据点</label>
+                                @Html.DropDownList("StrongHoldCode", Commom.GetStrongHoldcodeList as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            
+                        </td>
                     </tr>
 
 
@@ -194,7 +214,7 @@
             </table>
             <div class="box-footer">
                 <a href="javascript:history.go(-1);" class="btn btn-danger pull-left" style="margin-right:30px;">返回</a>
-                <button type="submit" class="btn btn-primary" onclick="check()">确认</button>     
+                <button type="submit" class="btn btn-primary">确认</button>     
             </div>
         </div>
     }

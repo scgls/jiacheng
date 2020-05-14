@@ -180,11 +180,11 @@ namespace BILBasic.Interface
                     messageModel.Message = string.Empty;
                     return JSONUtil.JSONHelper.ObjectToJson<BaseMessage_Model<List<T_InterfaceInfo>>>(messageModel);
                 }
-                
+                LogNet.LogInfo("ymh：ERPbefor-" + modelPost.ClassName + "-" + modelPost.FunctionName);
 
                 ErpJson = CreateInterfacePost(modelPost, VoucherJson);
 
-                LogNet.LogInfo("ymh00000000000000000000000000000----" + ErpJson);
+                LogNet.LogInfo("ymh：ERPBACK-" + ErpJson);
 
                 jtoken = JToken.Parse(ErpJson);
 

@@ -9,7 +9,7 @@
             for (var i = 0; i < data.length; i++) {
                 var html = "<tr>";
                 html += "<td>" + data[i].RowNo + "</td>"
-                html += "<td>" + data[i].RowNoDel + "</td>"
+                //html += "<td>" + data[i].RowNoDel + "</td>"
                 html += "<td>" + data[i].MaterialNo + "</td>"
                 html += "<td>" + data[i].MaterialDesc + "</td>"
                 html += "<td>" + data[i].TaskQty + "</td>"

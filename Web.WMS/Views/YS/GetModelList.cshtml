@@ -1,0 +1,120 @@
+﻿@using BILBasic.Common;
+@using Web.WMS.Common;
+@using BILWeb.YS;
+@model T_YS
+@{
+    ViewBag.Title = "预留释放单据";
+    Layout = "~/Views/Shared/_LayoutLayui.cshtml";
+    PageData<T_YS> pageData = (PageData<T_YS>)ViewData["PageData"];
+}
+<div class="box">
+    <div class="layui-card-body layui-table-body layui-table-main">
+        <form action="/T_YS/GetModelList" method="post">
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.SupplierNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "供应商编号" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                @Html.EditorFor(model => model.ErpVoucherNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "ERP单号" } })
+            </div>
+            @*<div class="layui-inline layui-show-xs-block">
+                    @Html.DropDownList("VoucherType", Commom.GetList("cbxInStockVoucherName") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control " }, disabled = "disabled" })
+                </div>*@
+            <div class="layui-inline layui-show-xs-block">
+                @Html.DropDownList("Status", Commom.GetList("cbxInstockVoucherStatus") as IEnumerable<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button type="submit" class="btn btn-primary" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+            </div>
+            @Html.HiddenFor(model => model.VoucherType)
+        </form>
+        @{Html.RenderPartial("~/Views/Shared/_ViewButtom.cshtml");}
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.VoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrongHoldCode)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrongHoldName)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.CompanyCode)</th>*@
+                    <th>@Html.DisplayNameFor(model => model.ErpVoucherNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrVoucherType)</th>
+                    <th>@Html.DisplayNameFor(model => model.StrStatus)</th>
+                    @*<th>@Html.DisplayNameFor(model => model.DepartmentName)</th>*@
+                    @*<th>@Html.DisplayNameFor(model => model.StrCreater)</th>*@
+                    <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                    <th>@Html.DisplayNameFor(model => model.SupplierName)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (pageData.data != null && pageData.data.Count != 0)
+                    {
+                        foreach (T_YS t_OutStockInfo in pageData.data)
+                        {
+                            <tr>
+                                <td>@t_OutStockInfo.VoucherNo</td>
+                                <td>@t_OutStockInfo.StrongHoldCode</td>
+                                <td>@t_OutStockInfo.StrongHoldName</td>
+                                @*<td>@t_OutStockInfo.CompanyCode</td>*@
+                                <td>@t_OutStockInfo.ErpVoucherNo</td>
+                                <td>@t_OutStockInfo.StrVoucherType</td>
+                                <td>@t_OutStockInfo.StrStatus</td>
+                                @*<td>@t_OutStockInfo.DepartmentName</td>*@
+                                @*<td>@t_OutStockInfo.StrCreater</td>*@
+                                <td>@t_OutStockInfo.CreateTime</td>
+                                <td>@t_OutStockInfo.SupplierName</td>
+                                <td>
+                                    <a title="详情" onclick="getDetail(@t_OutStockInfo.ID)" class="detail" data-toggle="modal" data-target="#compose-modal">
+                                        <i class="layui-icon">&#xe642;</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="12" align="center"><b>无查询数据</b></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{Html.RenderAction("PageView", pageData);}
+    </div>
+</div>
+
+<div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:90%;">
+        <div class="modal-content">
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>项次</th>
+                                    @*<th>项序</th>*@
+                                    <th>物料编号</th>
+                                    <th>物料描述</th>
+                                    @*<th>批次</th>*@
+                                    <th>订单数量</th>
+                                    <th>可收货数</th>
+                                    <th>已收货数</th>
+                                    <th>仓库</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="~/Content/SCG/js/Common/Operate.js"></script>
+<script src="~/Content/SCG/js/YS/YS.js"></script>

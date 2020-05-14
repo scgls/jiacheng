@@ -7,6 +7,7 @@ using BILBasic.Basing.Factory;
 using BILBasic.Common;
 using BILWeb.Login.User;
 using BILBasic.JSONUtil;
+using BILWeb.Stock;
 
 namespace BILWeb.OutBarCode
 {
@@ -440,7 +441,7 @@ namespace BILWeb.OutBarCode
             {
                 string strError = string.Empty;                             
 
-                T_OutBarcode_DB _db = new T_OutBarcode_DB();                
+                T_OutBarcode_DB _db = new T_OutBarcode_DB();
                 model.SerialNo = SerialNo;
                 model = _db.GetModelBySql(model);
                 if (model == null)
@@ -457,7 +458,47 @@ namespace BILWeb.OutBarCode
             }
         }
 
-        
+        public string GetBarcodeModelForJADF(string SerialNo)
+        {
+            BaseMessage_Model<List<T_StockInfo>> messageModel = new BaseMessage_Model<List<T_StockInfo>>();
+            try
+            {
+                string strErrMsg = string.Empty;
+                T_OutBarCodeInfo model = new T_OutBarCodeInfo();
+                if (!GetOutBarCodeInfoBySerialNo(SerialNo, ref model, ref  strErrMsg))
+                {
+                    messageModel.HeaderStatus = "E";
+                    messageModel.Message = strErrMsg;
+                    return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+                }
+
+                T_StockInfo smodel = new T_StockInfo();
+                List<T_StockInfo> smodelList = new List<T_StockInfo>();
+                smodel.MaterialNo = model.MaterialNo;
+                smodel.ProjectNo = model.ProjectNo==null?"": model.ProjectNo;
+                smodel.TracNo = model.TracNo == null ? "" : model.TracNo;
+                smodel.BarCodeType = model.BarcodeType;
+                smodel.SerialNo = model.SerialNo;
+                smodel.Barcode = model.BarCode;
+                smodel.fserialno = model.fserialno;
+                smodelList.Add(smodel);
+
+                messageModel.HeaderStatus = "S";
+                messageModel.ModelJson = smodelList;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+
+            }
+            catch (Exception ex)
+            {
+                messageModel.HeaderStatus = "E";
+                messageModel.Message = ex.Message;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+            }
+
+        }
+
+
+
 
         /// <summary>
         /// 根据托盘号查找条码
@@ -542,5 +583,108 @@ namespace BILWeb.OutBarCode
             }
 
         }
+
+        //补打条码列表
+        public string GetOutBarCodeForPrint(string BarCode)
+        {
+            BaseMessage_Model<List<T_OutBarCodeInfo>> model = new BaseMessage_Model<List<T_OutBarCodeInfo>>();
+            try
+            {
+                string strError = string.Empty;
+                T_OutBarcode_DB _db = new T_OutBarcode_DB();
+                List<T_OutBarCodeInfo> modellist = new List<T_OutBarCodeInfo>();
+                string SerialNo = "";
+                if (BarCode.Contains("@"))
+                {
+                    SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
+                }
+                else {
+                    SerialNo = BarCode;
+                }
+
+                modellist = _db.GetOutBarCodeForPrint(SerialNo);
+                if (modellist == null|| modellist.Count==0)
+                {
+                    model.HeaderStatus = "E";
+                    model.Message = "您扫描的条码不存在！请确认是否已经打印！";
+                    return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_OutBarCodeInfo>>>(model);
+                }
+                model.HeaderStatus = "S";
+                model.ModelJson = modellist;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_OutBarCodeInfo>>>(model);
+            }
+            catch (Exception ex)
+            {
+                model.HeaderStatus = "E";
+                model.Message = ex.Message;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_OutBarCodeInfo>>>(model);
+            }
+        }
+
+        public string GetErpVoucherNo(string BarCode)
+        {
+            BaseMessage_Model<string> model = new BaseMessage_Model<string>();
+            try
+            {
+                string strError = string.Empty;
+                T_OutBarcode_DB _db = new T_OutBarcode_DB();
+                string SerialNo = "";
+                if (BarCode.Contains("@"))
+                {
+                    SerialNo = OutBarCode_DeCode.GetSerialNo(BarCode);
+                }
+                else
+                {
+                    SerialNo = BarCode;
+                }
+
+                string erpvoucherno = _db.GetErpVoucherNo(SerialNo);
+                if (string.IsNullOrEmpty(erpvoucherno))
+                {
+                    model.HeaderStatus = "E";
+                    model.Message = "您扫描的条码没有单据号";
+                    return JSONHelper.ObjectToJson<BaseMessage_Model<string>>(model);
+                }
+                model.HeaderStatus = "S";
+                model.ModelJson = erpvoucherno;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<string>>(model);
+            }
+            catch (Exception ex)
+            {
+                model.HeaderStatus = "E";
+                model.Message = ex.Message;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<string>>(model);
+            }
+        }
+
+
+        public string GetOutBarCodeForYS(string BarCode)
+        {
+            BaseMessage_Model<T_OutBarCodeInfo> model = new BaseMessage_Model<T_OutBarCodeInfo>();
+            try
+            {
+                string strError = string.Empty;
+                T_OutBarcode_DB _db = new T_OutBarcode_DB();
+                T_OutBarCodeInfo BarCodeInfomodel = _db.GetOutBarCodeForYS(BarCode);
+
+                if (BarCodeInfomodel == null)
+                {
+                    model.HeaderStatus = "E";
+                    model.Message = "您扫描的条码不存在！请确认是否已经打印！";
+                    return JSONHelper.ObjectToJson<BaseMessage_Model<T_OutBarCodeInfo>>(model);
+                }
+                model.HeaderStatus = "S";
+                model.ModelJson = BarCodeInfomodel;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<T_OutBarCodeInfo>>(model);
+            }
+            catch (Exception ex)
+            {
+                model.HeaderStatus = "E";
+                model.Message = ex.Message;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<T_OutBarCodeInfo>>(model);
+            }
+        }
+        
+
     }
 }

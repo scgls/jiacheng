@@ -504,6 +504,13 @@ namespace BILWeb.OutBarCode
         //public int BarCodeType { get; set; }
 
         public List<T_OutBarCodeInfo> lstBarCode { get; set; }
+
+        public string ProjectNo { get; set; }
+        public string TracNo { get; set; }
+        public string originalCode { get; set; }
+        public string HouseNo { get; set; }
+
+        
     }
 }
 

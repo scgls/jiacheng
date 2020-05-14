@@ -187,7 +187,10 @@ namespace BILWeb.Quality
             List<string> lstSql = new List<string>();
             var seed = Guid.NewGuid().GetHashCode();
 
-            NewSerialNo = DateTime.Now.ToString("yyMMdd") + "77" + new Random(seed).Next(0, 999999).ToString().PadLeft(6, '0');//奥碧虹
+            NewSerialNo = DateTime.Now.ToString("yyMMddHHmmss") + new Random(seed).Next(0, 99999999).ToString().PadLeft(8, '0') + "01";
+
+            //"1@" + barcodelistnew[i].StrongHoldCode + "@" + barcodelistnew[i].MaterialNo + "@" + barcodelistnew[i].BatchNo + "@" + barcodelistnew[i].Qty + "@" + barcodelistnew[i].SerialNo;
+            //NewSerialNo = DateTime.Now.ToString("yyMMdd") + "77" + new Random(seed).Next(0, 999999).ToString().PadLeft(6, '0');//奥碧虹
 
             string strSqlCount = "SELECT COUNT(1) from T_OUTBARCODE where serialno = '" + NewSerialNo + "'";
 
@@ -195,10 +198,11 @@ namespace BILWeb.Quality
 
             if (i > 0) 
             {
-                NewSerialNo = DateTime.Now.ToString("yyMMdd") + "77" + new Random(seed).Next(0, 999999).ToString().PadLeft(6, '0');//奥碧虹
+                NewSerialNo = DateTime.Now.ToString("yyMMddHHmmss") + new Random(seed).Next(0, 99999999).ToString().PadLeft(8, '0') + "01";
+                //NewSerialNo = DateTime.Now.ToString("yyMMdd") + "77" + new Random(seed).Next(0, 999999).ToString().PadLeft(6, '0');//奥碧虹
             }
-
-            string BarCode =""+model.BarCodeType+"" + model.MaterialNo.PadLeft(16, '0') + "" + model.BatchNo.PadLeft(11, '0') + ""+NewSerialNo+"";
+            string BarCode = "1@" + model.StrongHoldCode + "@" + model.MaterialNo + "@" + model.BatchNo + "@" + model.Qty + "@" + NewSerialNo;
+            //string BarCode =""+model.BarCodeType+"" + model.MaterialNo.PadLeft(16, '0') + "" + model.BatchNo.PadLeft(11, '0') + ""+NewSerialNo+"";
 
             string strSql = "insert into t_Outbarcode ( Voucherno, Rowno, Erpvoucherno, Vouchertype, Materialno, Materialdesc, Cuscode," +
                             "Cusname, Supcode, Supname, Outpackqty, Innerpackqty, Voucherqty, Qty, Nopack, Printqty, Barcode, " +
@@ -206,7 +210,7 @@ namespace BILWeb.Quality
                             "Inner_Id, Abatchqty, Isdel, Creater, Createtime, Materialnoid, Strongholdcode, " +
                             "Strongholdname, Companycode, Productdate, Supprdbatch, Supprddate, Productbatch, Edate, Storecondition," +
                             "Specialrequire, Batchno, Barcodemtype, Rownodel, Protectway, Boxweight, Unit, Labelmark, Boxdetail, Matebatch," +
-                            "Mixdate, Relaweight,Ean)" +
+                            "Mixdate, Relaweight,Ean,ProjectNo,TracNo)" +
                             "select voucherno,rowno,erpvoucherno,vouchertype, Materialno, Materialdesc, Cuscode," +
                             "Cusname, Supcode, Supname, Outpackqty, Innerpackqty, Voucherqty, '" + model.AmountQty + "',Nopack, Printqty," +
                             "'" + BarCode + "'," +
@@ -214,7 +218,7 @@ namespace BILWeb.Quality
                             "Abatchqty, Isdel, Creater, getdate(), Materialnoid, Strongholdcode, " +
                             "Strongholdname, Companycode, Productdate, Supprdbatch, Supprddate, Productbatch, Edate, Storecondition," +
                             "Specialrequire, Batchno, Barcodemtype, Rownodel, Protectway, Boxweight, Unit, Labelmark, Boxdetail, Matebatch," +
-                            "Mixdate, Relaweight,ean from t_Outbarcode where serialno = '" + model.SerialNo + "'";
+                            "Mixdate, Relaweight,ean,ProjectNo,TracNo from t_Outbarcode where serialno = '" + model.SerialNo + "'";
 
             lstSql.Add(strSql);
 
@@ -266,10 +270,10 @@ namespace BILWeb.Quality
             strSql = "insert into t_Stock( Barcode, Serialno, Materialno, Materialdesc, Warehouseid, Houseid, Areaid, Qty, Status, Isdel," +
                                 "Creater, Createtime, Batchno,  Oldstockid, Unit, Unitname,  " +
                                 "Receivestatus,  Islimitstock,  Materialnoid, Strongholdcode, Strongholdname, Companycode," +
-                                "Edate, Supcode, Supname, Productdate, Supprdbatch, Supprddate, Isquality,Stocktype,ean,BARCODETYPE)" +
+                                "Edate, Supcode, Supname, Productdate, Supprdbatch, Supprddate, Isquality,Stocktype,ean,BARCODETYPE,ProjectNo,TracNo,IsAmount)" +
                                 "select barcode,serialno,materialno,Materialdesc,'" + model.WareHouseID + "', '" + model.HouseID + "', '" + model.AreaID + "', Qty ,'" + model.Status + "','1'," +
                                 "'" + user.UserNo + "',getdate(),batchno,'" + model.ID + "',unit,'" + model.UnitName + "','" + model.ReceiveStatus + "','" + model.IsLimitStock + "','"+model.MaterialNoID+"'," +
-                                "Strongholdcode, Strongholdname, Companycode,Edate, Supcode, Supname, Productdate, Supprdbatch,Supprddate, '3',1,ean,BARCODETYPE from t_Outbarcode where serialno = '" + NewSerialNo + "'";
+                                "Strongholdcode, Strongholdname, Companycode,Edate, Supcode, Supname, Productdate, Supprdbatch,Supprddate, '3',1,ean,BARCODETYPE,ProjectNo,TracNo,2 from t_Outbarcode where serialno = '" + NewSerialNo + "'";
 
             return strSql;
         }
@@ -320,3 +324,8 @@ namespace BILWeb.Quality
 
     }
 }
+
+
+
+
+

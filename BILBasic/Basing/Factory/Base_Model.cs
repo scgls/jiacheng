@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace BILBasic.Basing.Factory
 {
-
-    
     public class Base_Model
     {
         public Base_Model()
@@ -210,6 +208,9 @@ namespace BILBasic.Basing.Factory
         public string MainTypeCode { get; set; }
 
         public string GUID { get; set; }
+
+        public string PcOrPda { get; set; }
+        
 
     }
 

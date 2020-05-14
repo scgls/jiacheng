@@ -52,13 +52,16 @@ namespace Web.WMS.Common
                 new SelectListItem(){Value="2",Text="下架"},
                 new SelectListItem(){Value="3",Text="移库"},
                 new SelectListItem(){Value="4",Text="收货"},
+                new SelectListItem(){Value="200",Text="拆零"},
+                new SelectListItem(){Value="201",Text="调整上"},
+                new SelectListItem(){Value="202",Text="调整下"},
                 //new SelectListItem(){Value="5",Text="完工入库"},
                 //new SelectListItem(){Value="6",Text="退料入库"},
                 //new SelectListItem(){Value="7",Text="交接入库"},
                 //new SelectListItem(){Value="8",Text="齐套"},
                 //new SelectListItem(){Value="9",Text="领料出库"},
                 //new SelectListItem(){Value="10",Text="制成检"},
-                new SelectListItem(){Value="12",Text="复核"},
+                //new SelectListItem(){Value="12",Text="复核"},
                 //new SelectListItem(){Value="13",Text="包材接收"},
                 //new SelectListItem(){Value="18",Text="法规检"},
         };
@@ -68,6 +71,14 @@ namespace Web.WMS.Common
             new SelectListItem { Text = "正常", Value = "1" },
             new SelectListItem { Text = "停用", Value = "2" }
         };
+
+
+        public static List<SelectListItem> ISVWAREHOUSE = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "否", Value = "0" },
+            new SelectListItem { Text = "是", Value = "1" }
+        };
+        
 
         public static List<SelectListItem> CheckAnalyzeStateList = new List<SelectListItem>
         {
@@ -169,6 +180,13 @@ namespace Web.WMS.Common
             new SelectListItem { Text = "奥碧虹", Value = "奥碧虹" },
             new SelectListItem { Text = "傲之美", Value = "傲之美" },
             new SelectListItem { Text = "天猫", Value = "天猫" }
+        };
+
+        public static List<SelectListItem> GetStrongHoldcodeList = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "上海嘉成", Value = "SHJC" },
+            new SelectListItem { Text = "江苏嘉成", Value = "JSJC" },
+            new SelectListItem { Text = "上海三意", Value = "SHSY" }
         };
 
         public static UserInfo ReadUserInfo()

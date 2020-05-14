@@ -16,12 +16,24 @@ using BILBasic.Language;
 using BILWeb.StrategeRuleAll;
 using BILWeb.RuleAll;
 using BILWeb.Boxing;
+using BILWeb.OutBarCode;
 
 namespace BILWeb.OutStockTask
 {
     public partial class T_OutTaskDetails_Func : TBase_Func<T_OutTaskDetails_DB, T_OutStockTaskDetailsInfo>
     {
         T_OutTaskDetails_DB _db = new T_OutTaskDetails_DB();
+        protected override bool CheckGuid(string Guid, ref string strError)
+        {
+            T_OutBarcode_DB db = new T_OutBarcode_DB();
+            if (db.GetGuid(Guid)>0)
+            {
+                return false;
+            }
+            db.InsertGuid(Guid,ref strError);
+            return true;
+        }
+
 
         protected override bool CheckModelBeforeSave(T_OutStockTaskDetailsInfo model, ref string strError)
         {
@@ -96,10 +108,12 @@ namespace BILWeb.OutStockTask
 
             if (modelList[0].lstStockInfo != null && modelList[0].lstStockInfo.Count > 0) 
             {
-                if (modelList[0].FromErpWarehouse != modelList[0].lstStockInfo[0].WarehouseNo) 
-                {
-                    strError = "扫描条码的条码对应仓库和订单仓库不一致，不能提交数据！";
-                    return false;
+                if (!string.IsNullOrEmpty(modelList[0].FromErpWarehouse)) {
+                    if (modelList[0].FromErpWarehouse != modelList[0].lstStockInfo[0].WarehouseNo)
+                    {
+                        strError = "扫描条码的条码对应仓库和订单仓库不一致，不能提交数据！";
+                        return false;
+                    }
                 }
             }
 
@@ -168,7 +182,7 @@ namespace BILWeb.OutStockTask
             List<T_OutStockTaskDetailsInfo> modelList = new List<T_OutStockTaskDetailsInfo>();
             modelList = JSONHelper.JsonToObject<List<T_OutStockTaskDetailsInfo>>(ModelListJson);
             modelList = modelList.Where(t => t.ScanQty > 0).ToList();
-            modelList.ForEach(t => t.VoucherType = 9996);
+            //modelList.ForEach(t => t.VoucherType = 9996);
             LogNet.LogInfo("SaveT_OutStockTaskDetailADF---" + JSONHelper.ObjectToJson<List<T_OutStockTaskDetailsInfo>>(modelList));
             //modelList.ForEach(t => t.PostUser = userModel.UserNo);
             //modelList.ForEach(t => t.ToErpAreaNo = userModel.PickAreaNo);
@@ -187,36 +201,68 @@ namespace BILWeb.OutStockTask
             List<T_StockInfo> lstStock = new List<T_StockInfo>();
             List<T_StockInfo> NewLstStock = new List<T_StockInfo>();
             List<T_OutStockTaskDetailsInfo> lstDetail = new List<T_OutStockTaskDetailsInfo>();
-            string strUserNo = string.Empty;
-
-            foreach (var item in modelList) 
+            foreach (var item in modelList)
             {
-                if (item.lstStockInfo != null) 
+                if (item.lstStockInfo != null)
                 {
                     lstStock.AddRange(item.lstStockInfo);
                 }
-                
+
             }
-
-            NewLstStock = GroupInstockDetailList(modelList[0].VoucherType,lstStock);
-
-            foreach (var item in NewLstStock) 
+            NewLstStock = GroupInstockDetailList(modelList[0].VoucherType, lstStock);
+            foreach (var item in modelList)
             {
                 T_OutStockTaskDetailsInfo model = new T_OutStockTaskDetailsInfo();
+                model.ErpVoucherNo = item.ErpVoucherNo;
                 model.CompanyCode = item.CompanyCode;
                 model.StrongHoldCode = item.StrongHoldCode;
                 model.MaterialNo = item.MaterialNo;
-                model.FromBatchNo = item.FromBatchNo;
-                model.FromErpWarehouse = item.FromErpWarehouse;
-                model.FromErpAreaNo = item.FromErpAreaNo;
-                model.ToErpWarehouse = user.PickWareHouseNo;
-                model.ToErpAreaNo = user.PickAreaNo;
-                model.PostUser = user.UserNo;// strPostUser;
+                model.FromBatchNo = NewLstStock[0].FromBatchNo;//
+                model.FromErpWarehouse = NewLstStock[0].FromErpWarehouse.Replace("SHJC-", "").Replace("JSJC-", "").Replace("SHSY-", "");//
+                model.FromErpAreaNo = NewLstStock[0].FromErpAreaNo;//
+                model.WareHouseNo = NewLstStock[0].FromErpWarehouse.Replace("SHJC-", "").Replace("JSJC-", "").Replace("SHSY-", "");//
+                model.ToErpWarehouse = user.PickWareHouseNo;//
+                model.ToErpAreaNo = user.PickAreaNo; //
+                model.PostUser = user.UserNo;// /
                 model.VoucherType = item.VoucherType;
-                model.ScanQty = item.Qty;
-                model.ERPVoucherType = modelList[0].ERPVoucherType;
+                model.ScanQty = item.ScanQty;
+                model.ERPVoucherType = item.ERPVoucherType;
+                model.RowNo = item.RowNo;
+                model.PassWord = user.PassWord; 
                 lstDetail.Add(model);
             }
+            //string strUserNo = string.Empty;
+
+            //foreach (var item in modelList) 
+            //{
+            //    if (item.lstStockInfo != null) 
+            //    {
+            //        lstStock.AddRange(item.lstStockInfo);
+            //    }
+
+            //}
+
+            //NewLstStock = GroupInstockDetailList(modelList[0].VoucherType,lstStock);
+
+            //foreach (var item in NewLstStock) 
+            //{
+            //    T_OutStockTaskDetailsInfo model = new T_OutStockTaskDetailsInfo();
+            //    model.ErpVoucherNo = modelList[0].ErpVoucherNo;
+            //    model.CompanyCode = item.CompanyCode;
+            //    model.StrongHoldCode = item.StrongHoldCode;
+            //    model.MaterialNo = item.MaterialNo;
+            //    model.FromBatchNo = item.FromBatchNo;
+            //    model.FromErpWarehouse = item.FromErpWarehouse;
+            //    model.FromErpAreaNo = item.FromErpAreaNo;
+            //    model.WareHouseNo = item.FromErpWarehouse;
+            //    model.ToErpWarehouse = user.PickWareHouseNo;
+            //    model.ToErpAreaNo = user.PickAreaNo;
+            //    model.PostUser = user.UserNo;// strPostUser;
+            //    model.VoucherType = item.VoucherType;
+            //    model.ScanQty = item.Qty;
+            //    model.ERPVoucherType = modelList[0].ERPVoucherType;
+            //    lstDetail.Add(model);
+            //}
 
             return JSONHelper.ObjectToJson<List<T_OutStockTaskDetailsInfo>>(lstDetail);
 
@@ -236,8 +282,9 @@ namespace BILWeb.OutStockTask
                                   FromErpAreaNo = m.Key.t4,
                                   VoucherType = VoucherType,
                                   CompanyCode = m.FirstOrDefault().CompanyCode,
-                                  StrongHoldCode = m.FirstOrDefault().StrongHoldCode                                  
-
+                                  StrongHoldCode = m.FirstOrDefault().StrongHoldCode,
+                                  ErpVoucherNo = m.FirstOrDefault().ErpVoucherNo
+                                  
                                };
 
             return newModelList.ToList();
@@ -313,6 +360,11 @@ namespace BILWeb.OutStockTask
                     messageModel.HeaderStatus = "E";
                     messageModel.Message = "该拣货单已经全部完成拣货！";
                     return JsonConvert.SerializeObject(messageModel);
+                }
+                //如果拣货单明细没有仓库，增加当前登陆仓库
+                if (string.IsNullOrEmpty(modelList[0].FromErpWarehouse)) {
+
+                    modelList.ForEach(t => t.FromErpWarehouse = lstModel[0].WareHouseNo);
                 }
 
                 //拣货分配规则

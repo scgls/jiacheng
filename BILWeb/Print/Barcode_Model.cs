@@ -592,5 +592,6 @@ namespace BILWeb.Print
 
         public string fserialno { get; set; }
         
+        public string originalCode { get; set; }//预留释放标记
     }
 }

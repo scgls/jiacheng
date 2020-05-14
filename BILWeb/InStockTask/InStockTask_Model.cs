@@ -452,7 +452,7 @@ namespace BILWeb.InStockTask
         public string StrTaskType { get; set; }
         [Display(Name = "任务下发人")]
         public string StrTaskIsSuedUser { get; set; }
-        [Display(Name = "收货入库单")]
+        [Display(Name = "报检单号")]
         /// <summary>
         /// 采购收货入库单
         /// </summary>

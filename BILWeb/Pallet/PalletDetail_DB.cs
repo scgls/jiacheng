@@ -65,7 +65,7 @@ namespace BILWeb.Pallet
 
                 //string VoucherNoID = base.GetTableID("Seq_Pallet_No").ToString();
 
-                string VoucherNo = "4" + System.DateTime.Now.ToString("yyMMdd") + ID.ToString().PadLeft(6, '0');
+                string VoucherNo = "P4" + System.DateTime.Now.ToString("yyMMdd") + ID.ToString().PadLeft(6, '0');
 
                 modelList.ForEach(t => t.TaskNo = VoucherNo);
 
@@ -299,6 +299,8 @@ namespace BILWeb.Pallet
                 {
                     strSql = "delete t_Palletdetail where  PALLETTYPE=1 and serialno = '" + itemSerialNo.SerialNo + "'";
                     lstSql.Add(strSql);
+                    strSql = "update t_stock set palletno='' where serialno = '" + itemSerialNo.SerialNo + "'";
+                    lstSql.Add(strSql);
                 }
             }
 
@@ -375,6 +377,10 @@ namespace BILWeb.Pallet
             strSql = "update t_stock  set Qty = Qty - '" + model.AmountQty + "'  where serialno = '" + model.SerialNo + "'";
             lstSql.Add(strSql);
 
+            //被拆零的记录在出入库记录表
+            strSql = GetTaskTransSql_update(userModel, model, model.AmountQty);
+            lstSql.Add(strSql);
+
             strSql = "delete t_stock where serialno = '" + model.SerialNo + "' and qty =0";
             lstSql.Add(strSql);
 
@@ -422,6 +428,23 @@ namespace BILWeb.Pallet
             }
 
             return lstSql;
+        }
+
+        private string GetTaskTransSql_update(UserModel user, T_StockInfo model,decimal qty)
+        {
+            int id = base.GetTableIDBySqlServer("T_TASKTRANSDETAIL");
+            string strSql = "insert into t_tasktrans( Serialno,towarehouseID,TohouseID, ToareaID, Materialno, Materialdesc, Supcuscode, " +
+            "Supcusname, Qty, Tasktype, Vouchertype, Creater, Createtime,TaskdetailsId, Unit, Unitname,partno,materialnoid,erpvoucherno,voucherno," +
+            "Strongholdcode,Strongholdname,Companycode,Supprdbatch,Edate,taskno,batchno,Fromareaid,Fromwarehouseid,Fromhouseid,barcode,status,materialdoc,houseprop,ean)" +
+            " values ('" + model.SerialNo + "',0,0,0," +
+            " '" + model.MaterialNo + "','" + model.MaterialDesc + "','','','" + (model.Qty-qty) + "','200'," +
+            " 0 ,'" + user.UserName + "',getdate(),'" + model.ID + "', " +
+            "'" + model.Unit + "','" + model.UnitName + "','" + model.PartNo + "','" + model.MaterialNoID + "','" + model.ErpVoucherNo + "'," +
+            "  '','" + model.StrongHoldCode + "','" + model.StrongHoldName + "','" + model.CompanyCode + "'," +
+            "  '" + model.SupPrdBatch + "','" + model.EDate + "' ,'" + model.TaskNo + "'," +
+            " '" + model.BatchNo + "', '" + model.AreaID + "','" + model.WareHouseID + "','" + model.HouseID + "' ,'" + model.Barcode + "','" + model.Status + "','','','" + model.EAN + "') ";
+
+            return strSql;
         }
 
         private string GetStockTransSql(UserModel user, T_StockInfo model)

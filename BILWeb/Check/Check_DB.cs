@@ -630,14 +630,14 @@ namespace BILWeb.Query
 
                     //盘点明细表链接库位视图和托盘表，当完全盘盈时插入要使用这些字段
                     sql = "select a.creater,a.CHECKNO,a.AREAID,a.MATERIALID,a.inserttime,a.status,x.areano,x.houseid,x.warehouseid,a.SERIALNO,a.qty," +
-                                "o.BARCODE,o.MATERIALNO,o.MATERIALDESC,o.BATCHNO,o.unit,o.STRONGHOLDCODE,o.STRONGHOLDNAME,o.EDATE,o.SUPCODE,o.SUPNAME,o.PRODUCTDATE,o.SUPPRDBATCH,o.SUPPRDDATE,o.ean,p.PALLETNO," +
+                                "o.BARCODE,o.MATERIALNO,o.MATERIALDESC,o.BATCHNO,o.unit,o.STRONGHOLDCODE,o.STRONGHOLDNAME,o.EDATE,o.SUPCODE,o.SUPNAME,o.PRODUCTDATE,o.SUPPRDBATCH,o.SUPPRDDATE,o.ean,p.PALLETNO,o.ProjectNo,o.TracNo," +
                                 "b.qty as sqty,b.STRONGHOLDCODE,b.AREAID as SAREAID,b.MATERIALNOID as SMATERIALNOID,b.SERIALNO as SSERIALNO,b.status as sstatus ,b.ean as sean ," +
                                 "case when isnull(a.QTY,0)<isnull(b.QTY,0) then '亏' when isnull(a.QTY,0)>isnull(b.QTY,0)  then '赢' else '平'" +
                                 " end as remark from (select * from T_CHECKDETAILS where CHECKNO = '" + checkno + "') a full outer join (select AREAID,MATERIALNOID,SERIALNO,STRONGHOLDCODE,qty,status,ean " +
                                 " from T_STOCK where AREAID in(select AREAID from t_checkref where checkno = '" + checkno + "'))b" +
                             " on a.AREAID = b.AREAID " +
                             " and a.SERIALNO = b.SERIALNO left join (select * from v_AREA where ISDEL = 1) x on a.areaid = x.id" +
-                            " left join (select * from T_OUTBARCODE where  BARCODETYPE = 3 or BARCODETYPE = 5 or BARCODETYPE = 6) o on a.SERIALNO = o.SERIALNO " +
+                            " left join (select * from T_OUTBARCODE where  BARCODETYPE = 1) o on a.SERIALNO = o.SERIALNO " +
                             " left join T_PALLETDETAIL p on p.SERIALNO = a.SERIALNO and p.PALLETTYPE = 1  order by remark desc";
                     DataTable dt = dbFactory.ExecuteDataSet(System.Data.CommandType.Text, sql).Tables[0];
                     List<CheckAnalyze> listshow = ModelConvertHelper<CheckAnalyze>.ConvertToModel(dt);
@@ -658,11 +658,11 @@ namespace BILWeb.Query
                                 continue;
                             else
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 204, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),status = 3 where AREAID = " + item.SAREAID + "  and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
-                                sql = InTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = InTrans(username, sql, item, 203, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                             }
                         }
@@ -672,7 +672,7 @@ namespace BILWeb.Query
                             //如果完全亏
                             if (String.IsNullOrEmpty(item.SERIALNO))
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 204, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "delete from T_stock where AREAID = " + item.SAREAID + " and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
@@ -680,11 +680,11 @@ namespace BILWeb.Query
                             //数量亏
                             else
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 204, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),qty = " + item.QTY + ",status = " + item.status + " where AREAID = " + item.SAREAID + "  and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
-                                sql = InTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = InTrans(username, sql, item, 203, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                             }
                         }
@@ -698,11 +698,11 @@ namespace BILWeb.Query
                                 int o = Convert.ToInt32(dbFactory.ExecuteScalar(CommandType.Text, sql));
                                 if (o > 0)
                                 {
-                                    sql = OutTrans(username, sql, item, 101, item.SERIALNO);
+                                    sql = OutTrans(username, sql, item, 204, item.SERIALNO, checkno);
                                     sqls.Add(sql);
                                     sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),qty = " + item.QTY + ",AREAID = " + item.AREAID + ",WAREHOUSEID =" + item.warehouseid + ",HOUSEID =" + item.houseid + ",  status = 3 where SERIALNO = '" + item.SERIALNO + "'";
                                     sqls.Add(sql);
-                                    sql = InTrans(username, sql, item, 101, item.SERIALNO);
+                                    sql = InTrans(username, sql, item, 203, item.SERIALNO, checkno);
                                     sqls.Add(sql);
                                 }
                                 else
@@ -712,25 +712,25 @@ namespace BILWeb.Query
                                     //库存中没有，全部从条码表中拉数据，再从托盘表中拉托盘
                                     sql = "insert into T_STOCK (BARCODE,SERIALNO,MATERIALNO,MATERIALDESC,MATERIALNOID,WAREHOUSEID," +
                                        "HOUSEID,AREAID,QTY,STATUS,ISDEL,CREATER,CREATETIME,BATCHNO,UNIT,PALLETNO,STRONGHOLDCODE,STRONGHOLDNAME" +
-                                       ",COMPANYCODE,EDATE,SUPCODE,SUPNAME,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,RECEIVESTATUS,ISLIMITSTOCK,EAN)" +
+                                       ",COMPANYCODE,EDATE,SUPCODE,SUPNAME,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,RECEIVESTATUS,ISLIMITSTOCK,EAN,ProjectNo,TracNo)" +
                                        "VALUES('" + item.BARCODE + "','" + item.SERIALNO + "','" + item.MATERIALNO + "','" + item.MATERIALDESC + "'" +
                                        "," + item.MATERIALID + "," + item.warehouseid + "," + item.houseid + "," + item.AREAID +
                                        "," + item.QTY + ",3,1,'" + username + "',getdate(),'" + item.BatchNo + "','" + item.unit + "','" + item.PALLETNO + "','" + item.STRONGHOLDCODE + "','" + item.STRONGHOLDNAME + "'" +
                                        ",'10',"+ (item.EDATE < date1 ? "'2119-10-10'" : ("'"+ item.EDATE.ToString("yyyy-MM-dd")) + "'") + ",'" + item.SUPCODE + "','" + item.SUPNAME + "'" +
-                                       ",null,null,null,2,2,'" + item.ean + "')";
+                                       ",null,null,null,2,2,'" + item.ean + "','"+item.ProjectNo+"','"+item.TracNo+"')";
                                     sqls.Add(sql);
-                                    sql = InTrans(username, sql, item, 101, item.SERIALNO);
+                                    sql = InTrans(username, sql, item, 203, item.SERIALNO, checkno);
                                     sqls.Add(sql);
                                 }
                             }
                             //数量赢
                             else
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 204, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),qty = " + item.QTY + ",status = 3 where AREAID = " + item.SAREAID + "  and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
-                                sql = InTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = InTrans(username, sql, item, 203, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                             }
                         }
@@ -952,11 +952,11 @@ namespace BILWeb.Query
                                 continue;
                             else
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),status = " + item.status + " where AREAID = " + item.SAREAID + "  and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
-                                sql = InTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = InTrans(username, sql, item, 101, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                             }
                         }
@@ -966,7 +966,7 @@ namespace BILWeb.Query
                             //如果完全亏
                             if (String.IsNullOrEmpty(item.SERIALNO))
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO,checkno);
                                 sqls.Add(sql);
                                 sql = "delete from T_stock where AREAID = " + item.SAREAID + " and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
@@ -974,11 +974,11 @@ namespace BILWeb.Query
                             //数量亏
                             else
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),qty = " + item.QTY + ",status = " + item.status + " where AREAID = " + item.SAREAID + "  and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
-                                sql = InTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = InTrans(username, sql, item, 101, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                             }
                         }
@@ -992,11 +992,11 @@ namespace BILWeb.Query
                                 int o = Convert.ToInt32(dbFactory.ExecuteScalar(CommandType.Text, sql));
                                 if (o > 0)
                                 {
-                                    sql = OutTrans(username, sql, item, 101, item.SERIALNO);
+                                    sql = OutTrans(username, sql, item, 101, item.SERIALNO, checkno);
                                     sqls.Add(sql);
                                     sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),qty = " + item.QTY + ",AREAID = " + item.AREAID + ",WAREHOUSEID =" + item.warehouseid + ",HOUSEID =" + item.houseid + ",  status = " + item.status + " where SERIALNO = '" + item.SERIALNO + "'";
                                     sqls.Add(sql);
-                                    sql = InTrans(username, sql, item, 101, item.SERIALNO);
+                                    sql = InTrans(username, sql, item, 101, item.SERIALNO, checkno);
                                     sqls.Add(sql);
                                 }
                                 else
@@ -1011,18 +1011,18 @@ namespace BILWeb.Query
                                        ",'10','" + item.EDATE.ToString("yyyy-MM-dd") + "','" + item.SUPCODE + "','" + item.SUPNAME + "'" +
                                        ",'" + item.PRODUCTDATE.ToString("yyyy-MM-dd") + "','" + item.SUPPRDBATCH + "','" + item.SUPPRDDATE.ToString("yyyy-MM-dd") + "',2,2,'" + item.ean + "')";
                                     sqls.Add(sql);
-                                    sql = InTrans(username, sql, item, 101, item.SERIALNO);
+                                    sql = InTrans(username, sql, item, 101, item.SERIALNO, checkno);
                                     sqls.Add(sql);
                                 }
                             }
                             //数量赢
                             else
                             {
-                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = OutTrans(username, sql, item, 101, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                                 sql = "update T_stock set MODIFYER = '" + username + "',MODIFYTIME = getdate(),qty = " + item.QTY + ",status = " + item.status + " where AREAID = " + item.SAREAID + "  and SERIALNO = '" + item.SSERIALNO + "'";
                                 sqls.Add(sql);
-                                sql = InTrans(username, sql, item, 101, item.SSERIALNO);
+                                sql = InTrans(username, sql, item, 101, item.SSERIALNO, checkno);
                                 sqls.Add(sql);
                             }
                         }
@@ -1315,27 +1315,27 @@ namespace BILWeb.Query
         }
 
 
-        private static string OutTrans(string username, string sql, CheckAnalyze item, int vouchertype, string serialno)
+        private static string OutTrans(string username, string sql, CheckAnalyze item, int vouchertype, string serialno,string checkno)
         {
             sql = "insert into T_TASKTRANS (VOUCHERTYPE,MATERIALNO,MATERIALDESC,CREATETIME,UNIT,CREATER,MATERIALNOID,STRONGHOLDNAME,COMPANYCODE" +
                 " ,STRONGHOLDCODE,BATCHNO,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,SERIALNO" +
                 " ,TOWAREHOUSEID ,TOHOUSEID ,TOAREAID " +
-                "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status)" +
+                "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,taskno,FROMWAREHOUSEno,fromhouseno,FromAreaNo)" +
                 " select " + vouchertype + ",f.materialno,f.materialdesc,getdate(),f.unit,'" + username + "',f.materialnoid,f.strongholdname,10, " +
                 "  f.strongholdcode,f.batchno,f.productdate,f.supprdbatch,f.supprddate,f.serialno" +
-                " ,'','','',f.barcode,2,f.qty,f.edate,f.warehouseid,f.houseid,f.areaid,f.status from t_stock f where f.serialno = '" + serialno + "'";
-            return sql;
+                " ,'','','',f.barcode,204,f.qty,f.edate,f.warehouseid,f.houseid,f.areaid,f.status,'"+checkno+ "',f.warehouseno,f.houseno,f.areano from v_stock f where f.serialno = '" + serialno + "'";
+            return sql; 
         }
 
-        private static string InTrans(string username, string sql, CheckAnalyze item, int vouchertype, string serialno)
+        private static string InTrans(string username, string sql, CheckAnalyze item, int vouchertype, string serialno,string checkno)
         {
             sql = "insert into T_TASKTRANS (VOUCHERTYPE,MATERIALNO,MATERIALDESC,CREATETIME,UNIT,CREATER,MATERIALNOID,STRONGHOLDNAME,COMPANYCODE" +
                            " ,STRONGHOLDCODE,BATCHNO,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,SERIALNO" +
                             " ,TOWAREHOUSEID ,TOHOUSEID ,TOAREAID " +
-                          "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID ,FROMHOUSEID ,FROMAREAID,status)" +
+                          "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID ,FROMHOUSEID ,FROMAREAID,status,taskno,toWAREHOUSEno,tohouseno,toAreaNo)" +
                             "select " + vouchertype + ",f.materialno,f.materialdesc,getdate(),f.unit,'" + username + "',f.materialnoid,f.strongholdname,10, " +
                           "  f.strongholdcode,f.batchno,f.productdate,f.supprdbatch,f.supprddate,f.serialno" +
-                           " ,f.warehouseid,f.houseid,f.areaid,f.barcode,1,f.qty,f.edate,'','','',f.status from t_stock f where  f.serialno = '" + serialno + "'";
+                           " ,f.warehouseid,f.houseid,f.areaid,f.barcode,203,f.qty,f.edate,'','','',f.status,'" + checkno + "',f.warehouseno,f.houseno,f.areano from v_stock f where  f.serialno = '" + serialno + "'";
             return sql;
         }
 
@@ -2288,7 +2288,7 @@ namespace BILWeb.Query
                 }
                 if (returnlist.Count == 0)
                 {
-                    sql = "select * from t_outbarcode where SERIALNO = '" + SerialNo + "' and barcodetype = 3";
+                    sql = "select * from t_outbarcode where SERIALNO = '" + SerialNo + "' and barcodetype = 1";
                     using (var dr = dbFactory.ExecuteReader(sql))
                     {
                         if (dr.Read())
@@ -2349,23 +2349,23 @@ namespace BILWeb.Query
                 }
                 Barcode_Model bar = list[0];
 
-                if (bar.EDate == DateTime.MinValue)
-                {
-                    BaseMessage_Model<Barcode_Model> bm = new BaseMessage_Model<Barcode_Model>();
-                    bm.HeaderStatus = "E";
-                    bm.Message = "有效期不能为空";
-                    string j = Check_Func.SerializeObject(bm);
-                    return j;
-                }
+                //if (bar.EDate == DateTime.MinValue)
+                //{
+                //    BaseMessage_Model<Barcode_Model> bm = new BaseMessage_Model<Barcode_Model>();
+                //    bm.HeaderStatus = "E";
+                //    bm.Message = "有效期不能为空";
+                //    string j = Check_Func.SerializeObject(bm);
+                //    return j;
+                //}
 
-                if (bar.STATUS == 0)
-                {
-                    BaseMessage_Model<Barcode_Model> bm = new BaseMessage_Model<Barcode_Model>();
-                    bm.HeaderStatus = "E";
-                    bm.Message = "质检状态必须填写";
-                    string j = Check_Func.SerializeObject(bm);
-                    return j;
-                }
+                //if (bar.STATUS == 0)
+                //{
+                //    BaseMessage_Model<Barcode_Model> bm = new BaseMessage_Model<Barcode_Model>();
+                //    bm.HeaderStatus = "E";
+                //    bm.Message = "质检状态必须填写";
+                //    string j = Check_Func.SerializeObject(bm);
+                //    return j;
+                //}
                 //库存有，修改库存逻辑
                 if (bar.AllIn == "1")
                 {
@@ -2411,23 +2411,23 @@ namespace BILWeb.Query
                     sql = "insert into T_TASKTRANS (VOUCHERTYPE,MATERIALNO,MATERIALDESC,CREATETIME,UNIT,CREATER,MATERIALNOID,STRONGHOLDNAME,COMPANYCODE" +
                            " ,STRONGHOLDCODE,BATCHNO,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,SERIALNO" +
                             " ,TOWAREHOUSEID ,TOHOUSEID ,TOAREAID " +
-                          "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,EAN)" +
+                          "  , BARCODE ,TASKTYPE ,QTY ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,EAN)" +
                             "select 100,f.materialno,f.materialdesc,GETDATE(),f.unit,'" + man + "',f.materialnoid,f.strongholdname,10, " +
                           "  f.strongholdcode,f.batchno,f.productdate,f.supprdbatch,f.supprddate,f.serialno" +
-                           " ,'','','',f.barcode,2,f.qty,f.edate,f.warehouseid,f.houseid,f.areaid,f.status,f.EAN from t_stock f where f.barcode = '" + bar.BarCode + "'";
+                           " ,'','','',f.barcode,202,f.qty,f.warehouseid,f.houseid,f.areaid,f.status,f.EAN from t_stock f where f.barcode = '" + bar.BarCode + "'";
                     sqls.Add(sql);
                     //修改库存表
-                    sql = "update t_stock set edate ='" + bar.EDate.ToString("yyyy/MM/dd") + "' ,materialnoid=" + mid + ",qty = " + bar.Qty + ",BatchNo ='" + bar.BatchNo + "',StrongHoldCode ='" + bar.StrongHoldCode + "',StrongHoldName ='" + bar.StrongHoldName + "',areaid = " + areaid + ",houseid = " + houseid + ",warehouseid = " + warehouseid + ",status=" + bar.STATUS + ",ean='" + bar.EAN + "' where serialno = '" + bar.SerialNo + "'";
+                    sql = "update t_stock set materialnoid=" + mid + ",qty = " + bar.Qty + ",BatchNo ='" + bar.BatchNo + "',StrongHoldCode ='" + bar.StrongHoldCode + "',StrongHoldName ='" + bar.StrongHoldName + "',areaid = " + areaid + ",houseid = " + houseid + ",warehouseid = " + warehouseid + ",status=" + bar.STATUS + ",ean='" + bar.EAN + "' where serialno = '" + bar.SerialNo + "'";
                     sqls.Add(sql);
                     sql = "insert into T_TASKTRANS (VOUCHERTYPE,MATERIALNO,MATERIALDESC,CREATETIME,UNIT,CREATER,MATERIALNOID,STRONGHOLDNAME,COMPANYCODE" +
                         " ,STRONGHOLDCODE,BATCHNO,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,SERIALNO" +
                          " ,TOWAREHOUSEID ,TOHOUSEID ,TOAREAID " +
-                       "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,ean)" +
+                       "  , BARCODE ,TASKTYPE ,QTY  ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,ean)" +
                          "select 100,f.materialno,f.materialdesc,GETDATE(),f.unit,'" + man + "',(select id from t_material t where t.materialno = '" + bar.MaterialNo + "' and t.strongholdcode='" + bar.StrongHoldCode + "'),'" + bar.StrongHoldName + "',10, " +
                        " '" + bar.StrongHoldCode + "','" + bar.BatchNo + "',f.productdate,f.supprdbatch,f.supprddate,f.serialno" +
-                        " ," + warehouseid + "," + houseid + "," + areaid + ",f.barcode,1," + bar.Qty + ",f.edate,'','','',f.status,f.ean from t_stock f where f.barcode = '" + bar.BarCode + "'";
+                        " ," + warehouseid + "," + houseid + "," + areaid + ",f.barcode,201," + bar.Qty + ",'','','',f.status,f.ean from t_stock f where f.barcode = '" + bar.BarCode + "'";
                     sqls.Add(sql);
-                    sql = "update t_outbarcode set materialnoid=(select id from t_material t where t.materialno = '" + bar.MaterialNo + "' and t.strongholdcode='" + bar.StrongHoldCode + "'),edate ='" + bar.EDate.ToString("yyyy/MM/dd") + "',qty = " + bar.Qty + ",BatchNo ='" + bar.BatchNo + "',StrongHoldCode ='" + bar.StrongHoldCode + "',StrongHoldName ='" + bar.StrongHoldName + "' where serialno = '" + bar.SerialNo + "'";
+                    sql = "update t_outbarcode set materialnoid=(select id from t_material t where t.materialno = '" + bar.MaterialNo + "' and t.strongholdcode='" + bar.StrongHoldCode + "'),qty = " + bar.Qty + ",BatchNo ='" + bar.BatchNo + "',StrongHoldCode ='" + bar.StrongHoldCode + "',StrongHoldName ='" + bar.StrongHoldName + "' where serialno = '" + bar.SerialNo + "'";
                     sqls.Add(sql);
                     //插入流水
 
@@ -2457,28 +2457,28 @@ namespace BILWeb.Query
                         }
                     }
 
-                    sql = "select * from t_outbarcode where barcode = '" + bar.BarCode + "' and barcodetype = 3";
+                    sql = "select * from t_outbarcode where barcode = '" + bar.BarCode + "' and barcodetype = 1";
                     DataTable dt = dbFactory.ExecuteDataSet(CommandType.Text, sql).Tables[0];
                     List<Barcode_Model> lbb = ModelConvertHelper<Barcode_Model>.ConvertToModel(dt);
                     Barcode_Model item = lbb[0];
                     //插入
                     sql = "insert into T_STOCK (BARCODE,SERIALNO,MATERIALNO,MATERIALDESC,MATERIALNOID,WAREHOUSEID," +
                                           "HOUSEID,AREAID,QTY,STATUS,ISDEL,CREATER,CREATETIME,BATCHNO,UNIT,PALLETNO,STRONGHOLDCODE,STRONGHOLDNAME" +
-                                          ",COMPANYCODE,EDATE,SUPCODE,SUPNAME,SUPPRDBATCH,RECEIVESTATUS,ISLIMITSTOCK,ean,barcodetype)" +
+                                          ",COMPANYCODE,SUPCODE,SUPNAME,SUPPRDBATCH,RECEIVESTATUS,ISLIMITSTOCK,ean,barcodetype)" +
                                           "VALUES('" + item.BarCode + "','" + item.SerialNo + "','" + item.MaterialNo + "','" + item.MaterialDesc + "'" +
                                           "," + item.MaterialNoID + "," + warehouseid + "," + houseid + "," + areaid +
                                           "," + item.Qty + "," + bar.STATUS + ",1,'" + man + "',GETDATE(),'" + item.BatchNo + "','" + item.Unit + "','" + item.PalletNo + "','" + item.StrongHoldCode + "','" + item.StrongHoldName + "'" +
-                                          ",'10','" + item.EDate.ToString("yyyy-MM-dd") + "','" + item.SupCode + "','" + item.SupName + "'" +
-                                          ",'" + item.SupPrdBatch + "',2,2,'" + item.EAN + "',3)";
+                                          ",'10','" + item.SupCode + "','" + item.SupName + "'" +
+                                          ",'" + item.SupPrdBatch + "',2,2,'" + item.EAN + "',1)";
                     sqls.Add(sql);
                     //插入流水
                     sql = "insert into T_TASKTRANS (VOUCHERTYPE,MATERIALNO,MATERIALDESC,CREATETIME,UNIT,CREATER,MATERIALNOID,STRONGHOLDNAME,COMPANYCODE" +
                           " ,STRONGHOLDCODE,BATCHNO,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,SERIALNO" +
                            " ,TOWAREHOUSEID ,TOHOUSEID ,TOAREAID " +
-                         "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID ,FROMHOUSEID ,FROMAREAID,status,ean)" +
+                         "  , BARCODE ,TASKTYPE ,QTY  ,FROMWAREHOUSEID ,FROMHOUSEID ,FROMAREAID,status,ean)" +
                            "select 100,f.materialno,f.materialdesc,GETDATE(),f.unit,'" + man + "',f.materialnoid,f.strongholdname,10, " +
                          "  f.strongholdcode,f.batchno,f.productdate,f.supprdbatch,f.supprddate,f.serialno" +
-                          " ,f.warehouseid,f.houseid,f.areaid,f.barcode,1,f.qty,f.edate,'','','',f.status,f.ean from t_stock f where f.barcode = '" + bar.BarCode + "'";
+                          " ,f.warehouseid,f.houseid,f.areaid,f.barcode,201,f.qty,'','','',f.status,f.ean from t_stock f where f.barcode = '" + bar.BarCode + "'";
                     sqls.Add(sql);
 
                 }
@@ -2501,18 +2501,18 @@ namespace BILWeb.Query
                         sql = "insert into T_TASKTRANS (VOUCHERTYPE,MATERIALNO,MATERIALDESC,CREATETIME,UNIT,CREATER,MATERIALNOID,STRONGHOLDNAME,COMPANYCODE" +
                             " ,STRONGHOLDCODE,BATCHNO,PRODUCTDATE,SUPPRDBATCH,SUPPRDDATE,SERIALNO" +
                              " ,TOWAREHOUSEID ,TOHOUSEID ,TOAREAID " +
-                           "  , BARCODE ,TASKTYPE ,QTY ,EDATE ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,ean)" +
+                           "  , BARCODE ,TASKTYPE ,QTY ,FROMWAREHOUSEID , FROMHOUSEID ,FROMAREAID,status,ean)" +
                              "select 100,f.materialno,f.materialdesc,GETDATE(),f.unit,'" + man + "',f.materialnoid,f.strongholdname,10, " +
                            "  f.strongholdcode,f.batchno,f.productdate,f.supprdbatch,f.supprddate,f.serialno" +
-                            " ,'','','',f.barcode,2,f.qty,f.edate,f.warehouseid,f.houseid,f.areaid,f.status,f.ean from t_stock f where f.barcode = '" + bar.BarCode + "'";
+                            " ,'','','',f.barcode,202,f.qty,f.warehouseid,f.houseid,f.areaid,f.status,f.ean from t_stock f where f.barcode = '" + bar.BarCode + "'";
                         sqls.Add(sql);
                         //插入放颖库存备份表
                         sql = "INSERT INTO t_Stocktrans (Barcode, Serialno, Materialno, Materialdesc, Warehouseid, Houseid, Areaid, Qty,  Status, Isdel, Creater, Createtime, " +
                              "Batchno, Sn,  Oldstockid, Taskdetailesid, Checkid, Transferdetailsid,  Unit, Unitname, Palletno, Receivestatus,  Islimitstock,  " +
-                             "Materialnoid, Strongholdcode, Strongholdname, Companycode, Edate, Supcode, Supname, Productdate, Supprdbatch, Supprddate, Isquality,ean)" +
+                             "Materialnoid, Strongholdcode, Strongholdname, Companycode, Supcode, Supname, Productdate, Supprdbatch, Supprddate, Isquality,ean)" +
                             "SELECT A.Barcode,A.Serialno,A.Materialno,A.Materialdesc,A.Warehouseid,A.Houseid,A.Areaid,A.Qty, " +
                             "A.Status,A.Isdel,'" + man + "',A.Createtime,A.Batchno,A.Sn,a.Oldstockid,A.Taskdetailesid,A.Checkid,A.Transferdetailsid,A.Unit,A.Unitname,A.Palletno,A.Receivestatus," +
-                            "A.Islimitstock,A.Materialnoid,A.Strongholdcode,A.Strongholdname,A.Companycode,A.Edate,A.Supcode,A.Supname,A.Productdate,A.Supprdbatch," +
+                            "A.Islimitstock,A.Materialnoid,A.Strongholdcode,A.Strongholdname,A.Companycode,A.Supcode,A.Supname,A.Productdate,A.Supprdbatch," +
                             "A.Supprddate,A.Isquality,A.ean FROM T_STOCK A WHERE A.barcode = '" + bar.BarCode + "'";
                         sqls.Add(sql);
                         sql = "delete from t_stock where serialno = '" + bar.SerialNo + "'";

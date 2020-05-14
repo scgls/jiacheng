@@ -4,6 +4,7 @@ using BILWeb.Login.User;
 using BILWeb.Query;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -33,6 +34,71 @@ namespace Web.WMS.Controllers
             ViewData["PageData"] = new PageData<Check_Model> { data = modelList, dividPage = page, link = Common.PageTag.ModelToUriParam(model, "/Check/GetModelList") };
             return View("GetModelList", model);
         }
+
+
+        public FileResult Excel(CheckAnalyze model)
+        {
+            string strErrMsg = string.Empty;
+            List<CheckAnalyze> lstExport = new List<CheckAnalyze>();
+            string strError = "";
+            DividPage page = new DividPage
+            {
+                CurrentPageShowCounts = 10000000
+            };
+            tfun.GetCheckAnalyze(model, ref page, ref lstExport, ref strError);
+
+            //创建Excel文件的对象
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+            //给sheet1添加第一行的头部标题
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(0);
+            row1.CreateCell(0).SetCellValue("盈亏情况");
+            row1.CreateCell(1).SetCellValue("实盘据点");
+            row1.CreateCell(2).SetCellValue("实盘物料号");
+            row1.CreateCell(3).SetCellValue("实盘物料描述");
+            row1.CreateCell(4).SetCellValue("实盘库位");
+            row1.CreateCell(5).SetCellValue("实盘序列号");
+            row1.CreateCell(6).SetCellValue("实盘数量");
+            row1.CreateCell(7).SetCellValue("库存数量");
+            row1.CreateCell(8).SetCellValue("库存序列号");
+            row1.CreateCell(9).SetCellValue("库存库位");
+            row1.CreateCell(10).SetCellValue("库存物料号");
+            row1.CreateCell(11).SetCellValue("库存物料描述");
+            row1.CreateCell(12).SetCellValue("库存据点");
+            row1.CreateCell(13).SetCellValue("盘盈数量");
+            row1.CreateCell(14).SetCellValue("盘亏数量");
+            row1.CreateCell(15).SetCellValue("操作人");
+            
+            //将数据逐步写入seet1各个行
+            for (int i = 0; i < lstExport.Count; i++)
+            {
+                NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 1);
+
+                rowtemp.CreateCell(0).SetCellValue(lstExport[i].remark == null ? "" : lstExport[i].remark.ToString());
+                rowtemp.CreateCell(1).SetCellValue(lstExport[i].STRONGHOLDCODE == null ? "" : lstExport[i].STRONGHOLDCODE.ToString());
+                rowtemp.CreateCell(2).SetCellValue(lstExport[i].MATERIALNO == null ? "" : lstExport[i].MATERIALNO.ToString());
+                rowtemp.CreateCell(3).SetCellValue(lstExport[i].MATERIALDESC == null ? "" : lstExport[i].MATERIALDESC.ToString());
+                rowtemp.CreateCell(4).SetCellValue(lstExport[i].AREANO == null ? "" : lstExport[i].AREANO.ToString());
+                rowtemp.CreateCell(5).SetCellValue(lstExport[i].SERIALNO == null ? "" : lstExport[i].SERIALNO.ToString());
+                rowtemp.CreateCell(6).SetCellValue(lstExport[i].QTY == null ? "" : lstExport[i].QTY.ToString());
+                rowtemp.CreateCell(7).SetCellValue(lstExport[i].SQTY == null ? "" : lstExport[i].SQTY.ToString());
+                rowtemp.CreateCell(8).SetCellValue(lstExport[i].SSERIALNO.ToString());
+                rowtemp.CreateCell(9).SetCellValue(lstExport[i].SAREANO.ToString());
+                rowtemp.CreateCell(10).SetCellValue(lstExport[i].SMATERIALNO == null ? "" : lstExport[i].SMATERIALNO.ToString());
+                rowtemp.CreateCell(11).SetCellValue(lstExport[i].SMATERIALDESC == null ? "" : lstExport[i].SMATERIALDESC.ToString());
+                rowtemp.CreateCell(12).SetCellValue(lstExport[i].SSTRONGHOLDCODE == null ? "" : lstExport[i].SSTRONGHOLDCODE.ToString());
+                rowtemp.CreateCell(13).SetCellValue(lstExport[i].YQTY == null ? "" : lstExport[i].YQTY.ToString());
+                rowtemp.CreateCell(14).SetCellValue(lstExport[i].KQTY == null ? "" : lstExport[i].KQTY.ToString());
+                rowtemp.CreateCell(15).SetCellValue(lstExport[i].Creater == null ? "" : lstExport[i].Creater.ToString());
+            }
+            // 写入到客户端 
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            return File(ms, "application/vnd.ms-excel", DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls");
+        }
+
 
 
         [HttpPost]

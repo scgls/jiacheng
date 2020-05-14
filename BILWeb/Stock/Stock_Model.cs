@@ -569,5 +569,12 @@ namespace BILWeb.Stock
         public int IsPalletOrBox { get; set; }
 
         public string WarehouseName { get; set; }
+
+        public string ProjectNo { get; set; }
+        [Display(Name = "跟踪号")]
+        public string TracNo { get; set; }
+
+        public string Spec { get; set; }
+        
     }
 }

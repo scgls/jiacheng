@@ -416,5 +416,9 @@ namespace BILWeb.Material
         public int standardbox1 { get; set; }
         public int standardbox2 { get; set; }
         public int standardbox3 { get; set; }
+        [Display(Name = "是否是追溯件")]
+        public string sku { get; set; }
+        
+
     }
 }

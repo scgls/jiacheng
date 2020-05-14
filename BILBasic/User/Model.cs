@@ -396,5 +396,10 @@ namespace BILBasic.User
         public string LoginType { get; set; }
 
         public bool IsChangePwd { get; set; }
+
+        /// <summary>
+        /// 是否上架0：不上架 1：上架
+        /// </summary>
+        public int ISVWAREHOUSE { get; set; }
     }
 }

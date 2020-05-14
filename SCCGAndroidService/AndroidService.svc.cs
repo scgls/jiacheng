@@ -26,6 +26,7 @@ using BILWeb.MoveStockTask;
 using BILWeb.LandMark;
 using BILWeb.Query;
 using BILWeb.Box;
+using BILWeb.YS;
 
 namespace SCCGAndroidService
 {
@@ -218,6 +219,14 @@ namespace SCCGAndroidService
             T_OutBarCode_Func tfunc = new T_OutBarCode_Func();
             return tfunc.GetOutBarCodeInfo(SerialNo);
         }
+
+        //补打条码列表
+        public string GetOutBarCodeForPrint(string BarCode)
+        {
+            T_OutBarCode_Func tfunc = new T_OutBarCode_Func();
+            return tfunc.GetOutBarCodeForPrint(BarCode);
+        }
+        
 
         /// <summary>
         /// 检查条码（包材接收）
@@ -497,16 +506,22 @@ namespace SCCGAndroidService
             return tfunc.GetStockModelBySql(ModelStockJson);
         }
 
+        public string GetBarcodeModelForJADF(string Serialno)
+        {
+            T_OutBarCode_Func tfunc = new T_OutBarCode_Func();
+            return tfunc.GetBarcodeModelForJADF(Serialno);
+        }
+
         /// <summary>
         /// 保存下架扫描数据
         /// </summary>
         /// <param name="UserJson"></param>
         /// <param name="ModelJson"></param>
         /// <returns></returns>
-        public string SaveT_OutStockTaskDetailADF(string UserJson, string ModelJson)
+        public string SaveT_OutStockTaskDetailADF(string UserJson, string ModelJson,string Guid)
         {
             T_OutTaskDetails_Func tfunc = new T_OutTaskDetails_Func();
-            return tfunc.SaveModelListSqlToDBADF(UserJson, ModelJson);
+            return tfunc.SaveModelListSqlToDBADF(UserJson, ModelJson, Guid);
         }
 
         /// <summary>
@@ -822,7 +837,43 @@ namespace SCCGAndroidService
 
         #endregion
 
+        public string GetErpVoucherNo(string BarCode)
+        {
+            T_OutBarCode_Func func = new T_OutBarCode_Func();
+            return func.GetErpVoucherNo(BarCode);
+        }
 
+        #region 预留释放模块
+        /// <summary>
+        /// 获取入库单据，构造状态1
+        /// </summary>
+        /// <param name="UserJosn"></param>
+        /// <param name="ModelJson"></param>
+        /// <returns></returns>
+        public string GetT_YSListADF(string UserJson, string ModelJson)
+        {
+            T_YS_Func tfunc = new T_YS_Func();
+            return tfunc.GetModelListADF(UserJson, ModelJson);
+        }
+
+        public string GetTYSDetailListByHeaderIDADF(string ModelDetailJson)
+        {
+            T_YSDetail_Func tfunc = new T_YSDetail_Func();
+            return tfunc.GetModelListByHeaderIDADF(ModelDetailJson);
+        }
+        public string GetOutBarCodeForYS(string BarCode)
+        {
+            T_OutBarCode_Func tfunc = new T_OutBarCode_Func();
+            return tfunc.GetOutBarCodeForYS(BarCode);
+        }
+
+        public string YSPost(string UserJson,string ModelJson)
+        {
+            T_YSDetail_Func tfunc = new T_YSDetail_Func();
+            return tfunc.YSPost(UserJson,ModelJson);
+        }
+        
+        #endregion
 
     }
 }

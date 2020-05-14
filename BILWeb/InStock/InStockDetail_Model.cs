@@ -373,11 +373,15 @@ namespace BILWeb.InStock
         public bool ischeck { get; set; }
 
         public string InvoiceNo { get; set; }
-
+        [Display(Name = "需求号")]
         public string TracNo { get; set; }
+        [Display(Name = "项目号")]
         public string ProjectNo { get; set; }
         public string iarrsid { get; set; }
 
-        
+        public string WareHouseNo { get; set; }
+        public string PassWord { get; set; }
+        [Display(Name = "规格")]
+        public string spec { get; set; }
     }
 }

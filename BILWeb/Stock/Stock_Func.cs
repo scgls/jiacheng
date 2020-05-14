@@ -440,17 +440,17 @@ namespace BILWeb.Stock
             //    }
             //}
 
-            if (stockModel.EDate.ToString("yyyy/MM/dd").CompareTo(SysNowDate) < 0)
-            {
-                strError = "该条码超过有效期，不能下架！";
-                return false;
-            }
+            //if (stockModel.EDate.ToString("yyyy/MM/dd").CompareTo(SysNowDate) < 0)
+            //{
+            //    strError = "该条码超过有效期，不能下架！";
+            //    return false;
+            //}
 
-            if (stockModel.IsRetention == "1")
-            {
-                strError = "该条码已经被库存留置，不能下架！";
-                return false;
-            }
+            //if (stockModel.IsRetention == "1")
+            //{
+            //    strError = "该条码已经被库存留置，不能下架！";
+            //    return false;
+            //}
             //if (stockModel.Status == 4)
             //{
             //    strError = "该条码检验不合格！";
@@ -1118,6 +1118,9 @@ namespace BILWeb.Stock
                     case "5"://EAN查询
                         ReturnJson = GetStockByEANADF(MaterialNo);
                         break;
+                    case "6"://根据条码查询
+                        ReturnJson = GetStockByBarcodeADF(MaterialNo);
+                        break;
                 }
 
                 return ReturnJson;
@@ -1374,6 +1377,52 @@ namespace BILWeb.Stock
             }
         }
 
+
+        /// <summary>
+        /// 根据条码查询库存
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns></returns>
+        public string GetStockByBarcodeADF(string barcode)
+        {
+            BaseMessage_Model<List<T_StockInfo>> messageModel = new BaseMessage_Model<List<T_StockInfo>>();
+            try
+            {
+                string strError = string.Empty;
+                T_StockInfo model = new T_StockInfo();
+                string SerialNo = string.Empty;
+                string DeEAN = string.Empty;
+                string BarCodeType = string.Empty;
+
+                if (string.IsNullOrEmpty(barcode))
+                {
+                    messageModel.HeaderStatus = "E";
+                    messageModel.Message = "客户端传来条码为空！";
+                    return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+                }
+
+                List<T_StockInfo> lstModel = new List<T_StockInfo>();
+                lstModel = tdb.GetStockByBarcode(barcode);
+
+                if (lstModel == null || lstModel.Count == 0)
+                {
+                    messageModel.HeaderStatus = "E";
+                    messageModel.Message = "该条码没有库存数据！";
+                    return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+                }
+
+                messageModel.HeaderStatus = "S";
+                messageModel.ModelJson = lstModel;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+
+            }
+            catch (Exception ex)
+            {
+                messageModel.HeaderStatus = "E";
+                messageModel.Message = ex.Message;
+                return JSONHelper.ObjectToJson<BaseMessage_Model<List<T_StockInfo>>>(messageModel);
+            }
+        }
 
         /// <summary>
         /// 根据货位编码获取库存

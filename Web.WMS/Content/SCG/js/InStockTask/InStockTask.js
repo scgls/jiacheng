@@ -8,7 +8,7 @@
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
                 var html = "<tr>";
-                html += "<td>" + data[i].AreaNo + "</td>"
+                //html += "<td>" + data[i].AreaNo + "</td>"
                 html += "<td>" + data[i].MaterialNo + "</td>"
                 html += "<td>" + data[i].MaterialDesc + "</td>"
                 html += "<td>" + data[i].QualityQty + "</td>"

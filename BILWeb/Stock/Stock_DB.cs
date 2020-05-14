@@ -243,6 +243,9 @@ namespace BILWeb.Stock
             //t_stock.SortArea = dbFactory.ToModelValue(reader, "SortArea").ToDBString();
             t_stock.IsAmount = dbFactory.ToModelValue(reader, "IsAmount").ToInt32();
             t_stock.BarCodeType = dbFactory.ToModelValue(reader, "BarCodeType").ToInt32();//GetBarCodeType(t_stock.Barcode);
+            t_stock.Spec = dbFactory.ToModelValue(reader, "Spec").ToDBString();
+            t_stock.TracNo = dbFactory.ToModelValue(reader, "TracNo").ToDBString();
+            
 
             return t_stock;
         }
@@ -870,6 +873,41 @@ namespace BILWeb.Stock
             }
         }
 
+        public List<T_StockInfo> GetStockByBarcode(string SerialNo)
+        {
+            try
+            {
+                List<T_StockInfo> models = new List<T_StockInfo>();
+                T_StockInfo model = new T_StockInfo();
+                string strSql = "select A.Palletno,A.Areaid,a.Warehouseid,a.Houseid,a.Qty,a.Barcode,a.Serialno,a.Strongholdcode,(case a.Status when 1 then '待检' when 2 then '送检' when 3 then '合格' when 4 then '不合格' end) as StrStatus,c.areano," +
+                                "a.Strongholdname,a.Companycode,a.Batchno,a.Materialno,a.Materialdesc from t_Stock a left join t_Material b on a.Materialnoid = b.Id left join t_Area c on a.Areaid = c.Id" +
+                                " where a.Serialno = '" + SerialNo + "' or a.barcode='" + SerialNo + "'";
+
+                using (IDataReader dr = dbFactory.ExecuteReader(System.Data.CommandType.Text, strSql))
+                {
+                    if (dr.Read())
+                    {
+       
+                        model.MaterialNo = dr["materialno"].ToDBString();
+                        model.MaterialDesc = dr["materialdesc"].ToDBString();
+                        model.Qty = dr["Qty"].ToInt32();
+                        model.StrongHoldName = dr["StrongHoldName"].ToDBString();
+                        model.BatchNo = dr["BatchNo"].ToDBString();
+                        model.AreaNo = dr["AreaNo"].ToDBString();
+                        model.StrStatus = dr["StrStatus"].ToDBString();
+                        //model.EAN = dr["ean"].ToDBString();//
+                        model.WareHouseID = dr["warehouseid"].ToInt32();
+
+                    }
+                }
+                models.Add(model);
+                return models;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public T_StockInfo GetStockBySerialNo(string SerialNo)
         {
@@ -1629,15 +1667,17 @@ namespace BILWeb.Stock
 
                 materialID = materialID.TrimEnd(',');
 
-                strSql = "select * from v_stock where materialnoid in (" + materialID + ") union all "+
-                        " select * from (select a.id,b.barcode,b.serialno,b.materialno,b.materialdesc,a.WAREHOUSEID,a.HOUSEID,a.AREAID,"+
-                        " b.qty,a.TMATERIALNO,a.TMATERIALDESC,a.PICKAREANO,a.CELAREANO,a.STATUS,a.ISDEL,a.CREATER,a.CREATETIME,"+
-                        " a.MODIFYER,a.MODIFYTIME,b.batchno,a.SN,a.RETURNSUPCODE,a.RETURNRESON,a.RETURNSUPNAME,a.OLDSTOCKID,"+
-                        " a.TASKDETAILESID,a.CHECKID,a.TRANSFERDETAILSID,a.RETURNTYPE,a.RETURNTYPEDESC,b.unit,a.SALENAME,a.UNITNAME,a.PALLETNO,a.RECEIVESTATUS,"+
-                        " a.SALECODE,a.ISLIMITSTOCK,a.PARTNO,b.materialnoid,b.strongholdcode,b.strongholdname,b.companycode,b.edate,"+
-                        " a.SUPCODE,a.SUPNAME,a.PRODUCTDATE,a.SUPPRDBATCH,a.SUPPRDDATE,a.ISQUALITY,a.WAREHOUSENO,a.HOUSENO,a.AREANO,"+
-                        " a.AREATYPE,a.MATERIALCHANGEID,a.Expr1,a.Isretention,a.SPEC,b.ean,a.HOUSEPROP,a.ISAMOUNT,a.BARCODETYPE from v_stock a left join T_OUTBARCODE b on a.BARCODE = b.fserialno where a.BARCODETYPE = 5 "+
-                        " ) as c";
+                //strSql = "select * from v_stock where materialnoid in (" + materialID + ") union all "+
+                //        " select * from (select a.id,b.barcode,b.serialno,b.materialno,b.materialdesc,a.WAREHOUSEID,a.HOUSEID,a.AREAID,"+
+                //        " b.qty,a.TMATERIALNO,a.TMATERIALDESC,a.PICKAREANO,a.CELAREANO,a.STATUS,a.ISDEL,a.CREATER,a.CREATETIME,"+
+                //        " a.MODIFYER,a.MODIFYTIME,b.batchno,a.SN,a.RETURNSUPCODE,a.RETURNRESON,a.RETURNSUPNAME,a.OLDSTOCKID,"+
+                //        " a.TASKDETAILESID,a.CHECKID,a.TRANSFERDETAILSID,a.RETURNTYPE,a.RETURNTYPEDESC,b.unit,a.SALENAME,a.UNITNAME,a.PALLETNO,a.RECEIVESTATUS,"+
+                //        " a.SALECODE,a.ISLIMITSTOCK,a.PARTNO,b.materialnoid,b.strongholdcode,b.strongholdname,b.companycode,b.edate,"+
+                //        " a.SUPCODE,a.SUPNAME,a.PRODUCTDATE,a.SUPPRDBATCH,a.SUPPRDDATE,a.ISQUALITY,a.WAREHOUSENO,a.HOUSENO,a.AREANO,"+
+                //        " a.AREATYPE,a.MATERIALCHANGEID,a.Expr1,a.Isretention,a.SPEC,b.ean,a.HOUSEPROP,a.ISAMOUNT,a.BARCODETYPE from v_stock a left join T_OUTBARCODE b on a.BARCODE = b.fserialno where a.BARCODETYPE = 5 "+
+                //        " ) as c";
+
+                strSql = "select * from v_stock where materialnoid in (" + materialID + ") ";
 
                 stockList = base.GetModelListBySql(strSql);
 

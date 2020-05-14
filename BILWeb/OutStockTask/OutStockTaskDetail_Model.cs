@@ -797,6 +797,10 @@ namespace BILWeb.OutStockTask
         public string FloorName { get; set; }
 
         public string EAN { get; set; }
-        
+
+        public string TracNo { get; set; }
+
+        public string ProjectNo { get; set; }
+        public string PassWord { get; set; }
     }
 }
